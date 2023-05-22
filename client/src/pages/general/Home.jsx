@@ -22,7 +22,7 @@ const Home = () => {
         />
       <Navbar />
       <div className="mx-auto md:pt-24 p-12 ">     
-        <div className="flex relative w-full">
+        <div className="md:flex relative w-full">
           <div className="">
             <h3 className="md:text-4xl text-2xl leading-tight">
               Take Your Note-Taking to the{" "}

@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
 import InputPrimary from "../../components/InputPrimary";
 import ButtonPrimary from "../../components/ButtonPrimary";
+import { register } from "../../api";
 
 const Signup = () => {
   return (

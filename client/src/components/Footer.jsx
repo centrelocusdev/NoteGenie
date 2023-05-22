@@ -30,8 +30,8 @@ const Footer = () => {
           <FaLinkedinIn />
         </div>
       </div>
-      <div className="md:w-fit">
-        <h5 className="text-primary-dark text-xl font-semibold mb-3">Useful Links</h5>
+      <div className="w-fit mx-auto">
+        <h5 className="text-primary-dark text-xl font-semibold mb-3">Useful Links</h5>                  
         <ul className="list-none flex flex-col gap-2">
           <li className="hover:underline cursor-pointer">Privacy Policy</li>
           <li className="hover:underline cursor-pointer">Terms and Conditions</li>
