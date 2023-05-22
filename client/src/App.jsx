@@ -6,7 +6,7 @@ import { FaSpinner } from "react-icons/fa";
 
 import Home from "./pages/general/Home";
 import Signup from "./pages/general/Signup";
-import Login from "./pages/general/Login";
+import Signin from "./pages/general/Signin";
 import PrivateRoutes from "./PrivateRoutes";
 import Templates from "./pages/dashboard/Templates";
 import Editor from "./pages/dashboard/Editor";
@@ -25,7 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Login />} />
+          <Route path="/signin" element={<Signin />} />
           <Route path="/temp-editor" element={<EditorTest />} />
 
           <Route element={<PrivateRoutes />}>

@@ -62,10 +62,10 @@ const Navbar = () => {
           ))}
           <li className="md:hidden text-gray text-lg mx-auto md:px-0 px-5 w-full text-center flex flex-col w-fit">
             <Link
-              to="/login"
+              to="/signin"
               className="text-primary-dark text-lg mx-3 md:px-0 px-5 w-full lg:w-fit hover:text-primary-dark py-2 md:text-left text-center capitalize"
             >
-              Login
+              Sign in
             </Link>
             <Link
               to="/signup"
@@ -77,10 +77,10 @@ const Navbar = () => {
         </ul>
         <div className="md:flex items-center hidden">
           <Link
-            to="/login"
+            to="/signin"
             className="text-primary-dark mx-3 md:px-0 px-5 w-full lg:w-fit lg:border-transparent hover:border-yellow-500 hover:text-yellow-500 py-2 text-left"
           >
-            Login
+            Sign in
           </Link>
           <ButtonPrimary text={"sign up"} handleClick={(e) => navigate('/signup')} />
         </div>
