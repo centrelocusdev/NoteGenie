@@ -2,6 +2,8 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { toast } from "react-toastify";
 
+const url = 'http://localhost:8000'
+
 export const register = async (formData) => {
   try {
     const res = await axios.post(`${url}/register/`, formData);

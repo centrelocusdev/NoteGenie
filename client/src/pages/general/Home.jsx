@@ -43,7 +43,7 @@ const Home = () => {
 
             <ButtonPrimary text={"Try NoteGenie"} isDark={true} />
           </div>
-          <img src={sbar} alt="" />
+          <img src={sbar} alt="" className="hidden md:block" />
         </div>
       </div>
 
