@@ -4,12 +4,21 @@ import { toast } from "react-toastify";
 
 const url = 'http://localhost:8000'
 
+export const getUserByToken = async () => {
+  try {
+    const res = await axios.get(`${url}/user/${Cookies.get('notegenie')}`)
+    return res.data
+  } catch (err) {
+    toast.error(err);
+    return;
+  }
+}
+
 export const register = async (formData) => {
   try {
     const res = await axios.post(`${url}/register/`, formData);
-    console.log(res)
-    Cookies.set("notegenie", res.data.tokens.at(-1));
-    toast.success("user logged in successfully");
+    Cookies.set("notegenie", res.data.token);
+    toast.success("user registered successfully");
     return true;
   } catch (err) {
     toast.error(err);
@@ -20,7 +29,7 @@ export const register = async (formData) => {
 export const login = async (formData) => {
   try {
     const res = await axios.post(`${url}/login/`, formData);
-    Cookies.set("notegenie", res.data.tokens.at(-1));
+    res && Cookies.set("notegenie", res.data.token);
     toast.success("user logged in successfully");
     return true;
   } catch (err) {

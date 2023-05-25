@@ -11,7 +11,7 @@ const InputPrimary = ({ type, name, placeholer, textarea }) => {
         type={type ? type : 'text'}
         name={name}
         placeholder={placeholer}
-        className="w-full bg-[#D1D1D147] rounded-full px-4 py-2 mt-1 focus:outline-none focus:bg-primary-light"
+        className="w-full bg-[#D1D1D147] rounded-full px-4 py-2 mt-1 focus:outline-none focus:bg-white focus:border-[#D1D1D147] border border-transparent"
       />
       }
     </div>

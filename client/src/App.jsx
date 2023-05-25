@@ -10,7 +10,6 @@ import Signin from "./pages/general/Signin";
 import PrivateRoutes from "./PrivateRoutes";
 import Templates from "./pages/dashboard/Templates";
 import Editor from "./pages/dashboard/Editor";
-import EditorTest from "./pages/dashboard/TextEditor";
 
 function App() {
   return (
@@ -25,8 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/temp-editor" element={<EditorTest />} />
+          <Route path="/login" element={<Signin />} />
 
           <Route element={<PrivateRoutes />}>
             <Route path="/dashboard" element={<Templates />} />

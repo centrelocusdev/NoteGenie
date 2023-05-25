@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { BsGoogle } from "react-icons/bs";
 import Navbar from "../../components/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputPrimary from "../../components/InputPrimary";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { register } from "../../api";
 
 const Signup = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,6 +25,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await register(formData)
+    navigate('/dashboard')
   }
 
   return (

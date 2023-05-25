@@ -1,11 +1,31 @@
-import React from "react";
+import React, {useState} from "react";
 import Navbar from "../../components/Navbar";
 import InputPrimary from "../../components/InputPrimary";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsGoogle } from "react-icons/bs";
+import { login } from "../../api";
 
 const Signin = () => {
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleFormDataChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const res = await login(formData)
+    navigate('/dashboard')
+  }
+
   return (
     <div className="pb-16">
       <Navbar />
@@ -21,7 +41,7 @@ const Signin = () => {
           </Link>
         </p>
 
-        <form className="md:w-4/5 mx-auto">
+        <form onSubmit={handleSubmit} onChange={handleFormDataChange} className="md:w-4/5 mx-auto">
           <InputPrimary
             type={"email"}
             name={"email"}

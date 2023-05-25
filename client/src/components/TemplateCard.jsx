@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BsThreeDots, BsStar, BsClipboard, BsX } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-const TemplateCard = ({template}) => {
+const TemplateCard = ({template, key}) => {
   const navigate = useNavigate()
   const [displayMenu, setDisplayMenu] = useState(false)
 

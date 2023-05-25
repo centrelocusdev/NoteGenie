@@ -12,24 +12,11 @@ const TextEditor = () => {
   const { id } = useParams();
   const [raw, setRaw] = useState("");
   const [template, setTemplate] = useState();
+  const [input, setInput] = useState()
 
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-
-  const handleEditorStateChange = (newEditorState) => {
-    setEditorState(newEditorState);
-  };
-
-  const convertContentToRawText = () => {
-    const contentState = editorState.getCurrentContent();
-    const rawContentState = convertToRaw(contentState);
-    const rawText = rawContentState.blocks
-      .map((block) => block.text)
-      .join("\n");
-    setRaw(rawText);
-    // You can now send the `rawText` to your server or perform any required operations
-  };
 
   useEffect(() => {
     setTemplate(() => {
@@ -45,23 +32,41 @@ const TextEditor = () => {
     "bg-[#967CFC]",
     "bg-[#FCEF7C]",
   ];
-  const data = {
-    ttile: "sbar",
-    tags: [
-      {
-        tag: "soap",
-        desc: "Simple Object Access Protocol",
-      },
-      {
-        tag: "sbar",
-        desc: "Situation, Background, Assessment, Recommendation",
-      },
-      {
-        tag: "brip",
-        desc: "Berg River Improvement Plan",
-      },
-    ],
+  const tags = [
+    {
+      tag: "soap",
+      desc: "Simple Object Access Protocol",
+    },
+    {
+      tag: "sbar",
+      desc: "Situation, Background, Assessment, Recommendation",
+    },
+    {
+      tag: "brip",
+      desc: "Berg River Improvement Plan",
+    },
+  ]
+
+  const handleEditorStateChange = (newEditorState) => {
+    setEditorState(newEditorState);
   };
+
+  const convertContentToRawText = () => {
+    const contentState = editorState.getCurrentContent();
+    const rawContentState = convertToRaw(contentState);
+    const rawText = rawContentState.blocks
+      .map((block) => block.text)
+      .join("\n");
+    setRaw(rawText);
+    console.log(rawText)
+    // You can now send the `rawText` to your server or perform any required operations
+  };
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value)
+  }
+
+  console.log(input)
 
   return (
     <div className="flex gap-6">
@@ -70,6 +75,10 @@ const TextEditor = () => {
           {template?.title}
         </h2>
 
+        <div className="flex justify-end">
+        <button className="mt-1 font-semibold border border rounded-full px-3 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent"><FiSave /> Save as PDF</button>
+
+        </div>
         <div className="bg-white rounded-3xl justify-between mt-3">
           <Editor
             editorState={editorState}
@@ -81,9 +90,10 @@ const TextEditor = () => {
 
         <div className="py-3 absolute bottom-0">
           <div className="flex flex-wrap gap-1">
-            {data.tags.map(({ tag, desc }, index) => (
+            {tags.map(({ tag, desc }, index) => (
               <button
                 key={index}
+                onClick={(e) => setInput(desc)}
                 className={`${
                   tagColors[index % tagColors.length]
                 } text-primary-dark px-3 py-1 rounded-full text-sm uppercase`}
@@ -97,6 +107,8 @@ const TextEditor = () => {
               type="text"
               className="rounded-full px-6 py-2 my-2 bg-[#ECECEC]"
               placeholder="Additional prompt instructions"
+              value={input}
+              onChange={handleInputChange}
             />
             <ButtonPrimary text={"refine document"} handleClick={convertContentToRawText} />
           </div>

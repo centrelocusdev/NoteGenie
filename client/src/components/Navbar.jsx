@@ -27,8 +27,7 @@ const Navbar = () => {
             to="/"
             className="text-primary-dark font-semibold flex items-center gap-2 text-2xl"
           >
-            {/* <img src={logo} alt="NoteGenie logo" className="w-12" /> */}
-            NoteGnie
+            <img src={logo} alt="NoteGenie logo" className="w-32" />
           </Link>
           <button
             onClick={handleClick}
@@ -54,7 +53,7 @@ const Navbar = () => {
           {navItems.map((name, index) => (
             <li key={index}>
               <Goto to={name} spy={true} smooth={true} duration={250}>
-                <button className="text-primary-dark text-lg mx-1 px-5 w-full lg:w-fit hover:text-secondary-dark hover:bg-theme-primary rounded-xl py-2 md:text-left text-center capitalize">
+                <button className="text-primary-dark text-lg mx-1 px-5 w-full lg:w-fit hover:text-secondary-dark hover:bg-theme-primary rounded-xl py-2 md:text-left text-center capitalize font-semibold">
                   {name}
                 </button>
               </Goto>
@@ -62,10 +61,10 @@ const Navbar = () => {
           ))}
           <li className="md:hidden text-gray text-lg mx-auto md:px-0 px-5 w-full text-center flex flex-col w-fit">
             <Link
-              to="/signin"
+              to="/login"
               className="text-primary-dark text-lg mx-3 md:px-0 px-5 w-full lg:w-fit hover:text-primary-dark py-2 md:text-left text-center capitalize"
             >
-              Sign in
+             Login
             </Link>
             <Link
               to="/signup"
@@ -77,10 +76,10 @@ const Navbar = () => {
         </ul>
         <div className="md:flex items-center hidden">
           <Link
-            to="/signin"
-            className="text-primary-dark mx-3 md:px-0 px-5 w-full lg:w-fit lg:border-transparent hover:border-yellow-500 hover:text-yellow-500 py-2 text-left"
+            to="/login"
+            className="text-primary-dark text-lg mx-4 mt-5  font-semibold md:px-0 px-5 w-full lg:w-fit lg:border-transparent hover:border-yellow-500 hover:text-yellow-500 py-1 text-left"
           >
-            Sign in
+            Login
           </Link>
           <ButtonPrimary text={"sign up"} handleClick={(e) => navigate('/signup')} />
         </div>
