@@ -2,6 +2,17 @@ const router = require("express").Router();
 const User = require("./userModal");
 const bcrypt = require("bcrypt");
 
+//get user by token
+router.get('/user/:token', async (req, res) => {
+  try {
+    const token = req.params.token
+    const user = await User.findOne({token})
+    res.status(200).send(user)
+  } catch (err) {
+    res.status(400).send({ err: err.message });
+  }
+})
+
 //signup
 router.post("/register", async (req, res) => {
   try { 
