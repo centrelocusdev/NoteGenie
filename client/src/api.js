@@ -2,7 +2,7 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { toast } from "react-toastify";
 
-const url = 'http://localhost:8000'
+const url = 'https://ng.thedelvierypointe.com'
 
 export const getUserByToken = async () => {
   try {
