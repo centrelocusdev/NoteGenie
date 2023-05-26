@@ -47,7 +47,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="mt-5 md:p-8 p-4 flex md:gap-16 gap-5 justify-center items-center">
+      <section id="features" className="mt-5 md:p-8 p-4 flex md:gap-16 gap-5 justify-center items-center">
         <div className="md:w-fit lg:block hidden">
           <img src={girl} alt="technology" className="w-[22rem]" />
         </div>
@@ -62,9 +62,9 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div id="about-us" className="md:mt-16 mt-5 md:p-8 p-4 text-center ">
+      <section id="about" className="md:mt-16 mt-5 md:p-8 p-4 text-center ">
         <h4 className="text-4xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 font-semibold mb-3">About Us</h4>
         <p className="md:w-2/3 mx-auto p-5 leading-7 md:text-center text-justify">
           Our note-taking app was created with the mission to make note-taking
@@ -77,7 +77,7 @@ const Home = () => {
           notes! Ready to take your note-taking to the next level? Try ChatGPT
           today and see how easy it can be.
         </p>
-      </div>
+      </section>
 
       <div className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap-16 justify-center items-center gap-8">
       <div className="md:3/5 lg:block hidden">
@@ -98,7 +98,7 @@ const Home = () => {
           </p>
 
           <ul
-            className={`list-disc list-inside marker:text-theme-primary font-semibold`}
+            className={`list-disc list-outside  marker:text-theme-primary font-semibold`}
           >
             <li className="my-2">
               Multiple note-taking templates for different types of content and
@@ -112,7 +112,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div id="faqs" className="md:mt-8 mt-5 p-8 ">
+      <section id="faq" className="md:mt-8 mt-5 p-8 ">
         <h4 className="text-primary-dark text-4xl md:mb-10 mb-6 text-center">
           Frequently Asked Questions
         </h4>
@@ -141,7 +141,7 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
       <Footer />
     </section>

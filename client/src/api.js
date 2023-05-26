@@ -39,16 +39,17 @@ export const login = async (formData) => {
 };
 
 export const logout = async () => {
-  Cookies.remove("access-token");
-  Cookies.remove("refresh-token");
-  try {
-    const res = await axios.post(`${url}/logout/`, { refresh: refresh_token });
-    res.data && toast.success("logging out");
-    return true;
-  } catch (err) {
-    toast.error(err.response.data.error);
-    return;
-  }
+  Cookies.remove("notegenie");
+  toast.success("logging out");
+  return true
+  // try {
+  //   const res = await axios.post(`${url}/logout/`, { token });
+  //   res && toast.success("logging out");
+  //   return true;
+  // } catch (err) {
+  //   toast.error(err.response.data.error);
+  //   return;
+  // }
 };
 
 export const forgetPasswordConfirm = async (formData) => {

@@ -17,7 +17,7 @@ const Navbar = () => {
     setSidebar((prev) => !prev);
   };
 
-  const navItems = ["home", "features", "about us", "support"];
+  const navItems = ['features', 'about', 'faq', 'support' ];
 
   return (
     <div className="w-full py-3 top-0">
@@ -50,11 +50,11 @@ const Navbar = () => {
           >
             <FiXOctagon />
           </li>
-          {navItems.map((name, index) => (
+          {navItems.map((item, index) => (
             <li key={index}>
-              <Goto to={name} spy={true} smooth={true} duration={250}>
+              <Goto to={item} spy={true} smooth={true} duration={250} >
                 <button className="text-primary-dark text-lg mx-1 px-5 w-full lg:w-fit hover:text-secondary-dark hover:bg-theme-primary rounded-xl py-2 md:text-left text-center capitalize font-semibold">
-                  {name}
+                  {item}
                 </button>
               </Goto>
             </li>
@@ -64,7 +64,7 @@ const Navbar = () => {
               to="/login"
               className="text-primary-dark text-lg mx-3 md:px-0 px-5 w-full lg:w-fit hover:text-primary-dark py-2 md:text-left text-center capitalize"
             >
-             Login
+              Login
             </Link>
             <Link
               to="/signup"
@@ -81,7 +81,10 @@ const Navbar = () => {
           >
             Login
           </Link>
-          <ButtonPrimary text={"sign up"} handleClick={(e) => navigate('/signup')} />
+          <ButtonPrimary
+            text={"sign up"}
+            handleClick={(e) => navigate("/signup")}
+          />
         </div>
       </div>
     </div>
