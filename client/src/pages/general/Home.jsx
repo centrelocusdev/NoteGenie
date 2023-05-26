@@ -169,24 +169,34 @@ const features = [
 
 const faqs = [
   {
-    question: "How does the ChatGPT integration work in the app? ",
+    question: "Who can use NoteGenie?",
     answer:
-      "ChatGPT is an AI language model that provides personalized and insightful suggestions based on your notes. It helps you improve your productivity and efficiency by giving relevant recommendations related to your note's topic.",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
   },
   {
-    question: "Is my data safe and secure in the app?",
+    question: "What kind of notes I can write?",
     answer:
-      "ChatGPT is an AI language model that provides personalized and insightful suggestions based on your notes. It helps you improve your productivity and efficiency by giving relevant recommendations related to your note's topic.",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
   },
   {
-    question: "Can I export my notes in a specific file format?",
+    question: "Is my data safe with NoteGenie?",
     answer:
-      "Yes, our note-taking app allows you to export your notes in a variety of file formats, including PDF, DOCX, and TXT. Simply select the notes you want to export and choose the desired file format from the export options. You can also customize the export settings to suit your preferences.",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
   },
   {
-    question: "Are there any restrictions on the number of notes I can create?",
+    question: "Can I export my Notes?",
     answer:
-      "ChatGPT is an AI language model that provides personalized and insightful suggestions based on your notes. It helps you improve your productivity and efficiency by giving relevant recommendations related to your note's topic.",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
+  },
+  {
+    question: "Where will my notes get saved?",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
+  },
+  {
+    question: "Are there any restriction on the notes I take?",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
   },
 ];
 
