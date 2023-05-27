@@ -5,7 +5,6 @@ export default {
     extend: {
       colors: {
         'blue': '#02BAFB',
-        // 'gray': '#9daaafff',
         'grad-dark': '#00BFFF0D',
         'grad-primary': '#2E3E990D',
         'card-gray': '#2B597336',

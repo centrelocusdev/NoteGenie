@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { BsArrowRightShort } from "react-icons/bs";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import ellipse from "../../assets/ellipse-blue.png";
 import rectangle from "../../assets/rectangle.png";
 import sbar from "../../assets/sbar.png";
 import girl from "../../assets/girl.png";
 import dashboard from "../../assets/dashboard.png";
-import checkmark from "../../assets/checkmark.png";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate()
   const [openIndex, setOpenIndex] = useState(-1);
 
   return (
     <section className="min-h-screen min-w-screen">
       <img
-          src={rectangle}
-          className="absolute z-60 w-[75%] mx-auto -translate-y-16 hidden md:block"
-        />
+        src={rectangle}
+        className="absolute z-60 w-[75%] mx-auto -translate-y-16 hidden md:block"
+      />
       <Navbar />
-      <div className="mx-auto md:pt-24 p-12 ">     
+      <div className="mx-auto md:pt-24 p-12 ">
         <div className="md:flex relative w-full">
           <div className="">
             <h3 className="md:text-4xl text-2xl leading-tight">
@@ -35,28 +35,28 @@ const Home = () => {
             <p className="mt-5 leading-7">
               Our innovative note-taking platform uses the power of AI to
               suggest relevant notes, organize your ideas, and streamline your
-              workflow. With ChatGPT, you'll be able to focus on what you do
+              workflow. With NoteGenie, you'll be able to focus on what you do
               best – generating ideas – while our platform handles the rest.
-              Ready to take your note-taking to the next level? Try ChatGPT
+              Ready to take your note-taking to the next level? Try NoteGenie
               today and see how easy it can be
             </p>
 
-            <ButtonPrimary text={"Try NoteGenie"} isDark={true} />
+            <ButtonPrimary text={"Try NoteGenie"} isDark={true} handleClick={(e) => navigate('/dashboard')} />
           </div>
           <img src={sbar} alt="" className="hidden md:block" />
         </div>
       </div>
 
-      <section id="features" className="mt-5 md:p-8 p-4 flex md:gap-16 gap-5 justify-center items-center">
+      <section
+        id="features"
+        className="mt-5 md:p-8 p-4 flex md:gap-16 gap-5 justify-center items-center"
+      >
         <div className="md:w-fit lg:block hidden">
           <img src={girl} alt="technology" className="w-[22rem]" />
         </div>
         <div className="md:w-1/2 flex flex-wrap justify-center">
           {features.map(({ title, desc }, key) => (
-            <div
-              key={key}
-              className="w-72 bg-theme-primary rounded-xl p-4 m-2"
-            >
+            <div key={key} className="w-72 bg-theme-primary rounded-xl p-4 m-2">
               <h5 className="text-xl font-semibold mb-3">{title}</h5>
               <p className="md:text-normal text-justify">{desc}</p>
             </div>
@@ -64,23 +64,20 @@ const Home = () => {
         </div>
       </section>
 
-      <section id="about" className="md:mt-16 mt-5 md:p-8 p-4 text-center ">
-        <h4 className="text-4xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 font-semibold mb-3">About Us</h4>
-        <p className="md:w-2/3 mx-auto p-5 leading-7 md:text-center text-justify">
-          Our note-taking app was created with the mission to make note-taking
-          simpler, more efficient, and more personalized. We are a team of
-          passionate developers, designers, and innovators who believe that
-          technology can help transform the way we work and learn. With ChatGPT
-          integration, we are constantly pushing the boundaries of what is
-          possible and striving to deliver the best user experience for our
-          customers. Join us on this journey to revolutionize the way you take
-          notes! Ready to take your note-taking to the next level? Try ChatGPT
-          today and see how easy it can be.
+      <section id="about" className="md:mt-16 mt-5 md:p-8 p-4 text-center md:w-2/3 mx-auto">
+        <h4 className="text-4xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 font-semibold mb-3">
+          About Us
+        </h4>
+        <p className="p-3 leading-7 md:text-center text-justify">
+          Our note-taking app was created with the mission to make note-taking simpler, more efficient, and professional. We are a team of passionate developers, designers, and innovators who believe that technology can help transform the way we work and learn. NoteGenie owners are in the medical and behavioral health profession and understand the time, energy and effort it takes to complete notes that meet your professions standards (i.e. medical necessity, ethical standards, educational/legal requirements). With NoteGenie integration, we are constantly pushing the boundaries of what is possible and striving to deliver the best user experience for our customers. <br />
+          Join us on this journey to revolutionize the way you take
+          notes! Ready to take your note-taking to the next level? NoteGenie can Help!
         </p>
+        <p className="text-2xl p-3 leading-7 md:text-center text-justify"> Try NoteGenie today and see how easy it can be.</p>
       </section>
 
       <div className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap-16 justify-center items-center gap-8">
-      <div className="md:3/5 lg:block hidden">
+        <div className="md:3/5 lg:block hidden">
           <img src={dashboard} alt="dashboard preview" className="w-full" />
         </div>
         <div className="md:w-2/5">
@@ -90,7 +87,7 @@ const Home = () => {
           </h3>
           <p className="my-5">
             Upgrade your note-taking experience with our sleek and modern app,
-            featuring an intuitive UI design. Our integration with ChatGPT
+            featuring an intuitive UI design. Our integration with NoteGenie
             provides personalized and insightful suggestions to improve
             productivity and efficiency. Say goodbye to traditional note-taking
             and embrace the future of productivity. Try our cutting-edge app
@@ -126,18 +123,14 @@ const Home = () => {
                 className="flex items-center justify-between cursor-pointer"
                 onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
               >
-                <h3 className="text-lg  font-medium ">
-                  {faq.question}
-                </h3>
+                <h3 className="text-lg  font-medium ">{faq.question}</h3>
                 {openIndex === index ? (
                   <FaChevronUp className="" />
                 ) : (
                   <FaChevronDown className="" />
                 )}
               </div>
-              {openIndex === index && (
-                <p className="mt-4">{faq.answer}</p>
-              )}
+              {openIndex === index && <p className="mt-4">{faq.answer}</p>}
             </div>
           ))}
         </div>

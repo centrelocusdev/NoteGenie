@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import TemplateCard from "../../components/TemplateCard";
 import Popup from "../../components/Popup";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import { FiPlus, FiLogOut } from "react-icons/fi";
+import { FiPlus, FiLogOut, FiSettings } from "react-icons/fi";
+import { IoMdLogOut } from "react-icons/io"
 import { BiUserCircle, BiChevronLeftCircle } from "react-icons/bi";
 import { useState } from "react";
 import { templates } from "../../data";
@@ -27,9 +28,9 @@ const Templates = () => {
   const handleOpenPopupClick = () => setShowPopup(true);
   const handleClosePopupClick = () => setShowPopup(false);
   const handleLogoutClick = async () => {
-    const res = await logout()
-    res && navigate('/')
-  }
+    const res = await logout();
+    res && navigate("/");
+  };
 
   const predefined = templates.filter(
     (template) => template.type == "predefined"
@@ -58,11 +59,18 @@ const Templates = () => {
           <BiUserCircle className="text-2xl" />
           <p className="text-lg font-semibold hidden sm:block">{user?.name}</p>
           <button
-            onClick={handleLogoutClick}
-            title="Logout"
+            onClick={() => console.log('settings')}
+            title="settings"
             className="text-lg ml-3 rounded-full h-fit hover:text-gray-500"
           >
-            <FiLogOut />
+            <FiSettings />
+          </button>
+          <button
+            onClick={handleLogoutClick}
+            title="Logout"
+            className="text-lg rounded-full h-fit hover:text-gray-500"
+          >
+            <IoMdLogOut />
           </button>
         </div>
       </div>
@@ -73,7 +81,7 @@ const Templates = () => {
               select new template
             </h4>
             <ButtonPrimary
-              text={"add sample note"}
+              text={"add note magic"}
               icon={<FiPlus />}
               handleClick={(e) => navigate("/dashboard/editor/0")}
             />
@@ -82,15 +90,15 @@ const Templates = () => {
             {predefined.map((t, key) => (
               <TemplateCard template={t} key={key} />
             ))}
-            <button
+            <div
               onClick={handleOpenPopupClick}
-              className="md:w-[20rem] w-full rounded-2xl bg-theme-primary h-[8.5rem] py-4 flex justify-center flex-col items-center text-primary-dark hover:bg-white"
+              className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
             >
               <FiPlus className="text-[2rem]" />
               <h4 className="font-semibold capitalize ">
                 create custom templates
               </h4>
-            </button>
+            </div>
           </div>
         </div>
 
@@ -98,7 +106,7 @@ const Templates = () => {
           <h4 className="text-2xl font-medium text-primary-dark capitalize mb-2">
             custom templates
           </h4>
-          <div className="flex flex-wrap gap-4 justify-evenly">
+          <div className={`flex flex-wrap gap-8 pl-5 ${(custom.length % 3 == 0) ? 'justify-evenly' : 'justify-start'}`}>
             {custom.map((t, key) => (
               <TemplateCard template={t} key={key} />
             ))}

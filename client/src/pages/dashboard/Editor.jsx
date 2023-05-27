@@ -76,16 +76,14 @@ const TextEditor = () => {
   return (
     <div className="flex gap-6">
       <div className="md:w-2/3 p-8">
-        <div className="flex gap-2">
-          <button onClick={(e) => navigate('/dashboard')} title="Back" className="text-2xl hover:text-gray-600">
+        <button onClick={(e) => navigate('/dashboard')} title="Back" className="text-2xl hover:text-gray-600">
             <BiChevronLeftCircle />
           </button>
-          <h2 className="text-primary-dark text-2xl font-medium uppercase">
+
+        <div className="flex justify-between">
+        <h2 className="text-primary-dark text-2xl font-medium uppercase">
             {template?.title}
           </h2>
-        </div>
-
-        <div className="flex justify-end">
           <button className="mt-1 font-semibold border border rounded-full px-3 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
             <FiSave /> Save as PDF
           </button>
@@ -116,8 +114,9 @@ const TextEditor = () => {
           <div className="flex gap-2 items-center justify-between mt-3">
             <input
               type="text"
-              className="rounded-lg px-6 py-3  bg-[#ECECEC] w-[73%]"
-              placeholder="Additional prompt instructions"
+              className="rounded-lg px-6 py-3  bg-[#ECECEC] w-[73%] focus:outline-none"
+              autoFocus
+              placeholder="Add additional prompt..."
               value={input}
               onChange={handleInputChange}
             />
