@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import TemplateCard from "../../components/TemplateCard";
 import Popup from "../../components/Popup";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import { FiPlus, FiLogOut, FiSettings } from "react-icons/fi";
-import { IoMdLogOut } from "react-icons/io"
+import { FiPlus, FiSettings } from "react-icons/fi";
+import { CgLogOff } from "react-icons/cg";
+import { BsArrowLeftCircle } from "react-icons/bs";
 import { BiUserCircle, BiChevronLeftCircle } from "react-icons/bi";
 import { useState } from "react";
 import { templates } from "../../data";
@@ -47,7 +48,7 @@ const Templates = () => {
             title="Back"
             className="text-2xl hover:text-gray-600"
           >
-            <BiChevronLeftCircle />
+            <BsArrowLeftCircle />
           </button>
           <h2 className="text-primary-dark text-2xl font-medium uppercase">
             Dashboard
@@ -57,20 +58,20 @@ const Templates = () => {
         <div className="flex gap-2 items-center">
           {/* <img src={user} alt="avatar" className="w-12 rounded-full" /> */}
           <BiUserCircle className="text-2xl" />
-          <p className="text-lg font-semibold hidden sm:block">{user?.name}</p>
+          <p className="text-xl font-semibold hidden sm:block">{user?.name}</p>
           <button
-            onClick={() => console.log('settings')}
+            onClick={() => console.log("settings")}
             title="settings"
-            className="text-lg ml-3 rounded-full h-fit hover:text-gray-500"
+            className="text-2xl ml-3 rounded-full h-fit hover:text-gray-500"
           >
             <FiSettings />
           </button>
           <button
             onClick={handleLogoutClick}
             title="Logout"
-            className="text-lg rounded-full h-fit hover:text-gray-500"
+            className="text-2xl rounded-full h-fit hover:text-gray-500 text-red-500"
           >
-            <IoMdLogOut />
+            <CgLogOff />
           </button>
         </div>
       </div>
@@ -87,9 +88,6 @@ const Templates = () => {
             />
           </div>
           <div className="flex flex-wrap gap-4 justify-evenly">
-            {predefined.map((t, key) => (
-              <TemplateCard template={t} key={key} />
-            ))}
             <div
               onClick={handleOpenPopupClick}
               className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
@@ -99,6 +97,9 @@ const Templates = () => {
                 create custom templates
               </h4>
             </div>
+            {predefined.map((t, key) => (
+              <TemplateCard template={t} key={key} />
+            ))}
           </div>
         </div>
 
@@ -106,7 +107,11 @@ const Templates = () => {
           <h4 className="text-2xl font-medium text-primary-dark capitalize mb-2">
             custom templates
           </h4>
-          <div className={`flex flex-wrap gap-8 pl-5 ${(custom.length % 3 == 0) ? 'justify-evenly' : 'justify-start'}`}>
+          <div
+            className={`flex flex-wrap gap-8 pl-5 ${
+              custom.length % 3 == 0 ? "justify-evenly" : "justify-start"
+            }`}
+          >
             {custom.map((t, key) => (
               <TemplateCard template={t} key={key} />
             ))}

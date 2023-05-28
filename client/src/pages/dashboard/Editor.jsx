@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { FiSave, FiClipboard } from "react-icons/fi";
-import { BiChevronLeftCircle } from "react-icons/bi";
+import { BsArrowLeftCircle } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { templates } from "../../data";
-import {
-  EditorState,
-  convertToRaw,
-} from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const TextEditor = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { id } = useParams();
   const [raw, setRaw] = useState("");
   const [template, setTemplate] = useState();
   const [input, setInput] = useState();
-  const [output, setOutput] = useState('')
+  const [output, setOutput] = useState("");
 
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -75,53 +72,45 @@ const TextEditor = () => {
 
   return (
     <div className="flex gap-6">
-      <div className="md:w-2/3 p-8">
-        <button onClick={(e) => navigate('/dashboard')} title="Back" className="text-2xl hover:text-gray-600">
-            <BiChevronLeftCircle />
+      <div className="md:w-2/3 p-8 flex flex-col justify-between gap-5">
+        <div className="">
+          <button
+            onClick={(e) => navigate("/dashboard")}
+            title="Back"
+            className="text-2xl hover:text-gray-600"
+          >
+            <BsArrowLeftCircle />
           </button>
 
-        <div className="flex justify-between">
-        <h2 className="text-primary-dark text-2xl font-medium uppercase">
-            {template?.title}
-          </h2>
-          <button className="mt-1 font-semibold border border rounded-full px-3 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
-            <FiSave /> Save as PDF
-          </button>
-        </div>
-        <div className="bg-white rounded-3xl justify-between mt-3">
-          <Editor
-            editorState={editorState}
-            onEditorStateChange={handleEditorStateChange}
-            toolbarClassName="bg-primary-light"
-            editorClassName="min-h-[19rem] rounded-3xl px-8"
-          />
-        </div>
-
-        <div className="py-3 w-full mt-3">
-          <div className="flex flex-wrap gap-1">
-            {tags.map(({ tag, desc }, index) => (
-              <button
-                key={index}
-                onClick={(e) => setInput(desc)}
-                className={`${
-                  tagColors[index % tagColors.length]
-                } text-primary-dark px-3 py-1 rounded-full text-[12px] font-medium uppercase`}
-              >
-                {tag}
-              </button>
-            ))}
+          <div className="flex justify-between">
+            <h2 className="text-primary-dark text-xl font-medium uppercase">
+              {template?.title}
+            </h2>
+            <button className="mt-1 font-semibold border border rounded-full px-3 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
+              <FiSave /> Save as PDF
+            </button>
           </div>
-          <div className="flex gap-2 items-center justify-between mt-3">
-            <input
-              type="text"
-              className="rounded-lg px-6 py-3  bg-[#ECECEC] w-[73%] focus:outline-none"
-              autoFocus
-              placeholder="Add additional prompt..."
-              value={input}
-              onChange={handleInputChange}
+          <div className="bg-white rounded-3xl justify-between mt-3 h-[100%]">
+            <Editor
+              editorState={editorState}
+              onEditorStateChange={handleEditorStateChange}
+              toolbarClassName="bg-primary-light"
+              editorClassName="min-h-[20rem] rounded-3xl px-8"
             />
-            <button className="rounded-lg py-3 px-6 bg-theme-primary font-semibold">Refine Document</button>
           </div>
+        </div>
+        <div className="flex gap-2 items-center h-[10%] justify-between">
+          <input
+            type="text"
+            className="rounded-lg px-6 py-3  bg-[#ECECEC] w-[73%] focus:outline-none"
+            autoFocus
+            placeholder="Add additional prompt..."
+            value={input}
+            onChange={handleInputChange}
+          />
+          <button className="rounded-lg py-3 px-6 bg-theme-primary font-semibold">
+            Refine Document
+          </button>
         </div>
       </div>
       <div className="md:w-1/2 min-h-screen bg-primary-light">
@@ -138,7 +127,11 @@ const TextEditor = () => {
             </div>
           </div>
           <div className="h-[85%] bg-white w-full rounded-3xl p-8">
-            {!output && <span className="text-gray-400 text-lg">Your refined document will appear here...</span> }
+            {!output && (
+              <span className="text-gray-400 text-lg">
+                Your refined document will appear here...
+              </span>
+            )}
           </div>
         </div>
       </div>

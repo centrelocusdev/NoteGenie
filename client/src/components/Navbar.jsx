@@ -1,23 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { FiXOctagon } from "react-icons/fi";
+import { CgLogOff } from "react-icons/cg";
 import Scroll from "react-scroll";
 import logo from "../assets/logo-yellow.png";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "./ButtonPrimary";
+import { getUserByToken } from "../api";
 
 const Goto = Scroll.Link;
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [sidebar, setSidebar] = useState(false);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const runIt = async () => {
+      const u = await getUserByToken();
+      setUser(u);
+    };
+
+    runIt();
+  }, []);
+
   const handleClick = () => {
     setSidebar((prev) => !prev);
   };
 
-  const navItems = ['features', 'about', 'faq', 'support' ];
+  const handleLogoutClick = async () => {
+    const res = await logout();
+    res && navigate("/");
+  };
+
+  const navItems = ["features", "about", "faq", "support"];
 
   return (
     <div className="w-full top-0 bg-primary-dark py-2 relative">
@@ -52,39 +70,63 @@ const Navbar = () => {
           </li>
           {navItems.map((item, index) => (
             <li key={index}>
-              <Goto to={item} spy={true} smooth={true} duration={250} >
-                <button className="text-primary-light text-lg mx-1 px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
-                  {item}
-                </button>
-              </Goto>
+              {item == navItems[3] ? (
+                <Link to={item}>
+                  <button className="text-primary-light text-lg mx-1 px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
+                    {item}
+                  </button>
+                </Link>
+              ) : (
+                <Goto to={item} spy={true} smooth={true} duration={250}>
+                  <button className="text-primary-light text-lg mx-1 px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
+                    {item}
+                  </button>
+                </Goto>
+              )}
             </li>
           ))}
           <li className="md:hidden text-gray text-lg mx-auto md:px-0 px-5 w-full text-center flex flex-col w-fit">
-            <Link
-              to="/login"
-              className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold"
-            >
-              Sign up
-            </Link>
+            {!user ? (
+              <>
+                <Link
+                  to="/login"
+                  className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold"
+                >
+                  Sign up
+                </Link>
+              </>
+            ) : (
+              <button onClick={handleLogoutClick} className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center">
+                <CgLogOff /> Logout
+              </button>
+            )}
           </li>
         </ul>
         <div className="md:flex items-center hidden">
-          <Link
-            to="/login"
-            className="text-primary-light text-lg mx-4  font-semibold md:px-0 px-5 w-full lg:w-fit lg-transparent hover-yellow-500 hover:text-yellow-500 py-1 text-left"
-          >
-            Login
-          </Link>
-          <ButtonPrimary
-            text={"sign up"}
-            handleClick={(e) => navigate("/signup")}
-          />
+          {!user ? (
+            <>
+              <Link
+                to="/login"
+                className="text-primary-light text-lg mx-4  font-semibold md:px-0 px-5 w-full lg:w-fit lg-transparent hover-yellow-500 hover:text-yellow-500 py-1 text-left"
+              >
+                Login
+              </Link>
+              <ButtonPrimary
+                text={"sign up"}
+                handleClick={(e) => navigate("/signup")}
+              />
+            </>
+          ) : (
+            <button onClick={handleLogoutClick} className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center text-red-400">
+              <CgLogOff className=" text-2xl" /> Logout
+            </button>
+          )}
         </div>
       </div>
     </div>

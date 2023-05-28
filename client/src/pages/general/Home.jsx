@@ -69,7 +69,7 @@ const Home = () => {
           About Us
         </h4>
         <p className="p-3 leading-7 md:text-center text-justify">
-          Our note-taking app was created with the mission to make note-taking simpler, more efficient, and professional. We are a team of passionate developers, designers, and innovators who believe that technology can help transform the way we work and learn. NoteGenie owners are in the medical and behavioral health profession and understand the time, energy and effort it takes to complete notes that meet your professions standards (i.e. medical necessity, ethical standards, educational/legal requirements). With NoteGenie integration, we are constantly pushing the boundaries of what is possible and striving to deliver the best user experience for our customers. <br />
+          Our note-taking app was created with the mission to make note-taking simpler, more efficient, and professional. We are a team of passionate developers, designers, and innovators who believe that technology can help transform the way we work and learn. NoteGenie owners are in the medical and behavioral health profession and understand the time, energy and effort it takes to complete notes that meet your professions standards (i.e. medical necessity, ethical standards, educational/legal requirements). With NoteGenie, we are constantly pushing the boundaries of what is possible and striving to deliver the best user experience for our customers. <br />
           Join us on this journey to revolutionize the way you take
           notes! Ready to take your note-taking to the next level? NoteGenie can Help!
         </p>
@@ -87,7 +87,7 @@ const Home = () => {
           </h3>
           <p className="my-5">
             Upgrade your note-taking experience with our sleek and modern app,
-            featuring an intuitive UI design. Our integration with NoteGenie
+            featuring an intuitive UI design. Our integration with chatGPT
             provides personalized and insightful suggestions to improve
             productivity and efficiency. Say goodbye to traditional note-taking
             and embrace the future of productivity. Try our cutting-edge app
@@ -164,32 +164,32 @@ const faqs = [
   {
     question: "Who can use NoteGenie?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
+      " NoteGenie can be used by all the professionals who are into the filed of Medical, Legal, Sports. It can be very helpful to doctors, therapist, acupuncturist, educationalist and others. ",
   },
   {
     question: "What kind of notes I can write?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
+      "You can write notes like SOAP, BIRP, SBAR, Clinical Reports, Treatment Plans and other related related kind of notes. ",
   },
   {
     question: "Is my data safe with NoteGenie?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
+      "Yes, your data is safe with NoteGenie as it does not share or save your notes in the server. ",
   },
   {
     question: "Can I export my Notes?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
+      "Yes you can export your notes as a PDF file, that is downloaded on your system. ",
   },
   {
     question: "Where will my notes get saved?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
+      "Your notes are saved on your system after download.",
   },
   {
     question: "Are there any restriction on the notes I take?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi beatae perferendis voluptatibus ipsum at corrupti, illum optio voluptatem ipsa incidunt?",
+      "There is no restriction on the number of notes you take on NoteGenie. But you would need to have a premium plan for that.",
   },
 ];
 

@@ -2,17 +2,17 @@ export const templates = [
   {
     id: 1,
     type: 'predefined',
-    title: "Subjective, Objective, Assessment, Plan",
+    title: "Subjective, Objective, Assessment, Plan (SOAP)",
   },
   {
     id: 2,
     type: 'predefined',
-    title: "Behavior, Intervention, Response, Plan",
+    title: "Behavior, Intervention, Response, Plan (BIRP)",
   },
   {
     id: 3,
     type: 'predefined',
-    title: "Situation, Background, Assessment, Recommendation",
+    title: "Situation, Background, Assessment, Recommendation (SBAR)",
   },
   {
     id: 4,
