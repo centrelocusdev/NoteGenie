@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
 });
 
 //update
-router.post("/update", async (req, res) => {
+router.post("/update-profile", async (req, res) => {
   try {
     const {id} = req.query
     const user = await User.findOne({ id });

@@ -9,6 +9,10 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import gp1 from "../../assets/gp1.png"
+import gp2 from "../../assets/gp2.png"
+import gp3 from "../../assets/gp3.png"
+import gp4 from "../../assets/gp4.png"
 
 const Home = () => {
   const navigate = useNavigate()
@@ -76,7 +80,37 @@ const Home = () => {
         <p className="text-2xl p-3 leading-7 md:text-center text-justify"> Try NoteGenie today and see how easy it can be.</p>
       </section>
 
-      <div className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap-16 justify-center items-center gap-8">
+      <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap- justify-center items-center gap-8">  
+        <div className="md:w-2/3">
+          <h2 className="text-4xl font-semibold text-theme-primary">For whome this platform is</h2>
+          <h3 className="text-primary-dark md:text-xl text-2xl my-3">
+          Our note-taking platform is designed to cater to various professionals and individuals, including:
+          </h3>
+
+          <ul
+            className={`list-decimal list-outside text-lg md:ml-4 flex flex-col gap-4 text-gray-600`}
+          >
+            <li>
+            Doctors and healthcare professionals: Streamline patient documentation, medical research, and clinical note-taking.
+            </li>
+            <li>
+            Lawyers and legal professionals: Organize case notes, research findings, and client communication for efficient legal practice.
+            </li>
+            <li>Educators and academic professionals: Take lecture notes, create lesson plans, and track student progress for effective teaching.</li>
+            <li>Business professionals: Manage meeting notes, project plans, and brainstorming sessions to boost productivity. </li>
+            <li>Researchers and scientists: Capture research findings, experimental data, and hypotheses in a structured format.</li>
+            <li>Writers and content creators: Jot down ideas, outline articles, and create content drafts with ease.</li>
+          </ul>
+        </div>
+        <div className="w-1/2 lg:flex hidden flex-wrap gap-5 justify-end">
+            <img src={gp1} className="w-[15rem]" />
+            <img src={gp2} className="w-[15rem]" />
+            <img src={gp3} className="w-[15rem]" />
+            <img src={gp4} className="w-[15rem]" />
+        </div>
+      </section>
+
+      <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap-16 justify-center items-center gap-8">
         <div className="md:3/5 lg:block hidden">
           <img src={dashboard} alt="dashboard preview" className="w-full" />
         </div>
@@ -107,7 +141,7 @@ const Home = () => {
             <li className="my-2">AI-powered note-taking with the ability</li>
           </ul>
         </div>
-      </div>
+      </section>
 
       <section id="faq" className="md:mt-8 mt-5 p-8 ">
         <h4 className="text-primary-dark text-4xl md:mb-10 mb-6 text-center">

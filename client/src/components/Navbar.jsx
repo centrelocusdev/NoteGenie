@@ -38,7 +38,7 @@ const Navbar = () => {
   const navItems = ["features", "about", "faq", "support"];
 
   return (
-    <div className="w-full top-0 bg-primary-dark py-2 relative">
+    <div className="w-full top-0 bg-primary-dark py-4 relative">
       <div className="flex flex-wrap flex-col md:flex-row justify-between md:items-center md:px-12">
         <div className="flex justify-between px-5 py-2 md:py-0">
           <Link

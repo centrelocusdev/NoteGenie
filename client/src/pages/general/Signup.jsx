@@ -14,6 +14,8 @@ const Signup = () => {
     password: "",
     confirm_password: ""
   });
+  const [profession, setProfession] = useState();
+  const professions = ['healthcare provider', 'social worker', 'acupuncuturist', 'educator', 'psychologist', 'mental health therapist', 'chinese herbal medicine', 'psychiatrist', 'doctor', 'physical therapist', 'occupational therapist', 'chiropractor', 'speech pathologist', 'law inforcement', 'lawyer']
 
   const handleFormDataChange = (e) => {
     setFormData((prevState) => ({
@@ -22,10 +24,14 @@ const Signup = () => {
     }))
   }
 
+  const handleProfessionChange = (e) => {
+    setProfession(e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await register(formData)
-    navigate('/dashboard')
+    const res = await register({...formData, profession})
+    res && navigate('/dashboard')
   }
 
   return (
@@ -42,22 +48,28 @@ const Signup = () => {
         </p>
 
         <div onChange={handleFormDataChange} className="md:w-4/5 mx-auto">
-          <InputPrimary name={"name"} placeholer={"John Doe"} />
+          <InputPrimary name={"name"} placeholder={"John Doe"} />
           <InputPrimary
             type={"email"}
             name={"email"}
-            placeholer={"johndoe@gmail.com"}
+            placeholder={"johndoe@gmail.com"}
           />
           <InputPrimary
             type={"password"}
             name={"password"}
-            placeholer={"Enter strong password"}
+            placeholder={"Enter strong password"}
           />
           <InputPrimary
             type={"password"}
             name={"confirm_password"}
-            placeholer={"Re-type your password"}
+            placeholder={"Re-type your password"}
           />
+          <select value={profession} onChange={handleProfessionChange} className="appearance-none w-full invalid:bg-gray-600 bg-[#D1D1D147] mt-5 px-6 py-3 rounded-full focus:outline-none ">
+            <option value="">Select Your Profession</option>
+            {professions.map(p => (
+              <option value={p} className="capitalize">{p}</option>
+            ))}
+          </select>
           <ButtonPrimary text={"sign up"} width={"full"} handleClick={handleSubmit} />
           <p className="text-2xl text-center text-slate-400">OR</p>
           <ButtonPrimary

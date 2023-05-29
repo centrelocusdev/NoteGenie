@@ -17,7 +17,7 @@ const Popup = ({display}) => {
           <InputPrimary name={'template_name'} placeholer={'Enter a name for your template'} />
           <InputPrimary name={'tags'} placeholer={'Enter tags'} />
           <div className="mt-3">
-          <p className="text-lg mb-1">Template <span className="text-gray">(Enter Format)</span></p>
+          <p className="text-lg mb-1 font-semibold text-gray-600  ">Template <span className="text-gray">(Enter Format)</span></p>
           <JoditEditor
             value={content}
             config={{

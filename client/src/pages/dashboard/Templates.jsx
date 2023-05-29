@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import TemplateCard from "../../components/TemplateCard";
 import Popup from "../../components/Popup";
+import SettingsPopup from "../../components/SettingsPopup";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { FiPlus, FiSettings } from "react-icons/fi";
 import { CgLogOff } from "react-icons/cg";
@@ -15,6 +16,7 @@ const Templates = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [showPopup, setShowPopup] = useState(false);
+  const [showSettingsPopup, setShowSettingsPopup] = useState(false);
   const [displayMenu, setDisplayMenu] = useState(false);
 
   useEffect(() => {
@@ -28,6 +30,8 @@ const Templates = () => {
 
   const handleOpenPopupClick = () => setShowPopup(true);
   const handleClosePopupClick = () => setShowPopup(false);
+  const handleOpenSettingsPopupClick = () => setShowSettingsPopup(true);
+  const handleCloseSettingsPopupClick = () => setShowSettingsPopup(false);
   const handleLogoutClick = async () => {
     const res = await logout();
     res && navigate("/");
@@ -41,6 +45,7 @@ const Templates = () => {
   return (
     <>
       {showPopup && <Popup display={handleClosePopupClick} />}
+      {showSettingsPopup && <SettingsPopup display={handleCloseSettingsPopupClick} />}
       <div className="flex justify-between px-12 py-6">
         <div className="flex gap-2">
           <button
@@ -60,7 +65,7 @@ const Templates = () => {
           <BiUserCircle className="text-2xl" />
           <p className="text-xl font-semibold hidden sm:block">{user?.name}</p>
           <button
-            onClick={() => console.log("settings")}
+            onClick={handleOpenSettingsPopupClick}
             title="settings"
             className="text-2xl ml-3 rounded-full h-fit hover:text-gray-500"
           >

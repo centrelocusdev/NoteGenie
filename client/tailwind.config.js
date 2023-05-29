@@ -1,6 +1,20 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 export default {
   content: ["./src/**/*.{jsx,js}"],
+  variants: {
+    textColor: ({ after }) => after(['invalid']),
+  },
+  plugins: [
+    plugin(function ({ addVariant, e }) {
+      addVariant('invalid', ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.${e(`invalid${separator}${className}`)}:invalid`;
+        });
+      });
+    }),
+  ],
   theme: {
     extend: {
       colors: {
@@ -16,6 +30,5 @@ export default {
       }
     },
   },
-  plugins: [],
 }
 
