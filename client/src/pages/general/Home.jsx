@@ -88,7 +88,7 @@ const Home = () => {
           </h3>
 
           <ul
-            className={`list-decimal list-outside text-lg md:ml-4 flex flex-col gap-4 text-gray-600`}
+            className={`list-decimal list-outside text-lg md:ml-4 flex flex-col gap-4 text-gray-600 text-justify`}
           >
             <li>
             Doctors and healthcare professionals: Streamline patient documentation, medical research, and clinical note-taking.
@@ -119,7 +119,7 @@ const Home = () => {
             Streamline Your Note-Taking Experience with Modern and Intuitive UI
             Design
           </h3>
-          <p className="my-5">
+          <p className="my-5 text-justify text-lg">
             Upgrade your note-taking experience with our sleek and modern app,
             featuring an intuitive UI design. Our integration with chatGPT
             provides personalized and insightful suggestions to improve
@@ -129,7 +129,7 @@ const Home = () => {
           </p>
 
           <ul
-            className={`list-disc list-outside  marker:text-theme-primary font-semibold`}
+            className={`list-disc list-outside  marker:text-theme-primary font-semibold text-gray-600`}
           >
             <li className="my-2">
               Multiple note-taking templates for different types of content and
