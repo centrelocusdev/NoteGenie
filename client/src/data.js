@@ -1,67 +1,90 @@
-export const templates = [
-  {
-    id: 1,
-    type: 'predefined',
-    title: "Subjective, Objective, Assessment, Plan (SOAP)",
-  },
-  {
-    id: 2,
-    type: 'predefined',
-    title: "Behavior, Intervention, Response, Plan (BIRP)",
-  },
-  {
-    id: 3,
-    type: 'predefined',
-    title: "Situation, Background, Assessment, Recommendation (SBAR)",
-  },
-  {
-    id: 4,
-    type: 'predefined',
-    title: "Treatment Plan",
-  },
-  {
-    id: 5,
-    type: 'predefined',
-    title: "Discharge Summary",
-  },
-  {
-    id: 6,
-    type: 'predefined',
-    title: "Critical Incident Report",
-  },
-  {
-    id: 7,
-    type: 'predefined',
-    title: "Biopsychosocial Assessment",
-  },
-  {
-    id: 8,
-    type: 'predefined',
-    title: "Problem Intervention Evalution",
-  },
-  {
-    id: 9,
-    type: 'predefined',
-    title: "Report Intake",
-  },
-  {
-    id: 10,
-    type: 'predefined',
-    title: "Crisis Intervention",
-  },
-  {
-    id: 11,
-    type: 'predefined',
-    title: "Task Management",
-  },
-  {
-    id: 12,
-    type: 'custom',
-    title: "Case Woker Notes",
-  },
-  {
-    id: 13,
-    type: 'custom',
-    title: "Case Notes",
-  },
-];
+export const predefinedTemplates = (profession) => {
+  const data = [
+    {
+      id: 1,
+      name: "Subjective, Objective, Assessment, Plan (SOAP)",
+      description: `You are a medical ${profession}, create a comprehensive progress note that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 2,
+      name: "Behavior, Intervention, Response, Plan (BIRP)",
+      description: `You are a medical ${profession}, create a 3 page Behavior intervention response plan note that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 3,
+      name: "Situation, Background, Assessment, Recommendation (SBAR)",
+      description: `You are a medical ${profession}, create a comprehensive SBAR (situation background, assessment, recommendation) note that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 4,
+      name: "Progress Note",
+      description: `You are a medical ${profession}, create a comprehensive progress note that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 5,
+      name: "Treatment Plan",
+      description: `You are a medical ${profession}, create a comprehensive treatment plan that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 6,
+      name: "Discharge Summary",
+      description: `You are a medical ${profession}, create a 1-2 page discharge summary that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 7,
+      name: "Critical incident report",
+      description: `You are a medical ${profession}, create a critical incident report that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 8,
+      name: "Recommendations",
+      description: `You are a medical ${profession}, create medical recommendations for patients that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 9,
+      name: "Problem Intervention Evaluation",
+      description: `You are a medical ${profession}, create a comprehensive 3 paragraph PIE (problem intervention evaluation) note that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 10,
+      name: "Report Intake",
+      description: `You are a medical ${profession}, create a comprehensive intake note that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 11,
+      name: "Crisis Intervention",
+      description: `You are a medical ${profession}, create a comprehensive crisis management note that supports medical necessity`,
+      profession: `${profession}`,
+      type: "predefined"
+    },
+    {
+      id: 12,
+      name: "Task Management",
+      description: `You are a medical ${profession}, create a comprehensive task management note`,
+      profession: `${profession}`,
+      type: "predefined"
+    }
+  ]
+  
+  return data
+}

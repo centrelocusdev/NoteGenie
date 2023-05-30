@@ -30,7 +30,7 @@ function App() {
 
           <Route element={<PrivateRoutes />}>
             <Route path="/dashboard" element={<Templates />} />
-            <Route path="/dashboard/editor/:id" element={<Editor />} />
+            <Route path="/dashboard/editor/template/:id" element={<Editor />} />
           </Route>
         </Routes>
       </Suspense>

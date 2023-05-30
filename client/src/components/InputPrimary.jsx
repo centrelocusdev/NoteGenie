@@ -20,7 +20,7 @@ const InputPrimary = ({ type, name, placeholder, textarea, value, onChange }) =>
           value={value}
           placeholder={placeholder}
           onChange={onChange}
-          className="w-full bg-[#D1D1D147] rounded-full text-lg px-4 py-2 mt-1 focus:outline-none focus:bg-white focus:border-[#D1D1D147] border border-transparent"
+          className="w-full bg-[#D1D1D147] rounded-full px-4 py-2 mt-1 focus:outline-none focus:bg-white focus:border-[#D1D1D147] border border-transparent"
         />
       )}
     </div>

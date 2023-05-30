@@ -11,7 +11,7 @@ const TemplateCard = ({ template, key }) => {
   };
 
   const hanldeCardClick = () => {
-    navigate(`/dashboard/editor/${template.id}`);
+    navigate(`/dashboard/editor/template/${template.id}`);
   };
 
   return (
@@ -19,8 +19,8 @@ const TemplateCard = ({ template, key }) => {
       onClick={hanldeCardClick}
       className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
     >
-      <h4 className="text-xl text-primary-dark font-semibold text-center">
-        {template.title}
+      <h4 className="text-xl text-primary-dark font-semibold text-center capitalize">
+        {template.name}
       </h4>
     </div>
   );

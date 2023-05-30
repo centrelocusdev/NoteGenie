@@ -38,7 +38,7 @@ const Navbar = () => {
   const navItems = ["features", "about", "faq", "support"];
 
   return (
-    <div className="w-full top-0 bg-primary-dark py-4 relative">
+    <div className="w-full top-0 bg-primary-dark py-1 relative">
       <div className="flex flex-wrap flex-col md:flex-row justify-between md:items-center md:px-12">
         <div className="flex justify-between px-5 py-2 md:py-0">
           <Link
@@ -72,7 +72,7 @@ const Navbar = () => {
             <li key={index}>
               {item == navItems[3] ? (
                 <Link to={item}>
-                  <button className="text-primary-light text-lg mx-1 px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
+                  <button className="text-primary-light mx-1 px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
                     {item}
                   </button>
                 </Link>

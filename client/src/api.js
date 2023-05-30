@@ -55,7 +55,6 @@ export const logout = async () => {
 export const updateProfile = async () => {
   try {
     const user = await getUserByToken()
-    console.log(user)
     const res = await axios.post(`${url}/update-profile?id=${user.id}`, formData)
 
     toast.success('profile updated successfully')
@@ -76,4 +75,39 @@ export const forgetPasswordConfirm = async (formData) => {
     return;
   }
 };
+
+export const createTemplate = async (formData) => {
+  try {
+    const res = await axios.post(`${url}/create-template`, formData)
+
+    toast.success('template created successfully')
+    return res.data
+  } catch (err) {
+    toast.error(err.response.data.error);
+    return;
+  }
+}
+
+export const getAllTemplates = async (userId) => {
+  try {
+    const res = await axios.get(`${url}/get-templates/${userId}`)
+
+    return res.data
+  } catch (err) {
+    toast.error(err.response.data.error);
+    return;
+  }
+}
+
+export const deleteTemplate = async (id) => {
+  try {
+    const res = await axios.delete(`${url}/delete-template/${id}`)
+    res && toast.success('template deleted successfully')
+  } catch (err) {
+    toast.error(err.response.data.error);
+    return;
+  }
+}
+
+
 

@@ -3,10 +3,11 @@ import { FiSave, FiClipboard } from "react-icons/fi";
 import { BsArrowLeftCircle } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import { templates } from "../../data";
-import { EditorState, convertToRaw } from "draft-js";
+import { predefinedTemplates } from "../../data";
+import { EditorState, convertToRaw, ContentState  } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { getUserByToken } from "../../api";
 
 const TextEditor = () => {
   const navigate = useNavigate();
@@ -16,38 +17,29 @@ const TextEditor = () => {
   const [template, setTemplate] = useState();
   const [input, setInput] = useState();
   const [output, setOutput] = useState("");
+  const [profession, setProfession] = useState('')
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState();
 
   useEffect(() => {
+    const runIt = async () => {
+      const user = await getUserByToken()
+      setProfession(user.profession)
+    }
+
+    runIt()
     setTemplate(() => {
-      return templates.filter((t) => t.id == id)[0];
-    });
+      return predefinedTemplates(profession).filter((t) => t.id == id)[0];
+    })
+    
   }, []);
 
-  const tagColors = [
-    "bg-[#FCD47C]",
-    "bg-[#7CFC89]",
-    "bg-[#7CCEFC]",
-    "bg-[#967CFC]",
-    "bg-[#FCEF7C]",
-  ];
-  const tags = [
-    {
-      tag: "soap",
-      desc: "Simple Object Access Protocol",
-    },
-    {
-      tag: "sbar",
-      desc: "Situation, Background, Assessment, Recommendation",
-    },
-    {
-      tag: "brip",
-      desc: "Berg River Improvement Plan",
-    },
-  ];
+  useEffect(() => {
+    const initialContent = template?.description || ''
+    const contentState = ContentState.createFromText(initialContent)
+    const initialEditorState  = EditorState.createWithContent(contentState)
+    setEditorState(initialEditorState)
+  }, [template])
 
   const handleEditorStateChange = (newEditorState) => {
     setEditorState(newEditorState);
@@ -59,16 +51,12 @@ const TextEditor = () => {
     const rawText = rawContentState.blocks
       .map((block) => block.text)
       .join("\n");
-    setRaw(rawText);
-    console.log(rawText);
-    // You can now send the `rawText` to your server or perform any required operations
+    setRaw(rawText);    // You can now send the `rawText` to your server or perform any required operations
   };
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
-
-  console.log(input);
 
   return (
     <div className="flex gap-6">
@@ -84,7 +72,7 @@ const TextEditor = () => {
 
           <div className="flex justify-between">
             <h2 className="text-primary-dark text-xl font-medium uppercase">
-              {template?.title}
+              {id == 'new' ? 'new template' : template?.name}
             </h2>
             <button className="mt-1 font-semibold border border rounded-full px-3 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
               <FiSave /> Save as PDF
