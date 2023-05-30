@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsArrowRightShort } from "react-icons/bs";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import rectangle from "../../assets/rectangle.png";

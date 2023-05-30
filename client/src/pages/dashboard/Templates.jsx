@@ -120,7 +120,7 @@ const Templates = () => {
           </div>
         </div>
 
-        {customTemplates && (
+        {customTemplates.length && (
           <div className="p-4 md:w-4/5 mx-auto">
             <h4 className="text-2xl font-medium text-primary-dark capitalize mb-2">
               custom templates

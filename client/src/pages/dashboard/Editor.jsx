@@ -18,6 +18,7 @@ const TextEditor = () => {
   const [input, setInput] = useState();
   const [output, setOutput] = useState("");
   const [profession, setProfession] = useState('')
+  const [showEditor, setShowEditor] = useState(false)
 
   const [editorState, setEditorState] = useState();
 
@@ -58,10 +59,12 @@ const TextEditor = () => {
     setInput(e.target.value);
   };
 
+  const handleShowEditor = () => setShowEditor((prev) => !prev)
+
   return (
-    <div className="flex gap-6">
-      <div className="md:w-2/3 p-8 flex flex-col justify-between gap-5">
-        <div className="">
+    <div className="md:flex gap-6">
+      <div className="md:w-2/3 p-8 flex flex-col justify-between gap-8">
+        <div className="mb-5">
           <button
             onClick={(e) => navigate("/dashboard")}
             title="Back"
@@ -70,8 +73,8 @@ const TextEditor = () => {
             <BsArrowLeftCircle />
           </button>
 
-          <div className="flex justify-between">
-            <h2 className="text-primary-dark text-xl font-medium uppercase">
+          <div className="md:flex justify-between">
+            <h2 className="text-primary-dark text-xl  font-medium uppercase">
               {id == 'new' ? 'new template' : template?.name}
             </h2>
             <button className="mt-1 font-semibold border border rounded-full px-3 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
@@ -83,38 +86,38 @@ const TextEditor = () => {
               editorState={editorState}
               onEditorStateChange={handleEditorStateChange}
               toolbarClassName="bg-primary-light"
-              editorClassName="min-h-[20rem] rounded-3xl px-8"
+              editorClassName="md:min-h-[16rem] min-h-[10rem] rounded-3xl px-8"
             />
           </div>
         </div>
-        <div className="flex gap-2 items-center h-[10%] justify-between">
+        <div className="md:flex gap-2 items-center h-[10%] justify-between">
           <input
             type="text"
-            className="rounded-lg px-6 py-3  bg-[#ECECEC] w-[73%] focus:outline-none"
+            className="rounded-lg px-6 py-3  bg-[#ECECEC] md:w-[73%] w-full focus:outline-none"
             autoFocus
             placeholder="Add additional prompt..."
             value={input}
             onChange={handleInputChange}
           />
-          <button className="rounded-lg py-3 px-6 bg-theme-primary font-semibold">
+          <button className="rounded-lg py-3 px-6 bg-theme-primary font-semibold md:w-fit w-full md:mt-0 mt-3">
             Refine Document
           </button>
         </div>
       </div>
-      <div className="md:w-1/2 min-h-screen bg-primary-light">
-        <div className="bg-theme-primary rounded-l-3xl h-full px-5">
-          <div className="flex justify-between items-center px-8">
-            <h4 className=" text-primary-dark text-xl font-medium bg-dark">
+      <div className="md:w-1/2 md:p-0 p-8 min-h-screen bg-primary-light">
+        <div className="bg-theme-primary md:rounded-l-3xl rounded h-full px-5 md:pb-0 pb-5">
+          <div className="md:flex justify-between items-center md:px-8 md:py-0 py-4">
+            <h4 className="text-primary-dark text-xl font-medium bg-dark">
               NoteGenie Suggestions
             </h4>
-            <div className="flex items-center">
+            <div className="flex md:items-center md:translate-0 -translate-x-5 -translate-y-5 w-fit ">
               <ButtonPrimary text={"save as refined PDF"} icon={<FiSave />} />
               <button className="mt-3">
                 <FiClipboard />
               </button>
             </div>
           </div>
-          <div className="h-[85%] bg-white w-full rounded-3xl p-8">
+          <div className="md:h-[85%] min-h-[10rem] bg-white w-full md:rounded-3xl rounded md:p-8 p-4">
             {!output && (
               <span className="text-gray-400 text-lg">
                 Your refined document will appear here...

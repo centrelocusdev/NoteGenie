@@ -8,7 +8,7 @@ import Scroll from "react-scroll";
 import logo from "../assets/logo-yellow.png";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "./ButtonPrimary";
-import { getUserByToken } from "../api";
+import { getUserByToken, logout } from "../api";
 
 const Goto = Scroll.Link;
 
@@ -32,7 +32,7 @@ const Navbar = () => {
 
   const handleLogoutClick = async () => {
     const res = await logout();
-    res && navigate("/");
+    window.location.reload()
   };
 
   const navItems = ["features", "about", "faq", "support"];
@@ -102,9 +102,9 @@ const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <button onClick={handleLogoutClick} className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center">
+              <Link to={'/'} onClick={handleLogoutClick} className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center">
                 <CgLogOff /> Logout
-              </button>
+              </Link>
             )}
           </li>
         </ul>
@@ -123,7 +123,7 @@ const Navbar = () => {
               />
             </>
           ) : (
-            <button onClick={handleLogoutClick} className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center text-red-400">
+            <button onClick={handleLogoutClick} className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center text-red-400 my-3">
               <CgLogOff className=" text-2xl" /> Logout
             </button>
           )}
