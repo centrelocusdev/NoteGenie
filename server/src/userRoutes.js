@@ -3,22 +3,22 @@ const User = require("./userModal");
 const bcrypt = require("bcrypt");
 
 //get user by token
-router.get('/user/:token', async (req, res) => {
+router.get("/user/:token", async (req, res) => {
   try {
-    const token = req.params.token
-    const user = await User.findOne({token})
-    res.status(200).send(user)
+    const token = req.params.token;
+    const user = await User.findOne({ token });
+    res.status(200).send(user);
   } catch (err) {
     res.status(400).send({ err: err.message });
   }
-})
+});
 
 //signup
 router.post("/register", async (req, res) => {
-  try { 
+  try {
     const user = new User(req.body);
-    await user.generateAuthToken()
-    console.log(user)
+    await user.generateAuthToken();
+    console.log(user);
     // await user.save();
     res.status(200).send(user);
   } catch (err) {
@@ -31,13 +31,15 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-
     if (!user) throw new Error("User not found, please try again");
-    else if (!bcrypt.compare(password, user.password))
-      throw new Error("Incorrect password, please try again");
 
-    await user.generateAuthToken()
-    res.status(200).send(user);
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch)
+      throw new Error("Incorrect password, please try again");
+    else {
+      await user.generateAuthToken();
+      res.status(200).send(user);
+    }
   } catch (err) {
     res.status(400).send({ err: err.message });
   }
@@ -46,7 +48,7 @@ router.post("/login", async (req, res) => {
 //update
 router.post("/update-profile", async (req, res) => {
   try {
-    const {id} = req.query
+    const { id } = req.query;
     const user = await User.findOne({ id });
     if (!user) throw new Error("user not found");
 
@@ -69,7 +71,7 @@ router.post("/update-profile", async (req, res) => {
 router.post("/logout", async (req, res) => {
   try {
     const user = req.user;
-    user.tokens = user.tokens.filter(token => token != req.token)
+    user.tokens = user.tokens.filter((token) => token != req.token);
     await user.save();
     res.send({ msg: "logged out successfully", user });
   } catch (err) {

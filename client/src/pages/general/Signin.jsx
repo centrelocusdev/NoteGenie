@@ -23,7 +23,7 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await login(formData)
-    navigate('/dashboard')
+    res && navigate('/dashboard')
   }
 
   return (
@@ -43,22 +43,22 @@ const Signin = () => {
           <InputPrimary
             type={"email"}
             name={"email"}
-            placeholer={"johndoe@gmail.com"}
+            placeholder={"johndoe@gmail.com"}
           />
           <InputPrimary
             type={"password"}
             name={"password"}
-            placeholer={"Enter strong password"}
+            placeholder={"Enter strong password"}
           />
           <ButtonPrimary text={"login"} width={"full"} />
 
-          <p className="text-2xl text-center text-slate-400">OR</p>
+          {/* <p className="text-2xl text-center text-slate-400">OR</p>
           <ButtonPrimary
             text={"contibue with google"}
             isDark={true}
             width={"full"}
             icon={<BsGoogle />}
-          />
+          /> */}
         </form>
       </div>
     </div>

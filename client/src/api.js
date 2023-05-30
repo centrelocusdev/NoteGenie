@@ -2,8 +2,8 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { toast } from "react-toastify";
 
-// const url = 'https://ng.thedelvierypointe.com'
-const url = 'http://127.0.0.1:8000'
+const url = 'https://ng.thedelvierypointe.com'
+// const url = 'http://127.0.0.1:8000'
 
 export const getUserByToken = async () => {
   try {
@@ -39,9 +39,10 @@ export const login = async (formData) => {
     const res = await axios.post(`${url}/login/`, formData);
     res && Cookies.set("notegenie", res.data.token);
     toast.success("user logged in successfully");
-    return true;
+    return res.data
   } catch (err) {
-    toast.error(err.response.data.error);
+    console.log(err.response.data.err)
+    toast.error(err.response.data.err);
     return;
   }
 };

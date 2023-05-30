@@ -1,6 +1,6 @@
 import React from "react";
 
-const InputPrimary = ({ type, name, placeholder, textarea, value, onChange }) => {
+const InputPrimary = ({ type, name, placeholder, textarea, value, onChange, disabled }) => {
   return (
     <div className="w-full mt-3 text-gray-600">
       <label htmlFor={name} className="capitalize text-lg block font-medium">
@@ -20,7 +20,8 @@ const InputPrimary = ({ type, name, placeholder, textarea, value, onChange }) =>
           value={value}
           placeholder={placeholder}
           onChange={onChange}
-          className="w-full bg-[#D1D1D147] rounded-full px-4 py-2 mt-1 focus:outline-none focus:bg-white focus:border-[#D1D1D147] border border-transparent"
+          disabled={disabled}
+          className={`w-full bg-[#D1D1D147] rounded-full px-4 py-2 mt-1 focus:outline-none focus:bg-white focus:border-[#D1D1D147] border border-transparent ${disabled && 'cursor-not-allowed'}`}
         />
       )}
     </div>

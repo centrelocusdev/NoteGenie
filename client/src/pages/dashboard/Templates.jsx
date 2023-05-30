@@ -126,7 +126,7 @@ const Templates = () => {
               custom templates
             </h4>
             <div
-              className={`flex flex-wrap gap-8 pl-5 mt-5 ${
+              className={`flex flex-wrap gap-8 md:pl-5 mt-5 ${
                 customTemplates.length % 3 == 0
                   ? "justify-evenly"
                   : "justify-start"

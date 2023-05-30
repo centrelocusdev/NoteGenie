@@ -60,20 +60,21 @@ const Signup = () => {
             name={"confirm_password"}
             placeholder={"Re-type your password"}
           />
-          <select value={formData.profession} name="profession" className="appearance-none w-full invalid:bg-gray-600 bg-[#D1D1D147] mt-5 px-6 py-3 rounded-full focus:outline-none ">
+          <label htmlFor="profession" className="capitalize text-lg block font-medium mt-3 text-gray-600">profession</label>
+          <select value={formData.profession} name="profession" className="appearance-none w-full invalid:bg-gray-600 bg-[#D1D1D147] mt-1  px-6 py-3 rounded-full focus:outline-none ">
             <option value="">Select Your Profession</option>
             {professions.map(p => (
               <option value={p} className="capitalize">{p}</option>
             ))}
           </select>
           <ButtonPrimary text={"sign up"} width={"full"} handleClick={handleSubmit} />
-          <p className="text-2xl text-center text-slate-400">OR</p>
+          {/* <p className="text-2xl text-center text-slate-400">OR</p>
           <ButtonPrimary
             text={"contibue with google"}
             isDark={true}
             width={"full"}
             icon={<BsGoogle />}
-          />
+          /> */}
         </div>
       </div>
     </div>

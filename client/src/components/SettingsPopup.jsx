@@ -1,16 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputPrimary from "./InputPrimary";
 import ButtonPrimary from "./ButtonPrimary";
-import { updateProfile } from "../api";
+import { getUserByToken, updateProfile } from "../api";
 
 const SettingsPopup = ({ display }) => {
+  const [user, setUser] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     password: "",
     confirm_password: "",
+    profession: "",
   });
   const [profession, setProfession] = useState();
-  const professions = ['healthcare provider', 'social worker', 'acupuncuturist', 'educator', 'psychologist', 'mental health therapist', 'chinese herbal medicine', 'psychiatrist', 'doctor', 'physical therapist', 'occupational therapist', 'chiropractor', 'speech pathologist', 'law inforcement', 'lawyer']
+  const professions = [
+    "healthcare provider",
+    "social worker",
+    "acupuncuturist",
+    "educator",
+    "psychologist",
+    "mental health therapist",
+    "chinese herbal medicine",
+    "psychiatrist",
+    "doctor",
+    "physical therapist",
+    "occupational therapist",
+    "chiropractor",
+    "speech pathologist",
+    "law inforcement",
+    "lawyer",
+  ];
+
+  useEffect(() => {
+    const runIt = async () => {
+      const u = await getUserByToken();
+      setUser(u)
+    };
+
+    runIt();
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -25,8 +52,8 @@ const SettingsPopup = ({ display }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await updateProfile({...formData, profession})
-    display()
+    const res = await updateProfile({ ...formData, profession });
+    display();
   };
 
   return (
@@ -37,20 +64,38 @@ const SettingsPopup = ({ display }) => {
         </h4>
 
         <div onChange={handleChange}>
-          <InputPrimary name={"name"} placeholder={"enter your name"} />
+          <InputPrimary
+            name={"name"}
+            value={user.name}
+            placeholder={"enter your name"}
+            disabled={true}
+          />
           <InputPrimary
             name={"password"}
+            value={formData.password}
             placeholder={"enter your new passaword"}
           />
           <InputPrimary
             name={"confirm_password"}
+            value={formData.confirm_password}
             placeholder={"re-type your password"}
           />
-
-          <select value={profession} onChange={handleProfessionChange} className="w-full invalid:bg-gray-600 bg-[#D1D1D147] mt-5 px-6 py-3 rounded-full focus:outline-none ">
-            <option value="">Select an option</option>
-            {professions.map(p => (
-              <option value={p} className="capitalize">{p}</option>
+          <label
+            htmlFor="profession"
+            className="capitalize text-lg block font-medium mt-3 text-gray-600"
+          >
+            Choose profession
+          </label>
+          <select
+            value={formData.profession}
+            name="profession"
+            className="w-full appearance-none invalid:bg-gray-600 bg-[#D1D1D147] mt-1 px-6 py-3 rounded-full focus:outline-none "
+          >
+            <option value="">Select your profession</option>
+            {professions.map((p) => (
+              <option value={p} className="capitalize">
+                {p}
+              </option>
             ))}
           </select>
 
