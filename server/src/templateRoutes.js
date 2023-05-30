@@ -4,8 +4,8 @@ const User = require("./userModal");
 
 router.post('/create-template', async (req, res) => {
   try {
+    console.log(req.body)
     const template = new Template(req.body) 
-    template.type = 'custom'
 
     await template.save()
     res.status(200).send({msg: 'template created successfully'})
@@ -14,13 +14,22 @@ router.post('/create-template', async (req, res) => {
   }
 })
 
-router.get('/get-templates/:token', async (req, res) => {
+router.get('/get-templates/:userId', async (req, res) => {
   try {
-    const token = req.params.token
-    const user = await User.findOne({token})
+    const userId = req.params.userId
+    const templates = await Template.find({userId})
 
-    await template.save()
-    res.status(200).send({msg: 'template created successfully'})
+    res.status(200).send(templates)
+  } catch (err) {
+    res.status(400).send({ err: err.message });
+  }
+})
+
+router.delete('/delete-template/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    await Template.findByIdAndDelete(id)
+    res.send({msg: 'deleted template successfuy'})
   } catch (err) {
     res.status(400).send({ err: err.message });
   }

@@ -21,12 +21,12 @@ userSchema.methods.generateAuthToken = async function() {
 	return token
 }
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', async function (next) {
     try {
-        if(this.isModified('password')) {
-            this.password = bcrypt.hash(this.password, 9)
-        }
-        next()
+      if(this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 9)
+    }
+    next()
     } catch (err) {
         console.log(err)
     }

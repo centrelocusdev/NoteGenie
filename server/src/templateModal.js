@@ -1,15 +1,14 @@
 const mongoose = require('mongoose')
 
 const templateModal = mongoose.Schema({
+  userId: mongoose.Schema.Types.ObjectID,
   name: String,
-  desciption: String,
-  tags: [
-    {
-      type: String
-    }
-  ],
+  description: String,
+  profession: String,
   type: {
     type: String,
     default: 'predefined'
   }
 })
+
+module.exports = mongoose.model('Template', templateModal)
