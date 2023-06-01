@@ -98,7 +98,7 @@ const Templates = () => {
           </div>
           <div className="flex flex-wrap gap-4 justify-evenly">
             <div
-              className={`flex flex-wrap gap-8 md:pl-5 ${
+              className={`flex flex-wrap lg:gap-8 gap-4 md:pl-5 ${
                 (templates.length + 1) % 3 == 0
                   ? "justify-evenly"
                   : "justify-start"

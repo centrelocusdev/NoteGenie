@@ -6,12 +6,10 @@ import { getUserByToken, updateProfile } from "../api";
 const SettingsPopup = ({ display }) => {
   const [user, setUser] = useState("");
   const [formData, setFormData] = useState({
-    name: "",
     password: "",
     confirm_password: "",
     profession: "",
   });
-  const [profession, setProfession] = useState();
   const professions = [
     "healthcare provider",
     "social worker",
@@ -37,7 +35,7 @@ const SettingsPopup = ({ display }) => {
     };
 
     runIt();
-  }, [user]);
+  }, []);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -46,13 +44,10 @@ const SettingsPopup = ({ display }) => {
     }));
   };
 
-  const handleProfessionChange = (e) => {
-    setProfession(e.target.value);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await updateProfile({ ...formData, profession });
+    const res = await updateProfile(formData);
+    console.log(res)
     display();
   };
 
@@ -100,9 +95,9 @@ const SettingsPopup = ({ display }) => {
           </select>
 
           <ButtonPrimary
-            text={"update prfile"}
+            text={"update profile"}
             width={"full"}
-            onClick={handleSubmit}
+            handleClick={handleSubmit}
           />
           <button
             onClick={display}

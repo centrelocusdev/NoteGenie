@@ -75,18 +75,14 @@ const Home = () => {
         <p className="p-3 leading-7 md:text-center text-justify">
           Our note-taking app was created with the mission to make note-taking simpler, more efficient, and professional. We are a team of passionate developers, designers, and innovators who believe that technology can help transform the way we work and learn. NoteGenie owners are in the medical and behavioral health profession and understand the time, energy and effort it takes to complete notes that meet your professions standards (i.e. medical necessity, ethical standards, educational/legal requirements). With NoteGenie, we are constantly pushing the boundaries of what is possible and striving to deliver the best user experience for our customers. <br />
           Join us on this journey to revolutionize the way you take
-          notes! Ready to take your note-taking to the next level? NoteGenie can Help!
+          notes! Elevate your professional note taking with Note Genie.
         </p>
         <p className="text-2xl p-3 leading-7 md:text-center text-justify"> Try NoteGenie today and see how easy it can be.</p>
       </section>
 
       <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap- justify-center items-center gap-8">  
         <div className="md:w-2/3">
-          <h2 className="text-4xl font-semibold text-theme-primary">For whome this platform is</h2>
-          <h3 className="text-primary-dark md:text-xl text-2xl my-3">
-          Our note-taking platform is designed to cater to various professionals and individuals, including:
-          </h3>
-
+          <h2 className="text-4xl font-semibold text-theme-primary">our users include</h2>
           <ul
             className={`list-decimal list-outside md:ml-4 flex flex-col gap-4 text-gray-600 text-justify`}
           >

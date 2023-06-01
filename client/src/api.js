@@ -1,27 +1,32 @@
-import axios from "axios"
-import Cookies from "js-cookie"
+import axios from "axios";
+import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
-const url = 'https://ng.thedelvierypointe.com'
-// const url = 'http://127.0.0.1:8000'
+// const url = "https://ng.thedelvierypointe.com";
+const url = 'http://127.0.0.1:8000'
 
 export const getUserByToken = async () => {
   try {
-    const res = await axios.get(`${url}/user/${Cookies.get('notegenie')}`)
-    return res.data
+    const res = await axios.get(`${url}/user/${Cookies.get("notegenie")}`);
+    return res.data;
   } catch (err) {
     toast.error(err);
     return;
   }
-}
+};
 
 export const register = async (formData) => {
   try {
-    if(!formData.name || !formData.email || !formData.password || !formData.profession) {
-      toast.error('all fields are mendatory')
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.profession
+    ) {
+      toast.error("all fields are mendatory");
     } else if (formData.password !== formData.confirm_password) {
-      toast.error("password doesn't match")
-      return
+      toast.error("password doesn't match");
+      return;
     } else {
       const res = await axios.post(`${url}/register/`, formData);
       Cookies.set("notegenie", res.data.token);
@@ -39,9 +44,9 @@ export const login = async (formData) => {
     const res = await axios.post(`${url}/login/`, formData);
     res && Cookies.set("notegenie", res.data.token);
     toast.success("user logged in successfully");
-    return res.data
+    return res.data;
   } catch (err) {
-    console.log(err.response.data.err)
+    console.log(err.response.data.err);
     toast.error(err.response.data.err);
     return;
   }
@@ -50,21 +55,28 @@ export const login = async (formData) => {
 export const logout = async () => {
   Cookies.remove("notegenie");
   toast.success("logging out");
-  return true
+  return true;
 };
 
-export const updateProfile = async () => {
+export const updateProfile = async (formData) => {
   try {
-    const user = await getUserByToken()
-    const res = await axios.post(`${url}/update-profile?id=${user.id}`, formData)
+    if (formData.password != formData.confirm_password) {
+      toast.error("password doesn't match");
+      return;
+    }
+    const user = await getUserByToken();
+    const res = await axios.post(`${url}/update-profile?id=${user.id}`, {
+      password: formData.password,
+      profession: formData.profession,
+    });
 
-    toast.success('profile updated successfully')
-    return res.data
+    toast.success("profile updated successfully");
+    return res.data;
   } catch (err) {
     toast.error(err.response.data.error);
     return;
   }
-}
+};
 
 export const forgetPasswordConfirm = async (formData) => {
   try {
@@ -79,36 +91,33 @@ export const forgetPasswordConfirm = async (formData) => {
 
 export const createTemplate = async (formData) => {
   try {
-    const res = await axios.post(`${url}/create-template`, formData)
+    const res = await axios.post(`${url}/create-template`, formData);
 
-    toast.success('template created successfully')
-    return res.data
+    toast.success("template created successfully");
+    return res.data;
   } catch (err) {
     toast.error(err.response.data.error);
     return;
   }
-}
+};
 
 export const getAllTemplates = async (userId) => {
   try {
-    const res = await axios.get(`${url}/get-templates/${userId}`)
+    const res = await axios.get(`${url}/get-templates/${userId}`);
 
-    return res.data
+    return res.data;
   } catch (err) {
     toast.error(err.response.data.error);
     return;
   }
-}
+};
 
 export const deleteTemplate = async (id) => {
   try {
-    const res = await axios.delete(`${url}/delete-template/${id}`)
-    res && toast.success('template deleted successfully')
+    const res = await axios.delete(`${url}/delete-template/${id}`);
+    res && toast.success("template deleted successfully");
   } catch (err) {
     toast.error(err.response.data.error);
     return;
   }
-}
-
-
-
+};
