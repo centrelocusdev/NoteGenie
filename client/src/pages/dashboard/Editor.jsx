@@ -4,10 +4,21 @@ import { BsArrowLeftCircle } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { predefinedTemplates } from "../../data";
-import { EditorState, convertToRaw, ContentState  } from "draft-js";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { getUserByToken } from "../../api";
+import { PDFDownloadLink, Page, Text, Document, StyleSheet } from "@react-pdf/renderer";
+import { toast } from "react-toastify";
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 20, // Add padding to the page
+  },
+  text: {
+    fontSize: 12, // Reduce the font size
+  },
+});
 
 const TextEditor = () => {
   const navigate = useNavigate();
@@ -17,30 +28,29 @@ const TextEditor = () => {
   const [template, setTemplate] = useState();
   const [input, setInput] = useState();
   const [output, setOutput] = useState("");
-  const [profession, setProfession] = useState('')
-  const [showEditor, setShowEditor] = useState(false)
+  const [profession, setProfession] = useState("");
+  const [showEditor, setShowEditor] = useState(false);
 
   const [editorState, setEditorState] = useState();
 
   useEffect(() => {
     const runIt = async () => {
-      const user = await getUserByToken()
-      setProfession(user.profession)
-    }
+      const user = await getUserByToken();
+      setProfession(user.profession);
+    };
 
-    runIt()
+    runIt();
     setTemplate(() => {
       return predefinedTemplates(profession).filter((t) => t.id == id)[0];
-    })
-    
-  }, []);
+    });
+  }, [profession]);
 
   useEffect(() => {
-    const initialContent = template?.description || ''
-    const contentState = ContentState.createFromText(initialContent)
-    const initialEditorState  = EditorState.createWithContent(contentState)
-    setEditorState(initialEditorState)
-  }, [template])
+    const initialContent = template?.description || "";
+    const contentState = ContentState.createFromText(initialContent);
+    const initialEditorState = EditorState.createWithContent(contentState);
+    setEditorState(initialEditorState);
+  }, [template]);
 
   const handleEditorStateChange = (newEditorState) => {
     setEditorState(newEditorState);
@@ -52,14 +62,17 @@ const TextEditor = () => {
     const rawText = rawContentState.blocks
       .map((block) => block.text)
       .join("\n");
-    setRaw(rawText);    // You can now send the `rawText` to your server or perform any required operations
+    setRaw(rawText); // You can now send the `rawText` to your server or perform any required operations
   };
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
 
-  const handleShowEditor = () => setShowEditor((prev) => !prev)
+  const handleCopyRes = () => {
+    navigator.clipboard.writeText(output)
+    toast.success('Copied to clipboard')
+  }
 
   return (
     <div className="md:flex gap-6">
@@ -73,13 +86,26 @@ const TextEditor = () => {
             <BsArrowLeftCircle />
           </button>
 
-          <div className="md:flex justify-between">
+          <div className="md:flex justify-between items-center">
             <h2 className="text-primary-dark text-xl  font-medium uppercase">
-              {id == 'new' ? 'new template' : template?.name}
+              {id == "new" ? "new template" : template?.name}
             </h2>
-            <button className="mt-1 font-semibold border border rounded-full px-3 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
-              <FiSave /> Save as PDF
-            </button>
+            <PDFDownloadLink
+              document={
+                <Document>
+                  <Page style={styles.page}>
+                    <Text cstyle={styles.text}>{template?.description}</Text>
+                  </Page>
+                </Document>
+              }
+              fileName="NoteGenieNote.pdf"
+            >
+              {({loading }) =>
+                loading ? "Generating PDF..." : <button className="mt-1 font-semibold border border rounded-full px-3 py-1 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
+                <FiSave /> Save Note
+              </button>
+              }
+            </PDFDownloadLink>     
           </div>
           <div className="bg-white rounded-3xl justify-between mt-3 h-[100%]">
             <Editor
@@ -106,16 +132,33 @@ const TextEditor = () => {
       </div>
       <div className="md:w-1/2 md:p-0 p-8 min-h-screen bg-primary-light">
         <div className="bg-theme-primary md:rounded-l-3xl rounded h-full px-5 md:pb-0 pb-5">
-          <div className="md:flex justify-between items-center md:px-8 md:py-0 py-4">
+          <div className="md:flex justify-between items-center md:px-8 py-4">
             <h4 className="text-primary-dark text-xl font-medium bg-dark">
               NoteGenie Suggestions
             </h4>
-            <div className="flex md:items-center md:translate-0 -translate-x-5 -translate-y-5 w-fit ">
-              <ButtonPrimary text={"save as refined PDF"} icon={<FiSave />} />
-              <button className="mt-3">
+           {
+            output &&  <div className="flex md:items-center w-fit ">
+            <PDFDownloadLink
+              document={
+                <Document>
+                  <Page style={styles.page}>
+                    <Text cstyle={styles.text}>{output}</Text>
+                  </Page>
+                </Document>
+              }
+              fileName="NoteGenieNote.pdf"
+            >
+              {({loading }) =>
+                loading ? "Generating PDF..." : <button className="font-semibold rounded-full px-3 py-1 flex items-center gap-2 hover:bg-primary-light">
+                <FiSave /> Save as PDF
+              </button>
+              }
+            </PDFDownloadLink>
+              <button onClick={handleCopyRes} title="copy">
                 <FiClipboard />
               </button>
             </div>
+           }
           </div>
           <div className="md:h-[85%] min-h-[10rem] bg-white w-full md:rounded-3xl rounded md:p-8 p-4">
             {!output && (
