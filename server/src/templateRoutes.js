@@ -35,4 +35,15 @@ router.delete('/delete-template/:id', async (req, res) => {
   }
 })
 
+router.get('/get-template/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    const template =  await Template.findById(id)
+    if(!template) throw new Error('No template found')
+    else res.send(template)
+  } catch (err) {
+    res.status(400).send({ err: err.message });
+  }
+})
+
 module.exports = router

@@ -4,14 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const TemplateCard = ({ template }) => {
   const navigate = useNavigate();
-  const [displayMenu, setDisplayMenu] = useState(false);
-
-  const handleClick = () => {
-    setDisplayMenu((displayMenu) => !displayMenu);
-  };
 
   const hanldeCardClick = () => {
-    navigate(`/dashboard/editor/template/${template.id}`);
+    navigate(`/dashboard/editor/template?id=${template._id}&type=${template.type}`);
   };
 
   return (

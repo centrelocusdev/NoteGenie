@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FiSave, FiClipboard } from "react-icons/fi";
 import { BsArrowLeftCircle } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
-import ButtonPrimary from "../../components/ButtonPrimary";
+import { useNavigate, useLocation } from "react-router-dom";
 import { predefinedTemplates } from "../../data";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { getUserByToken } from "../../api";
+import { getTemplate, getUserByToken, sendPrompt } from "../../api";
 import { PDFDownloadLink, Page, Text, Document, StyleSheet } from "@react-pdf/renderer";
 import { toast } from "react-toastify";
 
@@ -22,26 +21,38 @@ const styles = StyleSheet.create({
 
 const TextEditor = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id');
+  const type = queryParams.get('type')
 
-  const { id } = useParams();
-  const [raw, setRaw] = useState("");
   const [template, setTemplate] = useState();
-  const [input, setInput] = useState();
+  const [input, setInput] = useState(' ');
   const [output, setOutput] = useState("");
   const [profession, setProfession] = useState("");
-  const [showEditor, setShowEditor] = useState(false);
-
   const [editorState, setEditorState] = useState();
 
   useEffect(() => {
     const runIt = async () => {
       const user = await getUserByToken();
       setProfession(user.profession);
+
+      if(type == 'predefined') {
+        const t = predefinedTemplates(profession).filter((t) => t._id == id)[0]
+        setTemplate(t)
+      } else if (type == 'custom') {
+        const t = await getTemplate(id)
+        setTemplate(t)
+      }
     };
 
     runIt();
     setTemplate(() => {
-      return predefinedTemplates(profession).filter((t) => t.id == id)[0];
+      if(type == 'predefined') {
+        return predefinedTemplates(profession).filter((t) => t.id == id)[0];
+      } else {
+        return predefinedTemplates(profession).filter((t) => t.id == id)[0];
+      }
     });
   }, [profession]);
 
@@ -56,17 +67,20 @@ const TextEditor = () => {
     setEditorState(newEditorState);
   };
 
-  const convertContentToRawText = () => {
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const handleRefineDocClick = async () => {
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
     const rawText = rawContentState.blocks
       .map((block) => block.text)
       .join("\n");
-    setRaw(rawText); // You can now send the `rawText` to your server or perform any required operations
-  };
-
-  const handleInputChange = (e) => {
-    setInput(e.target.value);
+    
+    const prompt = `${input}, ${rawText}`
+    const res = await sendPrompt({prompt})
+    setOutput(res.message.content)
   };
 
   const handleCopyRes = () => {
@@ -125,7 +139,7 @@ const TextEditor = () => {
             value={input}
             onChange={handleInputChange}
           />
-          <button className="rounded-lg py-3 px-6 bg-theme-primary font-semibold md:w-fit w-full md:mt-0 mt-3">
+          <button onClick={handleRefineDocClick} className="rounded-lg py-3 px-6 bg-theme-primary font-semibold md:w-fit w-full md:mt-0 mt-3">
             Refine Document
           </button>
         </div>
@@ -160,12 +174,10 @@ const TextEditor = () => {
             </div>
            }
           </div>
-          <div className="md:h-[85%] min-h-[10rem] bg-white w-full md:rounded-3xl rounded md:p-8 p-4">
-            {!output && (
-              <span className="text-gray-400 text-lg">
-                Your refined document will appear here...
-              </span>
-            )}
+          <div className="md:h-[85%] min-h-[10rem] bg-white w-full md:rounded-3xl rounded md:p-8 p-4 text-gray-400 text-lg">
+            {!output ? (
+              <span>Your refined document will appear here...</span>
+            ) : <p>{output}</p>}
           </div>
         </div>
       </div>
