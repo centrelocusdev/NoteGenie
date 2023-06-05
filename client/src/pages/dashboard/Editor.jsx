@@ -31,6 +31,7 @@ const TextEditor = () => {
   const [output, setOutput] = useState("");
   const [profession, setProfession] = useState("");
   const [editorState, setEditorState] = useState();
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const runIt = async () => {
@@ -80,7 +81,8 @@ const TextEditor = () => {
     
     const prompt = `${input}, ${rawText}`
     const res = await sendPrompt({prompt})
-    setOutput(res.message.content)
+    !res && setIsLoading(true)
+    res && setOutput(res)
   };
 
   const handleCopyRes = () => {
@@ -145,7 +147,7 @@ const TextEditor = () => {
         </div>
       </div>
       <div className="md:w-1/2 md:p-0 p-8 min-h-screen bg-primary-light">
-        <div className="bg-theme-primary md:rounded-l-3xl rounded h-full px-5 md:pb-0 pb-5">
+        <div className="bg-theme-primary md:rounded-l-3xl rounded h-full px-5 md:pb-0 pb-5 max-h-screen">
           <div className="md:flex justify-between items-center md:px-8 py-4">
             <h4 className="text-primary-dark text-xl font-medium bg-dark">
               NoteGenie Suggestions
@@ -174,10 +176,10 @@ const TextEditor = () => {
             </div>
            }
           </div>
-          <div className="md:h-[85%] min-h-[10rem] bg-white w-full md:rounded-3xl rounded md:p-8 p-4 text-gray-400 text-lg">
+          <div className="md:max-h-[85%] md:min-h-[85%] overflow-y-scroll  min-h-[10rem] bg-white w-full md:rounded-3xl rounded md:p-8 p-4 text-gray-400 text-lg">
             {!output ? (
-              <span>Your refined document will appear here...</span>
-            ) : <p>{output}</p>}
+              <span>{isLoading ? '...loading' : 'Your refined document will appear here...'}</span>
+            ) : <p><pre className="whitespace-pre-wrap break-all font-sans text-justify">{output}</pre></p>}
           </div>
         </div>
       </div>
