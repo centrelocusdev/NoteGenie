@@ -73,6 +73,8 @@ const TextEditor = () => {
   };
 
   const handleRefineDocClick = async () => {
+    setIsLoading(true)
+    setOutput('')
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
     const rawText = rawContentState.blocks
@@ -81,8 +83,8 @@ const TextEditor = () => {
     
     const prompt = `${input}, ${rawText}`
     const res = await sendPrompt({prompt})
-    !res && setIsLoading(true)
-    res && setOutput(res)
+    res && setIsLoading(false)
+    !res.err && setOutput(res)
   };
 
   const handleCopyRes = () => {
@@ -178,8 +180,8 @@ const TextEditor = () => {
           </div>
           <div className="md:max-h-[85%] md:min-h-[85%] overflow-y-scroll  min-h-[10rem] bg-white w-full md:rounded-3xl rounded md:p-8 p-4 text-gray-400 text-lg">
             {!output ? (
-              <span>{isLoading ? '...loading' : 'Your refined document will appear here...'}</span>
-            ) : <p><pre className="whitespace-pre-wrap break-all font-sans text-justify">{output}</pre></p>}
+              <span>{isLoading ? 'Magic Note in Progress...' : 'Your refined document will appear here...'}</span>
+            ) : <p><pre className="whitespace-pre-line font-sans text-justify">{output}</pre></p>}
           </div>
         </div>
       </div>

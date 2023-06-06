@@ -98,7 +98,7 @@ const Templates = () => {
           </div>
           <div className="flex flex-wrap gap-4 justify-evenly">
             <div
-              className={`flex flex-wrap lg:gap-8 gap-4 md:pl-5 ${
+              className={`flex flex-wrap lg:gap-4 gap-4 md:pl-5 ${
                 (templates.length + 1) % 3 == 0
                   ? "justify-evenly"
                   : "justify-start"
@@ -106,7 +106,7 @@ const Templates = () => {
             >
               <div
               onClick={handleOpenPopupClick}
-              className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
+              className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[23%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
             >
               <FiPlus className="text-[2rem]" />
               <h4 className="font-semibold capitalize ">

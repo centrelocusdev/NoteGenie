@@ -44,7 +44,7 @@ export const predefinedTemplates = (profession) => {
     },
     {
       _id: 7,
-      name: "Critical inc_ident report",
+      name: "Critical incident report",
       description: `You are a ${profession}, create a critical inc_ident report that supports medical necessity`,
       profession: `${profession}`,
       type: "predefined"

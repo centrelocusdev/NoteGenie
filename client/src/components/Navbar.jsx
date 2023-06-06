@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
-import { FiXOctagon } from "react-icons/fi";
+import { FiXCircle } from "react-icons/fi";
 import { CgLogOff } from "react-icons/cg";
 import Scroll from "react-scroll";
 import logo from "../assets/logo-yellow.png";
@@ -66,7 +66,7 @@ const Navbar = () => {
             onClick={handleClick}
             className="md:hidden float-right mr-3 text-gray -mt-6 text-2xl cursor-pointer"
           >
-            <FiXOctagon />
+            <FiXCircle />
           </li>
           {navItems.map((item, index) => (
             <li key={index}>
@@ -102,7 +102,7 @@ const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <Link to={'/'} onClick={handleLogoutClick} className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center">
+              <Link to={'/'} onClick={handleLogoutClick} className="text-[#D62732] text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center">
                 <CgLogOff /> Logout
               </Link>
             )}
@@ -123,7 +123,7 @@ const Navbar = () => {
               />
             </>
           ) : (
-            <button onClick={handleLogoutClick} className="text-primary-light text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center text-red-400 my-3">
+            <button onClick={handleLogoutClick} className="text-[#D62732] text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center text-red-400 my-3">
               <CgLogOff className=" text-2xl" /> Logout
             </button>
           )}

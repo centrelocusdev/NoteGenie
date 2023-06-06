@@ -135,9 +135,12 @@ export const getTemplate = async (id) => {
 export const sendPrompt = async (formData) => {
   try {
     const res = await axios.post(`${url}/send-prompt`, formData)
-    toast.success('fetched!')
-    console.log(res.data)
-    return res.data
+    toast.success('Magic Note completed!')
+    if(!res.data.error) {
+      return res.data
+    } else {
+      return
+    }   
   } catch (err) {
     toast.error(err.err);
     return;

@@ -3,16 +3,16 @@ import { BsArrowRightShort } from "react-icons/bs";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import rectangle from "../../assets/rectangle.png";
 import sbar from "../../assets/sbar.png";
-import girl from "../../assets/girl.png";
 import dashboard from "../../assets/dashboard.png";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
-import gp1 from "../../assets/gp1.png"
-import gp2 from "../../assets/gp2.png"
-import gp3 from "../../assets/gp3.png"
-import gp4 from "../../assets/gp4.png"
+import yellow_notes from "../../assets/yellow_notes.png";
+import gp1 from "../../assets/doctor.png"
+import gp2 from "../../assets/typist.png"
+import gp3 from "../../assets/class.png"
+import gp4 from "../../assets/law.png"
 
 const Home = () => {
   const navigate = useNavigate()
@@ -56,7 +56,7 @@ const Home = () => {
         className="mt-5 md:p-8 p-4 flex md:gap-16 gap-5 justify-center items-center"
       >
         <div className="md:w-fit lg:block hidden">
-          <img src={girl} alt="technology" className="w-[22rem]" />
+          <img src={yellow_notes} alt="technology" className="w-[27rem]" />
         </div>
         <div className="md:w-1/2 flex flex-wrap justify-center">
           {features.map(({ title, desc }, key) => (
@@ -68,7 +68,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section id="about" className="md:mt-16 mt-5 md:p-8 p-4 text-center md:w-2/3 mx-auto">
+      <section id="about" className="md:mt-16 mt-5 md:p-8 p-4 text-center md:w-2/3 mx-auto text-gray-600">
         <h4 className="text-4xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 font-semibold mb-3">
           About Us
         </h4>
@@ -82,12 +82,20 @@ const Home = () => {
 
       <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap- justify-center items-center gap-8">  
         <div className="md:w-2/3">
-          <h2 className="text-4xl font-semibold text-theme-primary">our users include</h2>
+        <h4 className="text-3xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 font-semibold mb-3 capitalize mb-6">
+          Our users include
+        </h4>
           <ul
             className={`list-decimal list-outside md:ml-4 flex flex-col gap-4 text-gray-600 text-justify`}
           >
             <li>
             Doctors and healthcare professionals: Streamline patient documentation, medical research, and clinical note-taking.
+            </li>
+            <li>
+            Related health professionals (i.e., acupuncturist), speech and language therapists, physical therapists, occupational therapists, chiropractors: Create notes of your choice format like SOAP.
+            </li>
+            <li>
+            Psychologists and psychotherapist: Quickly take notes about your sessions and refine it to create a well drafted document. 
             </li>
             <li>
             Lawyers and legal professionals: Organize case notes, research findings, and client communication for efficient legal practice.
@@ -106,7 +114,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap-16 justify-center items-center gap-8">
+      <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap-16 justify-center items-center gap-8 text-gray-600">
         <div className="md:3/5 lg:block hidden">
           <img src={dashboard} alt="dashboard preview" className="w-full" />
         </div>
@@ -125,7 +133,7 @@ const Home = () => {
           </p>
 
           <ul
-            className={`list-disc list-outside  marker:text-theme-primary font-semibold text-gray-600`}
+            className={`list-disc list-outside  marker:text-theme-primary font-medium `}
           >
             <li className="my-2">
               Multiple note-taking templates for different types of content and
