@@ -6,8 +6,8 @@ const makeRequest = async (prompt) => {
     "https://api.openai.com/v1/chat/completions",
     {
       model: "gpt-3.5-turbo",
-      max_tokens: 100,
-      messages: [{ role: "user", content: prompt }],
+      max_tokens: 250,
+      messages: [{ role: "user", content: prompt + 'please make sure the res is complete' }],
     },
     {
       headers: {
@@ -30,8 +30,6 @@ router.post("/send-prompt", async (req, res) => {
 
       completeResponse += response.message.content
       prompt = `please complete this response: ${completeResponse}`
-      console.log(finishedReason) 
-      console.log(response) 
 
       if(maxLimit == 0 || finishedReason == 'stop') {
         break;           
