@@ -10,6 +10,10 @@ const userSchema = mongoose.Schema({
   },
   password: String,
   profession: String,
+  note_count: {
+    type: Number,
+    default: 0
+  },
   token: String
 })
 

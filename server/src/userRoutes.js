@@ -89,4 +89,18 @@ router.post("/delete-account", async (req, res) => {
   }
 });
 
+
+router.post('/count-note', async (req, res) => {
+  try {
+    const { id } = req.query;
+    const user = await User.findById(id);
+    if (!user) throw new Error("user not found");
+
+    user.note_count += 1
+    await user.save()
+  } catch (err) {
+    res.status(501).send({err: err.message})
+  }
+})
+
 module.exports = router;

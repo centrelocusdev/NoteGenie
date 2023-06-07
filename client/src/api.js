@@ -2,12 +2,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
-const url = "https://ng.thedelvierypointe.com";
-// const url = 'http://127.0.0.1:8000'
+// const url = "https://ng.thedelvierypointe.com";
+const url = 'http://127.0.0.1:8000'
 
 export const getUserByToken = async () => {
   try {
     const res = await axios.get(`${url}/user/${Cookies.get("notegenie")}`);
+    console.log(res.data)
     return res.data;
   } catch (err) {
     toast.error(err);
@@ -141,6 +142,16 @@ export const sendPrompt = async (formData) => {
     } else {
       return
     }   
+  } catch (err) {
+    toast.error(err.err);
+    return;
+  }
+}
+
+export const noteCount = async (id) => {
+  try {
+    await axios.post(`${url}/count-note?id=${id}`)
+    console.log('clicked')
   } catch (err) {
     toast.error(err.err);
     return;
