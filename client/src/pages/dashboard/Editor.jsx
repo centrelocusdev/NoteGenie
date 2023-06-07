@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FiSave, FiClipboard } from "react-icons/fi";
 import { BsArrowLeftCircle } from "react-icons/bs";
+import { FaSpinner } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { predefinedTemplates } from "../../data";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
@@ -82,9 +83,9 @@ const TextEditor = () => {
       .join("\n");
     
     const prompt = `${template.description}\n${rawText}\n${input}`
-    setInput('')
-    setEditorState('')
     const res = await sendPrompt({prompt})
+    res && setInput('')
+    res && setEditorState('')
     res && setIsLoading(false)
     !res.err && setOutput(res)
   };
@@ -187,7 +188,7 @@ const TextEditor = () => {
           </div>
           <div className="md:max-h-[85%] md:min-h-[85%] overflow-y-scroll  min-h-[10rem] bg-white w-full md:rounded-3xl rounded md:p-8 p-4 text-gray-400 text-lg">
             {!output ? (
-              <span>{isLoading ? 'Magic Note in Progress...' : 'Your refined document will appear here...'}</span>
+              <p>{!isLoading ? <span className="flex items-center gap-2">Magic Note in Progress <FaSpinner className="animate-spin" /> </span> : 'Your refined document will appear here...'}</p>
             ) : <p><pre className="whitespace-pre-line font-sans text-justify">{output}</pre></p>}
           </div>
         </div>
