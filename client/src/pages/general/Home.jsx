@@ -95,7 +95,7 @@ const Home = () => {
             Related health professionals (i.e., acupuncturist), speech and language therapists, physical therapists, occupational therapists, chiropractors: Create notes of your choice format like SOAP.
             </li>
             <li>
-            Psychologists and psychotherapist: Quickly take notes about your sessions and refine it to create a well drafted document. 
+            Social Worker and psychotherapist: Quickly take notes about your sessions and refine it to create a well drafted document. 
             </li>
             <li>
             Lawyers and legal professionals: Organize case notes, research findings, and client communication for efficient legal practice.

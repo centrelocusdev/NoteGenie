@@ -27,7 +27,7 @@ const TextEditor = () => {
   const type = queryParams.get('type')
 
   const [template, setTemplate] = useState();
-  const [input, setInput] = useState(' ');
+  const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [profession, setProfession] = useState("");
   const [editorState, setEditorState] = useState();
@@ -58,7 +58,7 @@ const TextEditor = () => {
   }, [profession]);
 
   useEffect(() => {
-    const initialContent = template?.description || "";
+    const initialContent = "";
     const contentState = ContentState.createFromText(initialContent);
     const initialEditorState = EditorState.createWithContent(contentState);
     setEditorState(initialEditorState);
@@ -81,7 +81,9 @@ const TextEditor = () => {
       .map((block) => block.text)
       .join("\n");
     
-    const prompt = `${input}, ${rawText}`
+    const prompt = `${template.description}\n${rawText}\n${input}`
+    setInput('')
+    setEditorState('')
     const res = await sendPrompt({prompt})
     res && setIsLoading(false)
     !res.err && setOutput(res)
@@ -119,30 +121,35 @@ const TextEditor = () => {
               fileName="NoteGenieNote.pdf"
             >
               {({loading }) =>
-                loading ? "Generating PDF..." : <button className="mt-1 font-semibold border border rounded-full px-3 py-1 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
+                loading ? "Generating PDF..." : <button className="mt-1 font-semibold border rounded-full px-3 py-1 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
                 <FiSave /> Save Note
               </button>
               }
             </PDFDownloadLink>     
           </div>
-          <div className="bg-white rounded-3xl justify-between mt-3 h-[100%]">
+          <div className="bg-white rounded-3xl justify-between mt-3">
             <Editor
               editorState={editorState}
               onEditorStateChange={handleEditorStateChange}
               toolbarClassName="bg-primary-light"
-              editorClassName="md:min-h-[16rem] min-h-[10rem] rounded-3xl px-8"
+              editorClassName="md:min-h-[275px] md:max-h-[15rem] min-h-[10rem] rounded-3xl px-8"
+              placeholder="Please enter your notes here..."
             />
           </div>
         </div>
-        <div className="md:flex gap-2 items-center h-[10%] justify-between">
+        <div className="md:flex gap-2 items-end h-[10%] justify-between">
+          <div className="md:w-[73%] w-full flex flex-col gap-1">
+          <label htmlFor="input" className="w-full font-semibold text-gray-500">Enter Additional Prompt (optional)</label>
           <input
             type="text"
-            className="rounded-lg px-6 py-3  bg-[#ECECEC] md:w-[73%] w-full focus:outline-none"
+            className="rounded-lg px-6 py-3  bg-[#ECECEC] w-full focus:outline-none"
+            name="input"
             autoFocus
             placeholder="Add additional prompt..."
             value={input}
             onChange={handleInputChange}
           />
+          </div>
           <button onClick={handleRefineDocClick} className="rounded-lg py-3 px-6 bg-theme-primary font-semibold md:w-fit w-full md:mt-0 mt-3">
             Refine Document
           </button>

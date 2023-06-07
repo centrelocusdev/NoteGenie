@@ -12,9 +12,9 @@ const TemplateCard = ({ template }) => {
   return (
     <div
       onClick={hanldeCardClick}
-      className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full lg:w-[23%] h-[8rem] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
+      className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full lg:w-[30%] h-[8rem] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
     >
-      <h4 className="text-md text-primary-dark font-semibold text-center capitalize">
+      <h4 className="text-xl text-primary-dark font-semibold text-center capitalize">
         {template.name}
       </h4>
     </div>
