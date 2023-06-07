@@ -35,7 +35,7 @@ const Navbar = () => {
     window.location.reload()
   };
 
-  const navItems = ["features", "about", "faq", "support"];
+  const navItems = ["features", "about", "faq", "support", "pricing"];
 
   return (
     <div className="w-full top-0 bg-primary-dark py-1 relative">
@@ -70,7 +70,7 @@ const Navbar = () => {
           </li>
           {navItems.map((item, index) => (
             <li key={index}>
-              {item == navItems[3] ? (
+              {(item == navItems[3] || item == navItems[4])  ? (
                 <Link to={item}>
                   <button className="text-primary-light mx-1 px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
                     {item}

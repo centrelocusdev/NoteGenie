@@ -11,6 +11,7 @@ import Support from "./pages/general/Support";
 import PrivateRoutes from "./PrivateRoutes";
 import Templates from "./pages/dashboard/Templates";
 import Editor from "./pages/dashboard/Editor";
+import Pricing from "./pages/general/Pricing";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Signin />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/pricing" element={<Pricing />} />
 
           <Route element={<PrivateRoutes />}>
             <Route path="/dashboard" element={<Templates />} />
