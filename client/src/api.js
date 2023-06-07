@@ -2,13 +2,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
-// const url = "https://ng.thedelvierypointe.com";
-const url = 'http://127.0.0.1:8000'
+const url = "https://ng.thedelvierypointe.com";
+// const url = 'http://127.0.0.1:8000'
 
 export const getUserByToken = async () => {
   try {
     const res = await axios.get(`${url}/user/${Cookies.get("notegenie")}`);
-    console.log(res.data)
     return res.data;
   } catch (err) {
     toast.error(err);
