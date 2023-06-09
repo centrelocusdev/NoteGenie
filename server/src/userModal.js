@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
+  customer_id: String,
   token: String
 })
 

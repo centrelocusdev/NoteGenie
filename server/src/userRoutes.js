@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("./userModal");
 const bcrypt = require("bcrypt");
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 //get user by token
 router.get("/user/:token", async (req, res) => {
@@ -18,8 +19,10 @@ router.post("/register", async (req, res) => {
   try {
     const user = new User(req.body);
     await user.generateAuthToken();
-    console.log(user);
-    // await user.save();
+
+    const customer = await stripe.customers.create({name: user.name, email: user.email})
+    user.customer_id = customer.id
+    await user.save();
     res.status(200).send(user);
   } catch (err) {
     res.status(400).send({ err: err.message });
