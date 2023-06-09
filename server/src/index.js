@@ -7,6 +7,7 @@ const app = express()
 const userRouter = require('./userRoutes')
 const templateRoutes = require('./templateRoutes')
 const chatgptRoutes = require('./chatgptRoutes')
+const paymentIntent = require('./paymentIntent')
 
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -14,6 +15,7 @@ app.use(bodyParser.json())
 app.use(userRouter)
 app.use(templateRoutes)
 app.use(chatgptRoutes)
+app.use(paymentIntent)
 
 app.listen(process.env.PORT, () => {
   console.log(`server running at http://127.0.0.1:${process.env.PORT}`)
