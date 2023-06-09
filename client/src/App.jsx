@@ -12,6 +12,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import Templates from "./pages/dashboard/Templates";
 import Editor from "./pages/dashboard/Editor";
 import Pricing from "./pages/general/Pricing";
+import StripeElements from "./pages/general/StripeElements";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route element={<PrivateRoutes />}>
             <Route path="/dashboard" element={<Templates />} />
             <Route path="/dashboard/editor/template" element={<Editor />} />
+            <Route path="/payment" element={<StripeElements />} />
           </Route>
         </Routes>
       </Suspense>

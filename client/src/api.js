@@ -2,8 +2,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
-const url = "https://ng.thedelvierypointe.com";
-// const url = 'http://127.0.0.1:8000'
+// const url = "https://ng.thedelvierypointe.com";
+const url = 'http://127.0.0.1:8000'
 
 export const getUserByToken = async () => {
   try {
@@ -150,8 +150,43 @@ export const sendPrompt = async (formData) => {
 export const noteCount = async (id) => {
   try {
     await axios.post(`${url}/count-note?id=${id}`)
-    console.log('clicked')
   } catch (err) {
+    toast.error(err.err);
+    return;
+  }
+}
+
+export const createPaymentIntent = async (formData) => {
+  try {
+    const res = await axios.post(`${url}/create-payment-intent`, formData)
+    toast.success('payment intent created!')
+    return res.data
+  } catch (err) {
+    console.log(err.err)
+    toast.error(err.err);
+    return;
+  }
+}
+
+export const retrievePaymentIntent = async (formData) => {
+  try {
+    const res = await axios.post(`${url}/retrieve-payment-intent`, formData)
+    toast.success('payment intent retrieved!')
+    return res.data
+  } catch (err) {
+    console.log(err.err)
+    toast.error(err.err);
+    return;
+  }
+}
+
+export const confirmPayment = async (formData) => {
+  try {
+    const res = await axios.post(`${url}/confirm-payment`, formData)
+    toast.success('Hurrey! payment confirmed!')
+    return res.data
+  } catch (err) {
+    console.log(err)
     toast.error(err.err);
     return;
   }
