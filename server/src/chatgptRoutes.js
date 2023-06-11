@@ -38,10 +38,9 @@ router.post("/send-prompt", async (req, res) => {
      
     } while(maxLimit > 0);
 
-    // console.log(completeResponse)
-    res.send(completeResponse);
+    res.send({status: 'success', data: completeResponse});
   } catch (err) { 
-    res.send({ err: err.message });
+    res.send({ status: "error", message: err.message });
   }
 });
 

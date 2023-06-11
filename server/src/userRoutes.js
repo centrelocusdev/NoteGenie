@@ -1,16 +1,41 @@
 const router = require("express").Router();
 const User = require("./userModal");
 const bcrypt = require("bcrypt");
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const moment = require("moment");
+
+const createPrice = async (plan) => {
+  try {
+    const product = await stripe.products.create({
+      name: `NoteGenie ${plan}`,
+    });
+
+    const unit_amount = plan;
+
+    if (product) {
+      const price = await stripe.prices.create({
+        unit_amount,
+        currency: "usd",
+        product: product.id,
+        recurring: { interval: "month" },
+      });
+      console.log(price.id, price.product);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// createPrice(15)
 
 //get user by token
 router.get("/user/:token", async (req, res) => {
   try {
     const token = req.params.token;
     const user = await User.findOne({ token });
-    res.status(200).send(user);
+    res.status(200).send({status: 'success', data: user});
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({status: 'error', message: err.message });
   }
 });
 
@@ -20,12 +45,38 @@ router.post("/register", async (req, res) => {
     const user = new User(req.body);
     await user.generateAuthToken();
 
-    const customer = await stripe.customers.create({name: user.name, email: user.email})
-    user.customer_id = customer.id
+    const customer = await stripe.customers.create({
+      name: user.name,
+      email: user.email,
+    });
+    user.customer_id = customer.id;
+
+    const trialEnd = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
+    const billingCycleAnchor = trialEnd + 30 * 24 * 60 * 60;
+
+    const subs = await stripe.subscriptions.create({
+      customer: customer.id,
+      trial_end: trialEnd,
+      cancel_at_period_end: true,
+      billing_cycle_anchor: billingCycleAnchor,
+      items: [
+        {
+          price: process.env.FREE_PRICE_ID,
+        },
+      ],
+    });
+    user.subs_id = subs.id;
+
+    if (!subs || !customer) {
+      throw new Error("something went wrong");
+    }
+
+    user.subs_end_date = billingCycleAnchor;
     await user.save();
-    res.status(200).send(user);
+
+    res.status(200).send({ status: "success", data: user });
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({ status: "error", message: err.message });
   }
 });
 
@@ -36,15 +87,15 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) throw new Error("User not found, please try again");
 
-    const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch)
-      throw new Error("Incorrect password, please try again");
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new Error("Incorrect password, please try again");
     else {
       await user.generateAuthToken();
-      res.status(200).send(user);
+
+      res.status(200).send({ status: "success", data: user});
     }
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({ status: "error", message: err.message });
   }
 });
 
@@ -64,9 +115,9 @@ router.post("/update-profile", async (req, res) => {
       }
     });
     await user.save();
-    res.send(user);
+    res.send({status: 'success', message: 'profile updated successfully'});
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({status: 'error', message: err.message });
   }
 });
 
@@ -76,9 +127,9 @@ router.post("/logout", async (req, res) => {
     const user = req.user;
     user.tokens = user.tokens.filter((token) => token != req.token);
     await user.save();
-    res.send({ msg: "logged out successfully", user });
+    res.send({status: 'success', message: 'logged out!'});
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({status: 'error', message: err.message });
   }
 });
 
@@ -92,18 +143,29 @@ router.post("/delete-account", async (req, res) => {
   }
 });
 
-
-router.post('/count-note', async (req, res) => {
+router.post("/count-note", async (req, res) => {
   try {
     const { id } = req.query;
     const user = await User.findById(id);
     if (!user) throw new Error("user not found");
 
-    user.note_count += 1
-    await user.save()
+    user.note_count += 1;
+    await user.save();
   } catch (err) {
-    res.status(501).send({err: err.message})
+    res.status(501).send({status: 'error', message: err.message });
   }
-})
+});
+
+router.post("/reset-count-note", async (req, res) => {
+  try {
+    const user = await User.findById(req.body.id);
+    if (!user) throw new Error("user not found");
+
+    user.note_count = 0;
+    await user.save();
+  } catch (err) {
+    res.status(501).send({status: 'error', message: err.message });
+  }
+});
 
 module.exports = router;

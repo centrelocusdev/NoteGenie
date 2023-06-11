@@ -15,7 +15,21 @@ const userSchema = mongoose.Schema({
     default: 0
   },
   customer_id: String,
-  token: String
+  token: String,
+  subs_id: String,
+  trial: {
+    type: String,
+    default: true
+  },
+  subs_expired: {
+    type: Boolean,
+    default: false
+  },
+  subs_end_date: Number,
+  subs_plan: {
+    type: String,
+    default: 'free'
+  },
 })
 
 // generating tokens for user

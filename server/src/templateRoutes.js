@@ -4,13 +4,12 @@ const User = require("./userModal");
 
 router.post('/create-template', async (req, res) => {
   try {
-    console.log(req.body)
     const template = new Template(req.body) 
 
     await template.save()
-    res.status(200).send({msg: 'template created successfully'})
+    res.status(200).send({status: 'success', message: 'template created successfully'})
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({ status: "error", message: err.message });
   }
 })
 
@@ -19,9 +18,9 @@ router.get('/get-templates/:userId', async (req, res) => {
     const userId = req.params.userId
     const templates = await Template.find({userId})
 
-    res.status(200).send(templates)
+    res.status(200).send({status: 'success', data: templates})
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({ status: "error", message: err.message });
   }
 })
 
@@ -29,9 +28,9 @@ router.delete('/delete-template/:id', async (req, res) => {
   try {
     const id = req.params.id
     await Template.findByIdAndDelete(id)
-    res.send({msg: 'deleted template successfuy'})
+    res.send({status: 'success', message: 'deleted template successfuy'})
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({ status: "error", message: err.message });
   }
 })
 
@@ -40,9 +39,9 @@ router.get('/get-template/:id', async (req, res) => {
     const id = req.params.id
     const template =  await Template.findById(id)
     if(!template) throw new Error('No template found')
-    else res.send(template)
+    else res.send({status: 'success', data: template})
   } catch (err) {
-    res.status(400).send({ err: err.message });
+    res.status(400).send({ status: "error", message: err.message });
   }
 })
 
