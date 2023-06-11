@@ -4,6 +4,7 @@ import {
   getUserByToken,
   createPaymentIntent,
   confirmPayment,
+  updateSubscription,
 } from "../api";
 import { Link } from "react-router-dom";
 import InputPrimary from "./InputPrimary"
@@ -40,8 +41,6 @@ const StripeCheckoutForm = ({ price, plan }) => {
     }))
   }
 
-  console.log(address)
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!stripe || !elements) {
@@ -57,15 +56,16 @@ const StripeCheckoutForm = ({ price, plan }) => {
 
     setPaymentLoading(true);
     const { name, email } = user;
-    const paymentMethodRes = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-      billing_details: {
-        name,
-        email,
-        address
-      },
-    });
+    try {
+      const paymentMethodRes = await stripe.createPaymentMethod({
+        type: "card",
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name,
+          email,
+          address
+        },
+      });
 
     let paymentMethod = paymentMethodRes.paymentMethod;
     if (paymentMethod) {
@@ -76,7 +76,6 @@ const StripeCheckoutForm = ({ price, plan }) => {
         customer: user.customer_id,
         payment_method: paymentMethod.id,
       });
-      console.log(paymentIntent);
       if (paymentIntent) {
         if (paymentIntent.status === "requires_confirmation") {
           stripe
@@ -85,11 +84,14 @@ const StripeCheckoutForm = ({ price, plan }) => {
               if (result.error) {
                 console.log(result.error.message);
               } else {
-                const confirmedPayment = await confirmPayment({
+                  await confirmPayment({
                   paymentIntentId: paymentIntent.id,
                   paymentMethodId: paymentMethod.id,
+                  plan,
+                  userId: user._id,
+                  subsId: user.subs_id
                 });
-                console.log(confirmedPayment);
+                await updateSubscription({subsId: user.subs_id, plan, paymentMethodId: paymentMethod.id})
                 setPaymentLoading(false)
                 navigate(`/dashboard?payment=completed&plan=${plan}`)
               }
@@ -102,14 +104,16 @@ const StripeCheckoutForm = ({ price, plan }) => {
             .handleCardAction(paymentIntent.client_secret)
             .then(async (result) => {
               if (result.error) {
-                // Handle error
                 console.log(result.error.message);
               } else {
-                const confirmedPayment = await confirmPayment({
+                  await confirmPayment({
                   paymentIntentId: paymentIntent.id,
                   paymentMethodId: paymentMethod.id,
+                  plan,
+                  userId: user._id,
+                  subsId: user.subs_id
                 });
-                console.log(confirmedPayment);
+                await updateSubscription({subsId: user.subs_id, plan, paymentMethodId: paymentMethod.id})
                 setPaymentLoading(false)
                 navigate(`/dashboard?payment=completed&plan=${plan}`)
               }
@@ -117,6 +121,12 @@ const StripeCheckoutForm = ({ price, plan }) => {
         }
       }
     }
+  } catch (err) {
+    console.log(err)
+    setPaymentLoading(false)
+  } finally {
+    setPaymentLoading(false)
+  }
   };
 
   return (

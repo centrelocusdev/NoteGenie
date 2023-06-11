@@ -7,7 +7,7 @@ import { predefinedTemplates } from "../../data";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { getTemplate, getUserByToken, noteCount, sendPrompt } from "../../api";
+import { getTemplate, getUserByToken, noteCount, sendPrompt, getSubscription } from "../../api";
 import {
   PDFDownloadLink,
   Page,
@@ -19,10 +19,10 @@ import { toast } from "react-toastify";
 
 const styles = StyleSheet.create({
   page: {
-    padding: 20, // Add padding to the page
+    padding: 20,
   },
   text: {
-    fontSize: 12, // Reduce the font size
+    fontSize: 12, 
   },
 });
 
@@ -88,6 +88,22 @@ const TextEditor = () => {
   const handleRefineDocClick = async () => {
     setIsLoading(true);
     setOutput("");
+
+    if(user.trial && user.subs_plan == "free") {
+      const subsStatus = await getSubscription(user.subs_id)
+      if(subsStatus == 'past_due') {
+        toast.warning('your trial has been expired')
+        navigate('/pricing')
+        return
+      }
+    } else if(!user.trial) {
+      if((user.subs_plan == 'basic' && user.note_count > 100) || (user.subs_plan == 'premium' && user.note_count > 500)) {
+        toast.warning('your plan has been expired')
+        navigate('/pricing')
+        return
+      }
+    }
+
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
     const rawText = rawContentState.blocks
@@ -96,8 +112,8 @@ const TextEditor = () => {
 
     const prompt = `${template.description}\n${rawText}\n${input}`;
     const res = await sendPrompt({ prompt });
-    res && setInput("");
-    res && setEditorState("");
+    // res && setInput("");
+    // res && setEditorState("");
     res && setIsLoading(false);
     !res.err && setOutput(res);
     res && await noteCount(user._id)
