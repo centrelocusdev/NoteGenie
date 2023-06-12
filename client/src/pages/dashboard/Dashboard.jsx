@@ -6,7 +6,7 @@ import ButtonPrimary from "../../components/ButtonPrimary";
 import { FiPlus, FiSettings } from "react-icons/fi";
 import { CgLogOff } from "react-icons/cg";
 import { BsArrowLeftCircle } from "react-icons/bs";
-import { BiUserCircle, BiChevronLeftCircle } from "react-icons/bi";
+import { BiUserCircle } from "react-icons/bi";
 import { useState } from "react";
 import { predefinedTemplates } from "../../data.js";
 import { getAllTemplates, getUserByToken, logout } from "../../api";
@@ -67,11 +67,11 @@ const Dashboard = () => {
         <div className="flex gap-2 items-center">
           {/* <img src={user} alt="avatar" className="w-12 rounded-full" /> */}
           <BiUserCircle className="text-2xl" />
-          <p className="text-xl font-semibold hidden sm:block">{user?.name}</p>
+          <p className="text-xl font-semibold hidden sm:block capitalize">{user?.name}</p>
           <button
             onClick={handleOpenSettingsPopupClick}
             title="settings"
-            className="text-2xl ml-3 rounded-full h-fit hover:text-gray-500"
+            className="text-xl ml-3 rounded-full h-fit hover:text-gray-500"
           >
             <FiSettings />
           </button>

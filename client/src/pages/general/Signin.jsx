@@ -1,13 +1,14 @@
 import React, {useState} from "react";
-import Navbar from "../../components/Navbar";
 import InputPrimary from "../../components/InputPrimary";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsGoogle } from "react-icons/bs";
 import { login } from "../../api";
 
 const Signin = () => {
   const navigate = useNavigate()
+  const { state } = useLocation()
+  const redirectTo = state?.from ? state.from : "/dashboard";
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,7 +24,7 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await login(formData)
-    res && navigate('/dashboard')
+    res && navigate(redirectTo)
   }
 
   return (
