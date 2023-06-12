@@ -39,6 +39,7 @@ const TextEditor = () => {
   const [user, setUser] = useState("");
   const [editorState, setEditorState] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [rawText, setRawText] = useState('')
 
   useEffect(() => {
     const runIt = async () => {
@@ -79,6 +80,13 @@ const TextEditor = () => {
 
   const handleEditorStateChange = (newEditorState) => {
     setEditorState(newEditorState);
+    const contentState = editorState.getCurrentContent();
+    const rawContentState = convertToRaw(contentState);
+    const raw = rawContentState.blocks
+      .map((block) => block.text)
+      .join("\n");
+
+    setRawText(raw)
   };
 
   const handleInputChange = (e) => {
@@ -154,7 +162,7 @@ const TextEditor = () => {
                 loading ? (
                   "Generating PDF..."
                 ) : (
-                  <button className="mt-1 font-semibold border rounded-full px-3 py-1 flex items-center gap-2 hover:bg-theme-primary hover:border-transparent">
+                  <button disabled={!rawText.length && true} className={`${rawText.length ? 'hover:bg-theme-primary hover:border-transparent' : 'cursor-not-allowed'} mt-1 font-semibold border rounded-full px-3 py-1 flex items-center gap-2 `}>
                     <FiSave /> Save Note
                   </button>
                 )

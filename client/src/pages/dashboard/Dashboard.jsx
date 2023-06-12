@@ -12,7 +12,7 @@ import { predefinedTemplates } from "../../data.js";
 import { getAllTemplates, getUserByToken, logout } from "../../api";
 import { useNavigate } from "react-router-dom";
 
-const Templates = () => {
+const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [showPopup, setShowPopup] = useState(false);
@@ -143,4 +143,4 @@ const Templates = () => {
   );
 };
 
-export default Templates;
+export default Dashboard;

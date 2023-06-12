@@ -9,7 +9,7 @@ import Signup from "./pages/general/Signup";
 import Signin from "./pages/general/Signin";
 import Support from "./pages/general/Support";
 import PrivateRoutes from "./PrivateRoutes";
-import Templates from "./pages/dashboard/Templates";
+import Dashboard from "./pages/dashboard/Dashboard";
 import Editor from "./pages/dashboard/Editor";
 import Pricing from "./pages/general/Pricing";
 import StripeElements from "./pages/general/StripeElements";
@@ -32,7 +32,7 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
 
           <Route element={<PrivateRoutes />}>
-            <Route path="/dashboard" element={<Templates />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/editor/template" element={<Editor />} />
             <Route path="/payment" element={<StripeElements />} />
           </Route>
