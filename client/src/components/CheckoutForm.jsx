@@ -93,7 +93,7 @@ const StripeCheckoutForm = ({ price, plan }) => {
                 });
                 await updateSubscription({subsId: user.subs_id, plan, paymentMethodId: paymentMethod.id})
                 setPaymentLoading(false)
-                navigate(`/dashboard?payment=completed&plan=${plan}`)
+                navigate(`/pricing?status=completed&plan=${plan}`)
               }
             });
         } else if (
@@ -115,7 +115,7 @@ const StripeCheckoutForm = ({ price, plan }) => {
                 });
                 await updateSubscription({subsId: user.subs_id, plan, paymentMethodId: paymentMethod.id})
                 setPaymentLoading(false)
-                navigate(`/dashboard?payment=completed&plan=${plan}`)
+                navigate(`/pricing?status=completed&plan=${plan}`)
               }
             });
         }
@@ -140,7 +140,7 @@ const StripeCheckoutForm = ({ price, plan }) => {
             to={"/pricing"}
             className="italic font-medium text-gray-400 hover:underline"
           >
-            Plan <span>Basic</span>
+            Plan <span>{plan}</span>
           </Link>
         </div>
         <div onChange={handleAddressChange}>

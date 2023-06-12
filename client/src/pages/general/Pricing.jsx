@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsCheck2Circle } from "react-icons/bs"
 import { getUserByToken } from "../../api";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -55,12 +56,12 @@ const Pricing = () => {
           ))}
         </div>
       )}
-      <button
-        onClick={(e) => navigate("/")}
+      <Link
+        to={isCompleted ? '/dashboard' : "/"}
         className="text-gray-500 mt-5 underline hover:text-primary-dark"
       >
         Go Back
-      </button>
+      </Link>
     </div>
   );
 };
