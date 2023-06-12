@@ -8,31 +8,39 @@ const url = "http://127.0.0.1:8000";
 export const getUserByToken = async () => {
   try {
     const res = await axios.get(`${url}/user/${Cookies.get("notegenie")}`);
-    const { status, data} = res.data 
-    if(status == 'success') {
-      return data
+    const { status, data } = res.data;
+    if (status == "success") {
+      return data;
     } else {
-      return
+      return;
     }
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
 
 export const register = async (formData) => {
   try {
-    if (
+    if (!/^[A-Za-z]+$/.test(formData.name)) {
+      toast.warning("Name should only include alphabets");
+    } else if (
+      !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{6,}/.test(formData.password)
+    ) {
+      toast.warning(
+        "password should have at least 6 characters with at least one uppercase letter, one lowercase letter, one digit, and one special character"
+      );
+    } else if (formData.password !== formData.confirm_password) {
+      toast.warning("password doesn't match");
+      return;
+    } else if (
       !formData.name ||
       !formData.email ||
       !formData.password ||
       !formData.profession
     ) {
-      toast.error("All fields are mendatory");
-    } else if (formData.password !== formData.confirm_password) {
-      toast.error("password doesn't match");
-      return;
+      toast.warning("All fields are mendatory");
     } else {
       const res = await axios.post(`${url}/register/`, formData);
       Cookies.set("notegenie", res.data.data.token);
@@ -40,8 +48,8 @@ export const register = async (formData) => {
       return true;
     }
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -51,10 +59,10 @@ export const login = async (formData) => {
     const res = await axios.post(`${url}/login/`, formData);
     Cookies.set("notegenie", res.data.data.token);
     toast.success("user logged in successfully");
-    return true
+    return true;
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -78,15 +86,15 @@ export const updateProfile = async (formData) => {
     });
 
     toast.success("profile updated successfully");
-    const { status, data} = res.data 
-    if(status == 'success') {
-      return data
+    const { status, data } = res.data;
+    if (status == "success") {
+      return data;
     } else {
-      return
+      return;
     }
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -95,15 +103,15 @@ export const forgetPasswordConfirm = async (formData) => {
   try {
     const res = await axios.post(`${url}/password_reset/confirm/`, formData);
     res.data && toast.success("password changed successfully");
-    const { status, data} = res.data 
-    if(status == 'success') {
-      return data
+    const { status, data } = res.data;
+    if (status == "success") {
+      return data;
     } else {
-      return
+      return;
     }
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -113,15 +121,15 @@ export const createTemplate = async (formData) => {
     const res = await axios.post(`${url}/create-template`, formData);
 
     toast.success("template created successfully");
-    const { status, data} = res.data 
-    if(status == 'success') {
-      return data
+    const { status, data } = res.data;
+    if (status == "success") {
+      return data;
     } else {
-      return
+      return;
     }
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -130,15 +138,15 @@ export const getAllTemplates = async (userId) => {
   try {
     const res = await axios.get(`${url}/get-templates/${userId}`);
 
-    const { status, data} = res.data 
-    if(status == 'success') {
-      return data
+    const { status, data } = res.data;
+    if (status == "success") {
+      return data;
     } else {
-      return
+      return;
     }
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -148,8 +156,8 @@ export const deleteTemplate = async (id) => {
     const res = await axios.delete(`${url}/delete-template/${id}`);
     res && toast.success("template deleted successfully");
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -157,15 +165,15 @@ export const deleteTemplate = async (id) => {
 export const getTemplate = async (id) => {
   try {
     const res = await axios.get(`${url}/get-template/${id}`);
-    const { status, data} = res.data 
-    if(status == 'success') {
-      return data
+    const { status, data } = res.data;
+    if (status == "success") {
+      return data;
     } else {
-      return
+      return;
     }
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -175,18 +183,18 @@ export const sendPrompt = async (formData) => {
     const res = await axios.post(`${url}/send-prompt`, formData);
     toast.success("Magic Note completed!");
     if (!res.data.error) {
-      const { status, data} = res.data 
-      if(status == 'success') {
-        return data
+      const { status, data } = res.data;
+      if (status == "success") {
+        return data;
       } else {
-        return
+        return;
       }
     } else {
       return;
     }
   } catch (error) {
-    const { message } = error.response.data
-    toast.error(message)
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };
@@ -244,7 +252,7 @@ export const confirmPayment = async (formData) => {
     }
   } catch (error) {
     const { message } = error.response.data;
-    console.log(message)
+    console.log(message);
     // toast.error(message);
     return;
   }
