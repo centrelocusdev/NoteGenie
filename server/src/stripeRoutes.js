@@ -54,14 +54,17 @@ router.post("/retrieve-payment-intent", async (req, res) => {
 
 router.post("/confirm-payment", async (req, res) => {
   try {
+    console.log("confirm payment called");
     const { paymentMethodId, paymentIntentId, plan, userId, subsId } = req.body;
 
     const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
       payment_method: paymentMethodId,
     });
 
+    console.log(paymentIntent);
+
     if (paymentIntent.status === "succeeded") {
-      res.status(200).json({ success: true });
+      console.log("confirm payment succeeded");
       await stripe.subscriptions.update(subsId, {
         cancel_at_period_end: false,
         trial_end: "now",
@@ -71,12 +74,13 @@ router.post("/confirm-payment", async (req, res) => {
       user.subs_plan = plan;
       user.note_count = 0;
       user.trial = false;
+      console.log(user);
       await user.save();
     } else if (
       paymentIntent.status === "requires_action" &&
       paymentIntent.next_action.type === "use_stripe_sdk"
     ) {
-      res.status(200).json({
+      res.status(200).send({
         requiresAction: true,
         paymentIntentClientSecret: paymentIntent.client_secret,
       });
@@ -95,7 +99,7 @@ router.post("/confirm-payment", async (req, res) => {
 
 router.post("/update-subscription", async (req, res) => {
   try {
-    const { subsId, plan } = req.body;
+    const { userId, subsId, plan } = req.body;
     let price;
     if (plan == "basic") price = process.env.BASIC_PRICE_ID;
     else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID;
@@ -109,12 +113,15 @@ router.post("/update-subscription", async (req, res) => {
       ],
     });
 
-    res
-      .status(200)
-      .json({
-        status: "success",
-        message: "updated subscription successfully",
-      });
+    const user = await User.findById(userId);
+    user.subs_plan = plan;
+    user.note_count = 0;
+    user.trial = false;
+    await user.save();
+    res.status(200).json({
+      status: "success",
+      message: "updated subscription successfully",
+    });
   } catch (err) {
     res.status(500).send({ status: "error", message: err.message });
   }

@@ -3,16 +3,15 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import {
   getUserByToken,
   createPaymentIntent,
-  confirmPayment,
   updateSubscription,
 } from "../api";
 import { Link } from "react-router-dom";
-import InputPrimary from "./InputPrimary"
+import InputPrimary from "./InputPrimary";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const StripeCheckoutForm = ({ price, plan }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isPaymentLoading, setPaymentLoading] = useState(false);
   const [user, setUser] = useState("");
   const stripe = useStripe();
@@ -28,18 +27,24 @@ const StripeCheckoutForm = ({ price, plan }) => {
   useEffect(() => {
     const runIt = async () => {
       const user = await getUserByToken();
+      if(user.subs_id != 'free') {
+        toast.warning('You have already purchased a plan')
+        navigate('/dashboard')
+        return
+      }
       setUser(user);
     };
 
     runIt();
   }, []);
 
+
   const handleAddressChange = (e) => {
     setAddress((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
-    }))
-  }
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,12 +52,12 @@ const StripeCheckoutForm = ({ price, plan }) => {
       return;
     }
 
-    Object.keys(address).map(key => {
-      if(address[key] == "") {
-        toast.warning('please enter the value of ' + key)
-        return
+    Object.keys(address).map((key) => {
+      if (address[key] == "") {
+        toast.warning("please enter the value of " + key);
+        return;
       }
-    })
+    });
 
     setPaymentLoading(true);
     const { name, email } = user;
@@ -63,75 +68,78 @@ const StripeCheckoutForm = ({ price, plan }) => {
         billing_details: {
           name,
           email,
-          address
+          address,
         },
       });
 
-    let paymentMethod = paymentMethodRes.paymentMethod;
-    if (paymentMethod) {
-      const paymentIntent = await createPaymentIntent({
-        amount: price,
-        currency: "usd",
-        description: "NoteGenie Pro",
-        customer: user.customer_id,
-        payment_method: paymentMethod.id,
-      });
-      if (paymentIntent) {
-        if (paymentIntent.status === "requires_confirmation") {
-          stripe
-            .confirmCardPayment(paymentIntent.client_secret)
-            .then(async (result) => {
-              if (result.error) {
-                console.log(result.error.message);
-              } else {
-                  await confirmPayment({
-                  paymentIntentId: paymentIntent.id,
-                  paymentMethodId: paymentMethod.id,
-                  plan,
-                  userId: user._id,
-                  subsId: user.subs_id
-                });
-                await updateSubscription({subsId: user.subs_id, plan, paymentMethodId: paymentMethod.id})
-                setPaymentLoading(false)
-                navigate(`/pricing?status=completed&plan=${plan}`)
-              }
-            });
-        } else if (
-          paymentIntent.status === "requires_action" &&
-          paymentIntent.next_action.type === "use_stripe_sdk"
-        ) {
-          stripe
-            .handleCardAction(paymentIntent.client_secret)
-            .then(async (result) => {
-              if (result.error) {
-                console.log(result.error.message);
-              } else {
-                  await confirmPayment({
-                  paymentIntentId: paymentIntent.id,
-                  paymentMethodId: paymentMethod.id,
-                  plan,
-                  userId: user._id,
-                  subsId: user.subs_id
-                });
-                await updateSubscription({subsId: user.subs_id, plan, paymentMethodId: paymentMethod.id})
-                setPaymentLoading(false)
-                navigate(`/pricing?status=completed&plan=${plan}`)
-              }
-            });
+      let paymentMethod = paymentMethodRes.paymentMethod;
+      if (paymentMethod) {
+        const paymentIntent = await createPaymentIntent({
+          amount: price,
+          currency: "usd",
+          description: "NoteGenie Pro",
+          customer: user.customer_id,
+          payment_method: paymentMethod.id,
+        });
+        console.log(paymentIntent);
+        if (paymentIntent) {
+          if (paymentIntent.status === "requires_confirmation") {
+            stripe
+              .confirmCardPayment(paymentIntent.client_secret)
+              .then(async (result) => {
+                if (result.error) {
+                  console.log(result.error.message);
+                } else {
+                  if (result.paymentIntent.status == "succeeded") {
+                    console.log(true)
+                    await updateSubscription({
+                      userId: user._id,
+                      subsId: user.subs_id,
+                      plan,
+                    });
+                    setPaymentLoading(false);
+                    navigate(`/pricing?status=completed&plan=${plan}`);
+                  }
+                }
+              });
+          } else if (
+            paymentIntent.status === "requires_action" &&
+            paymentIntent.next_action.type === "use_stripe_sdk"
+          ) {
+            stripe
+              .handleCardAction(paymentIntent.client_secret)
+              .then(async (result) => {
+                if (result.error) {
+                  console.log(result.error.message);
+                } else {
+                  if (result.paymentIntent.status == "succeeded") {
+                    await updateSubscription({
+                      userId: user._id,
+                      subsId: user.subs_id,
+                      plan,
+                    });
+                    setPaymentLoading(false);
+                    navigate(`/pricing?status=completed&plan=${plan}`);
+                  }
+                }
+              });
+          }
         }
       }
+    } catch (err) {
+      console.log(err);
+      setPaymentLoading(false);
+    } finally {
+      setPaymentLoading(false);
     }
-  } catch (err) {
-    console.log(err)
-    setPaymentLoading(false)
-  } finally {
-    setPaymentLoading(false)
-  }
   };
 
   return (
     <div className="flex justify-center items-center py-10">
-      <form onSubmit={handleSubmit} className="md:w-2/5 bg-white p-8 rounded-2xl">
+      <form
+        onSubmit={handleSubmit}
+        className="md:w-2/5 bg-white p-8 rounded-2xl"
+      >
         <div className="flex justify-between items-end mb-2">
           <h2 className="text-2xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 font-semibold uppercase">
             NoteGenie Pro
@@ -144,25 +152,34 @@ const StripeCheckoutForm = ({ price, plan }) => {
           </Link>
         </div>
         <div onChange={handleAddressChange}>
-        <h2 className="text-xl mt-5 text-gray-500 font-semibold border-b">
-          Please enter your address <span className="text-red-500" title="required">*</span>
-        </h2>
+          <h2 className="text-xl mt-5 text-gray-500 font-semibold border-b">
+            Please enter your address{" "}
+            <span className="text-red-500" title="required">
+              *
+            </span>
+          </h2>
           <div className="flex flex-col sm:flex-row gap-2">
-            <InputPrimary name="line1" placeholder={'123 Main St'} />
-            <InputPrimary name="postal_code" placeholder={'10001'} />
+            <InputPrimary name="line1" placeholder={"123 Main St"} />
+            <InputPrimary name="postal_code" placeholder={"10001"} />
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
-            <InputPrimary name="city" placeholder={'New York'} />
-            <InputPrimary name="state" placeholder={'NY'} />
+            <InputPrimary name="city" placeholder={"New York"} />
+            <InputPrimary name="state" placeholder={"NY"} />
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
-            <InputPrimary name="country" placeholder={'2-letter country code i.e US'} />
+            <InputPrimary
+              name="country"
+              placeholder={"2-letter country code i.e US"}
+            />
           </div>
         </div>
         <h2 className="text-xl mt-5 text-gray-500 font-semibold border-b">
-          Please enter your card details <span className="text-red-500" title="required">*</span>
+          Please enter your card details{" "}
+          <span className="text-red-500" title="required">
+            *
+          </span>
         </h2>
-        <CardElement className="w-full my-5 bg-[#D1D1D147] py-3 px-6 rounded-3xl"/>
+        <CardElement className="w-full my-5 bg-[#D1D1D147] py-3 px-6 rounded-3xl" />
         <button
           disabled={isPaymentLoading}
           className="bg-theme-primary px-6 py-2 rounded-2xl w-full font-medium"
