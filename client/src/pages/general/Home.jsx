@@ -147,7 +147,7 @@ const Home = () => {
             <li className="my-2">
               Auto-save and backup features to ensure that notes are never lost
             </li>
-            <li className="my-2">AI-powered note-taking application with the ability to refine the document, as per the need</li>
+            <li className="my-2">AI-powered note-taking application with the ability to refine any note, as per the need</li>
           </ul>
         </div>
       </section>
@@ -250,7 +250,7 @@ const features = [
     desc: "With our app, you can easily export your notes in a variety of file formats, including PDF, DOCX, and TXT. Simply click the export button.",
   },
   {
-    title: "Enhance your note-taking",
+    title: "Enhance your note-taking experience",
     desc: "Improve your progress notes. Note Genie will ensure your notes are specific, objective, and focused on measurable outcomes.",
   },
   {

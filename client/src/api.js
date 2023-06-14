@@ -24,7 +24,7 @@ export const getUserByToken = async () => {
 
 export const register = async (formData) => {
   try {
-    if (!/^[A-Za-z]+$/.test(formData.name)) {
+    if (!/^[A-Za-z ]+$/.test(formData.name)) {
       toast.warning("Name should only include alphabets");
     } else if (
       !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{6,}/.test(formData.password)
