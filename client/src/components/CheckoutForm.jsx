@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import InputPrimary from "./InputPrimary";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import currency from "currency.js";
 
 const StripeCheckoutForm = ({ price, plan }) => {
   const navigate = useNavigate();
@@ -32,8 +31,8 @@ const StripeCheckoutForm = ({ price, plan }) => {
       const user = await getUserByToken();
       if (user.subs_plan != "free") {
         toast.warning("You have already purchased a plan");
-        // navigate("/dashboard");
-        // return;
+        navigate("/dashboard");
+        return;
       }
       setUser(user);
     };
@@ -96,7 +95,7 @@ const StripeCheckoutForm = ({ price, plan }) => {
       if (paymentMethod) {
         const paymentIntent = await createPaymentIntent({
           amount: Math.round(price * 100),
-          currency,
+          currency: "usd",
           description: "NoteGenie Pro",
           customer: user.customer_id,
           payment_method: paymentMethod.id,
@@ -117,7 +116,7 @@ const StripeCheckoutForm = ({ price, plan }) => {
                       subsId: user.subs_id,
                       plan,
                       price,
-                      currency,
+                      currency: "usd",
                     });
                     setPaymentLoading(false);
                     navigate(`/pricing?status=completed&plan=${plan}`);
@@ -140,7 +139,7 @@ const StripeCheckoutForm = ({ price, plan }) => {
                       subsId: user.subs_id,
                       plan,
                       price,
-                      currency,
+                      currency: "usd",
                     });
                     setPaymentLoading(false);
                     navigate(`/pricing?status=completed&plan=${plan}`);
@@ -175,18 +174,18 @@ const StripeCheckoutForm = ({ price, plan }) => {
             Plan <span>{plan}</span>
           </Link>
         </div>
-        <div onChange={handleAddressChange}>
-          <h2 className="text-xl mt-5 text-gray-500 font-semibold border-b">
+        <h2 className="text-xl mt-5 text-gray-500 font-semibold border-b">
             Please enter your address{" "}
             <span className="text-red-500" title="required">
               *
             </span>
           </h2>
-          <InputPrimary
+        {/* <InputPrimary
             name="currency"
             placeholder={"3-letter ISO currency code"}
             onChange={handleCurrencyChange}
-          />
+          /> */}
+        <div onChange={handleAddressChange}>
           <div className="flex flex-col sm:flex-row gap-2">
             <InputPrimary name="line1" placeholder={"123 Main St"} />
             <InputPrimary name="postal_code" placeholder={"10001"} />

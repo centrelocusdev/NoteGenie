@@ -77,7 +77,7 @@ const plans = [
   {
     tag: "most popular",
     name: "basic",
-    price: "0.50",
+    price: "10.99",
     desc: "In this plan you get 100 Notes for $10.99. If your note taking requirement is low than subscribe to this plan. ",
     url: "#",
   },
