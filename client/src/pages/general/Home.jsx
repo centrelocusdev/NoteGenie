@@ -27,22 +27,22 @@ const Home = () => {
       <Navbar />
       <div className="mx-auto md:pt-24 p-12 ">
         <div className="md:flex relative w-full">
-          <div className="">
-            <h3 className="md:text-4xl text-2xl leading-tight">
-              Take Your Note-Taking to the{" "}
-              <span className="md:block">Next Level with</span>
-            </h3>
-            <h2 className="text-primary-dark md:text-5xl text-3xl leading-tight flex items-end gap-1 ">
-              <span>NoteGenie</span> <BsArrowRightShort />
-            </h2>
+          <div className="flex flex-col items-center md:items-start justify-center md:justify-start">
+            <div className="flex justify-center md:justify-left items-end gap-1 md:text-5xl text-3xl">
+              <h2 className="text-primary-dark leading-tight ">NoteGenie</h2>
+              <BsArrowRightShort className="hidden sm:block" />
+            </div>
 
-            <p className="mt-5 leading-7">
-              Our innovative note-taking platform uses the power of AI to
-              suggest relevant notes, organize your ideas, and streamline your
-              workflow. With NoteGenie, you'll be able to focus on what you do
-              best – generating ideas – while our platform handles the rest.
-              Ready to Elevate your professional note taking with Note Genie? Try NoteGenie
-              today and see how easy it can be
+            <p className="mt-5 leading-7 text-justify sm:text-left">
+              Elevate your professional note-taking with the intelligence of
+              NoteGenie. From social workers and medical professionals to
+              educators and law enforcement, NoteGenie is the ultimate companion
+              for professionals across diverse fields. Our AI-driven platform
+              seamlessly enhances clinical documentation, streamlines
+              educational notes, and optimizes legal case reports. Experience
+              the transformative capabilities of NoteGenie and elevate your
+              note-taking game. Unlock the future of efficient documentation
+              today!
             </p>
 
             <ButtonPrimary
@@ -57,16 +57,19 @@ const Home = () => {
 
       <section
         id="features"
-        className="mt-5 md:p-8 p-4 flex md:gap-16 gap-5 justify-center items-center"
+        className="mt-5 md:px-8 md:py-16 p-4 md:gap-16 gap-5"
       >
-        <div className="md:w-fit lg:block hidden">
-          <img src={yellow_notes} alt="technology" className="w-[27rem]" />
-        </div>
-        <div className="md:w-1/2 flex flex-wrap justify-center">
+        <h4 className="text-primary-dark text-3xl md:mb-10 mb-6 text-center underline decoration-theme-primary decoration-4 underline-offset-4">
+          Our Features
+        </h4>
+        <div className="flex flex-wrap justify-center">
           {features.map(({ title, desc }, key) => (
-            <div key={key} className="w-72 bg-theme-primary rounded-xl p-4 m-2">
-              <h5 className="text-xl font-semibold mb-3">{title}</h5>
-              <p className="md:text-normal text-justify">{desc}</p>
+            <div
+              key={key}
+              className="w-72 bg-theme-primary rounded-xl p-5 m-2 border-2 rounded-2xl border-theme-primary"
+            >
+              <h5 className="text-2xl font- mb-3">{title}</h5>
+              <p className="md:text-normal">{desc}</p>
             </div>
           ))}
         </div>
@@ -74,91 +77,48 @@ const Home = () => {
 
       <section
         id="about"
-        className="md:mt-16 mt-5 md:p-8 p-4 text-center md:w-2/3 mx-auto text-gray-600"
+        className=" mt-5 md:px-8 md:py-16 p-4 text-center text-gray-600 bg-white flex justify-center items-center"
       >
-        <h4 className="text-4xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 font-semibold mb-3">
-          About Us
-        </h4>
-        <p className="p-3 leading-7 md:text-center text-justify">
-          Our note-taking app was created with the mission to make note-taking
-          simpler, more efficient, and professional. We are a team of passionate
-          developers, designers, and innovators who believe that technology can
-          help transform the way we work and learn. NoteGenie owners are in the
-          medical and behavioral health profession and understand the time,
-          energy and effort it takes to complete notes that meet your
-          professions standards (i.e. medical necessity, ethical standards,
-          educational/legal requirements). With NoteGenie, we are constantly
-          pushing the boundaries of what is possible and striving to deliver the
-          best user experience for our customers. <br />
-          Join us on this journey to revolutionize the way you take notes!{" "}
-          <br />
-          Elevate your professional note-taking with the intelligence of
-          NoteGenie. From social workers and medical professionals to educators
-          and law enforcement, NoteGenie is the ultimate companion for
-          professionals across diverse fields. Our AI-driven platform seamlessly
-          enhances clinical documentation, streamlines educational notes, and
-          optimizes legal case reports. Experience the transformative
-          capabilities of NoteGenie and elevate your note-taking game. Unlock
-          the future of efficient documentation today!
-        </p>
-        <p className="text-2xl p-3 leading-7 md:text-center text-justify">
-          {" "}
-          Try NoteGenie today and see how easy it can be.
-        </p>
+        <div className="md:w-2/3 mx-auto">
+          <h4 className="text-3xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 mb-3">
+            About Us
+          </h4>
+          <p className="text-md p-3 leading-8 md:text-center text-justify">
+            Our note-taking app was created with the mission to make note-taking
+            simpler, more efficient, and professional. We are a team of
+            passionate developers, designers, and innovators who believe that
+            technology can help transform the way we work and learn. NoteGenie
+            owners are in the medical and behavioral health profession and
+            understand the time, energy and effort it takes to complete notes
+            that meet your professions standards (i.e. medical necessity,
+            ethical standards, educational/legal requirements). With NoteGenie,
+            we are constantly pushing the boundaries of what is possible and
+            striving to deliver the best user experience for our customers. Join
+            us on this journey to revolutionize the way you take notes!{" "}
+          </p>
+          <p className="text-xl p-3 leading-7 md:text-center text-justify">
+            {" "}
+            Try NoteGenie today and see how easy it can be.
+          </p>
+        </div>
       </section>
 
       <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap- justify-center items-center gap-8">
-        <div className="md:w-2/3">
-          <h4 className="text-3xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 font-semibold mb-3 capitalize mb-6">
+        <div className="md:w-4/5 mx-auto">
+          <h4 className="text-3xl text-primary-dark underline decoration-theme-primary decoration-4 underline-offset-4 mb-3 capitalize mb-6 text-center">
             Our users include
           </h4>
-          <ul
-            className={`list-decimal list-outside md:ml-4 flex flex-col gap-4 text-gray-600 text-justify`}
-          >
-            <li>
-              Social Worker and psychotherapist: Quickly take notes about your
-              sessions and refine it to create a well drafted document.
-            </li>
-            <li>
-              Related health professionals (i.e., acupuncturist), speech and
-              language therapists, physical therapists, occupational therapists,
-              chiropractors: Create notes of your choice format like SOAP.
-            </li>
-            <li>
-              Doctors and healthcare professionals: Streamline patient
-              documentation, medical research, and clinical note-taking.
-            </li>
-            <li>
-              Lawyers and legal professionals: Organize case notes, research
-              findings, and client communication for efficient legal practice.
-            </li>
-            <li>
-              Educators and academic professionals: Take lecture notes, create
-              lesson plans, and track student progress for effective teaching.
-            </li>
-            <li>
-              Business professionals: Manage meeting notes, project plans, and
-              brainstorming sessions to boost productivity.{" "}
-            </li>
-            <li>
-              Researchers and scientists: Capture research findings,
-              experimental data, and hypotheses in a structured format.
-            </li>
-            <li>
-              Writers and content creators: Jot down ideas, outline articles,
-              and create content drafts with ease.
-            </li>
-          </ul>
-        </div>
-        <div className="w-1/2 lg:flex hidden flex-wrap gap-5 justify-end">
-          <img src={gp1} className="w-[15rem]" />
-          <img src={gp2} className="w-[15rem]" />
-          <img src={gp3} className="w-[15rem]" />
-          <img src={gp4} className="w-[15rem]" />
+          <div className="flex flex-wrap gap-4 justify-center">
+            {userInclude.map((d) => (
+              <div className="w-72 border-2 text-md text-center rounded-2xl border-theme-primary p-5 shadow-lg hover:bg-white cursor-pointer">
+                {d}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap-16 justify-center items-center gap-8 text-gray-600">
+      <section className="md:mt-16 mt-5 md:p-16 p-8 flex md:gap-16 justify-center items-center gap-8 text-gray-600 bg-white">
         <div className="md:3/5 lg:block hidden">
           <img src={dashboard} alt="dashboard preview" className="w-full" />
         </div>
@@ -191,7 +151,52 @@ const Home = () => {
         </div>
       </section>
 
-      <section id="faq" className="md:mt-8 mt-5 p-8 ">
+      <section className="md:mt-16 mt-5 md:p-16 p-8 text-gray-600">
+        <h4 className="text-primary-dark text-3xl md:mb-10 mb-6 underline decoration-theme-primary decoration-4 underline-offset-4">
+          How to use NoteGenie?
+        </h4>
+        <div className="md:flex md:gap-16 justify-center gap-8">
+        <div className="md:w-1/2">
+            <h3 className="text-primary-dark text-2xl">Streamline Workflow</h3>
+
+            <ul className={`list-disc list-outside  marker:text-theme-primary`}>
+              <li className="my-2">
+                Take advantage of Note Genie’s templates tailored to various
+                professional settings and needs.
+              </li>
+              <li className="my-2">
+                Select the appropriate template for your note type (e.g.,
+                progress notes, treatment plans, discharge summaries).
+              </li>
+              <li className="my-2">
+                {" "}
+                Customize the template to match your specific requirements and
+                preferences. Name the template you'd like to create and state
+                what you'd like to how you would like Note Genie to elevate your
+                notes (i.e. create a note specific to your industry).{" "}
+              </li>
+            </ul>
+          </div>
+          <div className="md:w-1/2">
+            <h3 className="text-primary-dark text-2xl">Elevate your notes</h3>
+
+            <ul className={`list-disc list-outside  marker:text-theme-primary`}>
+              <li className="my-2">
+                Simply select the type of note you want to use (i.e., SOAP,
+                BIRP, etc).
+              </li>
+              <li className="my-2">
+                Start typing your notes (or paste notes already typed) in the
+                designated field.
+              </li>
+              <li className="my-2">Select Elevate Your Notes</li>
+              <li className="my-2"> View the Note Genie Results</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className="md:mt-8 mt-5 px-8 md:py-16 py-8 bg-white">
         <h4 className="text-primary-dark text-4xl md:mb-10 mb-6 text-center">
           Frequently Asked Questions
         </h4>
@@ -199,13 +204,13 @@ const Home = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="rounded-lg shadow-md p-4 bg-[rgba(255,255,255,0.1)] my-4"
+              className="rounded-lg p-4 bg-[rgba(255,255,255,0.1)] my-4 border-2 border-primary-light "
             >
               <div
                 className="flex items-center justify-between cursor-pointer"
                 onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
               >
-                <h3 className="text-lg  font-medium ">{faq.question}</h3>
+                <h3 className="text-xl">{faq.question}</h3>
                 {openIndex === index ? (
                   <FaChevronUp className="" />
                 ) : (
@@ -222,6 +227,17 @@ const Home = () => {
     </section>
   );
 };
+
+const userInclude = [
+  " Social Worker and psychotherapist: Quickly take notes about your sessions and refine it to create a well drafted document.",
+  "Related health professionals (i.e., acupuncturist), speech and language therapists, physical therapists, occupational therapists,chiropractors: Create notes of your choice format like SOAP.",
+  "Doctors and healthcare professionals: Streamline patient documentation, medical research, and clinical note-taking.",
+  "Lawyers and legal professionals: Organize case notes, research findings, and client communication for efficient legal practice.",
+  "Educators and academic professionals: Take lecture notes, create lesson plans, and track student progress for effective teaching.",
+  "Business professionals: Manage meeting notes, project plans, and brainstorming sessions to boost productivity.",
+  "Researchers and scientists: Capture research findings, experimental data, and hypotheses in a structured format.",
+  "Writers and content creators: Jot down ideas, outline articles, and create content drafts with ease.",
+];
 
 const features = [
   {

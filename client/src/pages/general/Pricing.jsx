@@ -40,17 +40,17 @@ const Pricing = () => {
         </h3>
       </div>
       ) : (
-        <div className="md:w-4/5 m-auto flex md:flex-row flex-col justify-center items-start gap-8">
+        <div className="md:w-4/5 m-auto flex justify-center items-start flex-wrap gap-8">
           {plans.map((plan, key) => (
-            <div className="md:w-2/5 md:min-h-[30rem] bg-white flex flex-col gap-8 justify-between text-center">
+            <div className="w-80 md:min-h-[30rem] bg-white flex flex-col gap-8 justify-between text-center">
               <div className="bg-primary-dark text-white w-full text-center py-2 uppercase">
                 {plan.name == user?.subs_plan ? 'Your current plan' : plan.tag} 
               </div>
               <div className="font-bold uppercase text-2xl">{plan.name}</div>
               <div className="font-bold uppercase text-[4rem]">${plan.price}</div>
-              <div className="text-gray-500 px-8">{plan.desc}</div>
+              <div className="text-gray-500 px-8 h-[6rem]">{plan.desc}</div>
               <button disabled={plan == 'free'} onClick={(e) => handleClick(plan.price, plan.name)} className={`${plan.name == user?.subs_plan && 'cursor-not-allowed bg-[#ffebb3]'} py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}>
-                Buy Now!
+                {plan.name == 'free' ? 'Start Trial!' : 'Buy Now!'}
               </button>
             </div>
           ))}
@@ -68,17 +68,17 @@ const Pricing = () => {
 
 const plans = [
   {
-    tag: "zero cost",
+    tag: "Trial",
     name: "free",
     price: "0",
-    desc: "Free 1 day trial to get an awesome experience about NoteGenie. You can create notes and see the magic happen. After 1 day, you would need to upgrade to paid plan to continue using NoteGenie.",
+    desc: "Free 1 day trial to get an awesome experience about NoteGenie. You can create notes and see the magic happen.",
     url: "#",
   },
   {
     tag: "most popular",
     name: "basic",
     price: "10",
-    desc: "In this plan you get 100 Notes for $10.99. If your note taking requirement is not more then subscribe to this plan. ",
+    desc: "In this plan you get 100 Notes for $10.99. If your note taking requirement is low than subscribe to this plan. ",
     url: "#",
   },
   {
