@@ -4,11 +4,13 @@ import {
   getUserByToken,
   createPaymentIntent,
   updateSubscription,
+  convertCurrency,
 } from "../api";
 import { Link } from "react-router-dom";
 import InputPrimary from "./InputPrimary";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import currency from "currency.js";
 
 const StripeCheckoutForm = ({ price, plan }) => {
   const navigate = useNavigate();
@@ -23,14 +25,15 @@ const StripeCheckoutForm = ({ price, plan }) => {
     postal_code: "",
     country: "",
   });
+  const [currency, setCurrency] = useState("");
 
   useEffect(() => {
     const runIt = async () => {
       const user = await getUserByToken();
-      if(user.subs_id != 'free') {
-        toast.warning('You have already purchased a plan')
-        navigate('/dashboard')
-        return
+      if (user.subs_plan != "free") {
+        toast.warning("You have already purchased a plan");
+        // navigate("/dashboard");
+        // return;
       }
       setUser(user);
     };
@@ -38,12 +41,24 @@ const StripeCheckoutForm = ({ price, plan }) => {
     runIt();
   }, []);
 
+  useEffect(() => {
+    const runIt = async () => {
+      const amount = await convertCurrency('usd', 'inr', '14.99')
+      console.log(amount)
+    }
+
+    runIt()
+  }, [])
 
   const handleAddressChange = (e) => {
     setAddress((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleCurrencyChange = (e) => {
+    setCurrency(e.target.value);
   };
 
   const handleSubmit = async (event) => {
@@ -58,6 +73,11 @@ const StripeCheckoutForm = ({ price, plan }) => {
         return;
       }
     });
+
+    if (currency == "") {
+      toast.warning("please specify your currency ");
+      return;
+    }
 
     setPaymentLoading(true);
     const { name, email } = user;
@@ -75,8 +95,8 @@ const StripeCheckoutForm = ({ price, plan }) => {
       let paymentMethod = paymentMethodRes.paymentMethod;
       if (paymentMethod) {
         const paymentIntent = await createPaymentIntent({
-          amount: price,
-          currency: "usd",
+          amount: Math.round(price * 100),
+          currency,
           description: "NoteGenie Pro",
           customer: user.customer_id,
           payment_method: paymentMethod.id,
@@ -91,11 +111,13 @@ const StripeCheckoutForm = ({ price, plan }) => {
                   console.log(result.error.message);
                 } else {
                   if (result.paymentIntent.status == "succeeded") {
-                    console.log(true)
+                    console.log(true);
                     await updateSubscription({
                       userId: user._id,
                       subsId: user.subs_id,
                       plan,
+                      price,
+                      currency,
                     });
                     setPaymentLoading(false);
                     navigate(`/pricing?status=completed&plan=${plan}`);
@@ -117,6 +139,8 @@ const StripeCheckoutForm = ({ price, plan }) => {
                       userId: user._id,
                       subsId: user.subs_id,
                       plan,
+                      price,
+                      currency,
                     });
                     setPaymentLoading(false);
                     navigate(`/pricing?status=completed&plan=${plan}`);
@@ -158,6 +182,11 @@ const StripeCheckoutForm = ({ price, plan }) => {
               *
             </span>
           </h2>
+          <InputPrimary
+            name="currency"
+            placeholder={"3-letter ISO currency code"}
+            onChange={handleCurrencyChange}
+          />
           <div className="flex flex-col sm:flex-row gap-2">
             <InputPrimary name="line1" placeholder={"123 Main St"} />
             <InputPrimary name="postal_code" placeholder={"10001"} />

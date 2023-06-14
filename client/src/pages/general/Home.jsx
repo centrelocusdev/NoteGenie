@@ -33,9 +33,10 @@ const Home = () => {
               <BsArrowRightShort className="hidden sm:block" />
             </div>
 
+            <p className="text-2xl md:w-4/5 mt-2">Elevate your professional note-taking with the intelligence of
+              NoteGenie.</p>
             <p className="mt-5 leading-7 text-justify sm:text-left">
-              Elevate your professional note-taking with the intelligence of
-              NoteGenie. From social workers and medical professionals to
+              From social workers and medical professionals to
               educators and law enforcement, NoteGenie is the ultimate companion
               for professionals across diverse fields. Our AI-driven platform
               seamlessly enhances clinical documentation, streamlines
@@ -146,7 +147,7 @@ const Home = () => {
             <li className="my-2">
               Auto-save and backup features to ensure that notes are never lost
             </li>
-            <li className="my-2">AI-powered note-taking with the ability</li>
+            <li className="my-2">AI-powered note-taking application with the ability to refine the document, as per the need</li>
           </ul>
         </div>
       </section>
@@ -241,16 +242,16 @@ const userInclude = [
 
 const features = [
   {
-    title: "Smart categorization",
-    desc: "Our app automatically categorizes your notes based on keywords and tags, making it easier to find and review them when you need to.",
+    title: "Note Optimization ",
+    desc: "Save time, reduce errors, and enhance insurance reimbursement accuracy with AI-powered note optimization.",
   },
   {
     title: "Export your notes in any format",
     desc: "With our app, you can easily export your notes in a variety of file formats, including PDF, DOCX, and TXT. Simply click the export button.",
   },
   {
-    title: "Effortless note-taking",
-    desc: "With our app, taking notes is quick and easy. Simply start typing, and our intelligent AI will suggest relevant information to help you get started.",
+    title: "Enhance your note-taking",
+    desc: "Improve your progress notes. Note Genie will ensure your notes are specific, objective, and focused on measurable outcomes.",
   },
   {
     title: "Increased productivity",

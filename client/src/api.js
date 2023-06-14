@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import currency from "currency.js";
 
 const url = "https://ng.thedelvierypointe.com";
 // const url = "http://127.0.0.1:8000";
@@ -289,3 +290,19 @@ export const getSubscription = async (subsId) => {
     return;
   }
 };
+
+export const convertCurrency = async (baseCurrency, targetCurrency, amount) => {
+  try {
+    const response = await fetch(
+      `https://api.exchangeratesapi.io/latest?base=${baseCurrency}`
+    );
+    console.log(response)
+    const data = await response.json();
+    const conversionRates = data.rates
+    const conversionRate = conversionRates[targetCurrency];
+    const convertedAmount = currency(amount).multiply(conversionRate).toString();
+    return convertedAmount
+  } catch (error) {
+    console.log(error)
+  }
+}

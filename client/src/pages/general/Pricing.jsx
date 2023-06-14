@@ -77,14 +77,14 @@ const plans = [
   {
     tag: "most popular",
     name: "basic",
-    price: "10",
+    price: "10.99",
     desc: "In this plan you get 100 Notes for $10.99. If your note taking requirement is low than subscribe to this plan. ",
     url: "#",
   },
   {
     tag: "best value",
     name: "premium",
-    price: "15",
+    price: "14.99",
     desc: "This plan lets you create 500 Magic notes for only $14.99. Ideal for professionals in the field of Legal, Healthcare, Social workers or Therapists.",
     url: "#",
   },
