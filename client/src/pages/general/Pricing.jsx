@@ -84,7 +84,7 @@ const plans = [
   {
     tag: "best value",
     name: "premium",
-    price: "0.99",
+    price: "14.99",
     desc: "This plan lets you create 500 Magic notes for only $14.99. Ideal for professionals in the field of Legal, Healthcare, Social workers or Therapists.",
     url: "#",
   },
