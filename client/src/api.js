@@ -254,7 +254,7 @@ export const confirmPayment = async (formData) => {
   } catch (error) {
     const { message } = error.response.data;
     console.log(message);
-    // toast.error(message);
+    toast.error(message);
     return;
   }
 };

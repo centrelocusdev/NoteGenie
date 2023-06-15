@@ -201,7 +201,7 @@ const TextEditor = () => {
             onClick={handleRefineDocClick}
             className="rounded-lg py-3 px-6 bg-theme-primary font-semibold md:w-fit w-full md:mt-0 mt-3"
           >
-            Refine Document
+            Elevate Your Notes
           </button>
         </div>
       </div>
@@ -209,7 +209,7 @@ const TextEditor = () => {
         <div className="bg-theme-primary md:rounded-l-3xl rounded h-full px-5 md:pb-0 pb-5 max-h-screen">
           <div className="md:flex justify-between items-center md:px-8 py-4">
             <h4 className="text-primary-dark text-xl font-medium bg-dark">
-              NoteGenie Suggestions
+              NoteGenie Results
             </h4>
             {output && (
               <div className="flex md:items-center w-fit ">
