@@ -73,10 +73,10 @@ const StripeCheckoutForm = ({ price, plan }) => {
       }
     });
 
-    if (currency == "") {
-      toast.warning("please specify your currency ");
-      return;
-    }
+    // if (currency == "") {
+    //   toast.warning("please specify your currency ");
+    //   return;
+    // }
 
     setPaymentLoading(true);
     const { name, email } = user;
