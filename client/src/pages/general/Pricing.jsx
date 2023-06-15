@@ -49,7 +49,10 @@ const Pricing = () => {
               <div className="font-bold uppercase text-2xl">{plan.name}</div>
               <div className="font-bold uppercase text-[4rem]">${plan.price}</div>
               <div className="text-gray-500 px-8 h-[6rem]">{plan.desc}</div>
-              <button disabled={plan == 'free'} onClick={(e) => handleClick(plan.price, plan.name)} className={`${plan.name == user?.subs_plan && 'cursor-not-allowed bg-[#ffebb3]'} py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}>
+              {/* <button disabled={plan == 'free'} onClick={(e) => handleClick(plan.price, plan.name)} className={`${plan.name == user?.subs_plan && 'cursor-not-allowed bg-[#ffebb3]'} py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}>
+                {plan.name == 'free' ? 'Start Trial!' : 'Buy Now!'}
+              </button> */}
+               <button disabled title="Please try after some time" className={`cursor-not-allowed bg-[#ffebb3] py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}>
                 {plan.name == 'free' ? 'Start Trial!' : 'Buy Now!'}
               </button>
             </div>
