@@ -3,8 +3,8 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import currency from "currency.js";
 
-const url = "https://ng.thedelvierypointe.com";
-// const url = "http://127.0.0.1:8000";
+// const url = "https://ng.thedelvierypointe.com";
+const url = "http://127.0.0.1:8000";
 
 export const getUserByToken = async () => {
   try {
@@ -291,18 +291,19 @@ export const getSubscription = async (subsId) => {
   }
 };
 
-export const convertCurrency = async (baseCurrency, targetCurrency, amount) => {
+export const cancelSubs = async (subsId) => {
   try {
-    const response = await fetch(
-      `https://api.exchangeratesapi.io/latest?base=${baseCurrency}`
-    );
-    console.log(response)
-    const data = await response.json();
-    const conversionRates = data.rates
-    const conversionRate = conversionRates[targetCurrency];
-    const convertedAmount = currency(amount).multiply(conversionRate).toString();
-    return convertedAmount
+    const res = await axios.post(`${url}/cancel-subscription`, { subsId })
+    const { status, messafe } = res.data;
+    if (status == "success") {
+      toast.success('Your subscription has been cancelled.')
+      return;
+    } else {
+      return;
+    }
   } catch (error) {
-    console.log(error)
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
   }
 }

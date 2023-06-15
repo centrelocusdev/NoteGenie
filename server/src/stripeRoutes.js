@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY_TEST);
 const User = require("./userModal");
 
 router.post("/create-customer", async (req, res) => {
@@ -101,11 +101,16 @@ router.post("/update-subscription", async (req, res) => {
   try {
     const { userId, subsId, plan } = req.body;
     let price;
-    if (plan == "basic") price = process.env.BASIC_PRICE_ID;
-    else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID;
+    if (plan == "basic") price = process.env.BASIC_PRICE_ID_TEST;
+    else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID_TEST;
     else return;
+    
+    const period30Days = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
 
-    await stripe.subscriptions.update(subsId, {
+    const subs = await stripe.subscriptions.update(subsId, {
+      trial_end: "now",
+      billing_cycle_anchor: period30Days,
+      cancel_at_period_end: false,
       items: [
         {
           price,
@@ -113,6 +118,7 @@ router.post("/update-subscription", async (req, res) => {
       ],
     });
 
+    console.log(subs)
     const user = await User.findById(userId);
     user.subs_plan = plan;
     user.note_count = 0;
@@ -148,5 +154,54 @@ router.post("/update-subscription-trial", async (req, res) => {
     res.status(500).send({ status: "error", message: err.message });
   }
 });
+
+router.post('/cancel-subscription', async (req, res) => {
+  try {
+    const subs = await stripe.subscriptions.cancel(req.body.subsId)
+    res.status(200).send({status: "success", message: subs.status})
+  } catch (err) {
+    res.status(500).send({ status: "error", message: err.message });
+  }
+})
+
+const updateSubs = async () => {
+  try {
+    const userId = '648b37f2b4a1d341403c479c'
+    const subsId = 'sub_1NJIkiSD0OCqj199wHogAO4k'
+    const plan = 'basic'
+    let price;
+    if (plan == "basic") price = process.env.BASIC_PRICE_ID_TEST;
+    else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID_TEST;
+    else return;
+    
+    const period30Days = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
+
+    const subs = await stripe.subscriptions.update(subsId, {
+      trial_end: "now",
+      billing_cycle_anchor: period30Days,
+      cancel_at_period_end: false,
+      items: [
+        {
+          price,
+        },
+      ],
+    });
+
+    console.log(subs)
+    const user = await User.findById(userId);
+    user.subs_plan = plan;
+    user.note_count = 0;
+    user.trial = false;
+    await user.save();
+    console.log({
+      status: "success",
+      message: "updated subscription successfully",
+    });
+  } catch (err) {
+    console.log({ status: "error", message: err.message });
+  }
+}
+
+// updateSubs()
 
 module.exports = router;

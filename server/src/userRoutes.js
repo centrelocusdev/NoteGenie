@@ -1,20 +1,19 @@
 const router = require("express").Router();
 const User = require("./userModal");
 const bcrypt = require("bcrypt");
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY_TEST);
 const moment = require("moment");
 
-const createPrice = async (plan) => {
+const createPrice = async () => {
   try {
+    const plan = 'Premium'
     const product = await stripe.products.create({
       name: `NoteGenie ${plan}`,
     });
 
-    const unit_amount = plan;
-
     if (product) {
       const price = await stripe.prices.create({
-        unit_amount,
+        unit_amount: (14.99 * 100),
         currency: "usd",
         product: product.id,
         recurring: { interval: "month" },
@@ -26,7 +25,7 @@ const createPrice = async (plan) => {
   }
 };
 
-// createPrice(15)
+// createPrice()
 
 //get user by token
 router.get("/user/:token", async (req, res) => {
@@ -52,16 +51,14 @@ router.post("/register", async (req, res) => {
     user.customer_id = customer.id;
 
     const trialEnd = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
-    const billingCycleAnchor = trialEnd + 30 * 24 * 60 * 60;
 
     const subs = await stripe.subscriptions.create({
       customer: customer.id,
       trial_end: trialEnd,
       cancel_at_period_end: true,
-      billing_cycle_anchor: billingCycleAnchor,
       items: [
         {
-          price: process.env.FREE_PRICE_ID,
+          price: process.env.FREE_PRICE_ID_TEST,
         },
       ],
     });
@@ -71,7 +68,6 @@ router.post("/register", async (req, res) => {
       throw new Error("something went wrong");
     }
 
-    user.subs_end_date = billingCycleAnchor;
     await user.save();
 
     res.status(200).send({ status: "success", data: user });

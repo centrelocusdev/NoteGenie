@@ -4,19 +4,17 @@ import {
   getUserByToken,
   createPaymentIntent,
   updateSubscription,
-  convertCurrency,
 } from "../api";
 import { Link } from "react-router-dom";
 import InputPrimary from "./InputPrimary";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const StripeCheckoutForm = ({ price, plan }) => {
+const StripeCheckoutForm = ({ plan }) => {
   const navigate = useNavigate();
   const [isPaymentLoading, setPaymentLoading] = useState(false);
   const [user, setUser] = useState("");
-  const stripe = useStripe();
-  const elements = useElements();
+  const [price, setPrice] = useState(null);
   const [address, setAddress] = useState({
     line1: "",
     city: "",
@@ -24,30 +22,31 @@ const StripeCheckoutForm = ({ price, plan }) => {
     postal_code: "",
     country: "",
   });
-  const [currency, setCurrency] = useState("");
+  const stripe = useStripe();
+  const elements = useElements();
 
   useEffect(() => {
-    const runIt = async () => {
-      const user = await getUserByToken();
-      if (user.subs_plan != "free") {
-        toast.warning("You have already purchased a plan");
-        navigate("/dashboard");
-        return;
+    const fetchUser = async () => {
+      try {
+        const user = await getUserByToken();
+        setUser(user);
+      } catch (error) {
+        console.log(error);
       }
-      setUser(user);
     };
 
-    runIt();
+    fetchUser();
   }, []);
 
   useEffect(() => {
-    const runIt = async () => {
-      const amount = await convertCurrency('usd', 'inr', '14.99')
-      console.log(amount)
+    if (plan === "basic") {
+      setPrice(Math.round(10.99 * 100));
+    } else if (plan === "premium") {
+      setPrice(Math.round(14.99 * 100));
+    } else {
+      toast.warning("Invalid plan chosen");
     }
-
-    runIt()
-  }, [])
+  }, [plan]);
 
   const handleAddressChange = (e) => {
     setAddress((prev) => ({
@@ -56,31 +55,24 @@ const StripeCheckoutForm = ({ price, plan }) => {
     }));
   };
 
-  const handleCurrencyChange = (e) => {
-    setCurrency(e.target.value);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (!stripe || !elements) {
       return;
     }
 
-    Object.keys(address).map((key) => {
-      if (address[key] == "") {
-        toast.warning("please enter the value of " + key);
+    for (const key in address) {
+      if (address[key] === "") {
+        toast.error("Please enter the value of " + key);
         return;
       }
-    });
-
-    // if (currency == "") {
-    //   toast.warning("please specify your currency ");
-    //   return;
-    // }
+    }
 
     setPaymentLoading(true);
-    const { name, email } = user;
+
     try {
+      const { name, email } = user;
       const paymentMethodRes = await stripe.createPaymentMethod({
         type: "card",
         card: elements.getElement(CardElement),
@@ -91,67 +83,75 @@ const StripeCheckoutForm = ({ price, plan }) => {
         },
       });
 
-      let paymentMethod = paymentMethodRes.paymentMethod;
+      if (paymentMethodRes.error) {
+        toast.error(paymentMethodRes.error.message);
+        setPaymentLoading(false);
+        return;
+      }
+
+      const paymentMethod = paymentMethodRes.paymentMethod;
+
       if (paymentMethod) {
         const paymentIntent = await createPaymentIntent({
-          amount: Math.round(price * 100),
+          amount: price,
           currency: "usd",
           description: "NoteGenie Pro",
           customer: user.customer_id,
           payment_method: paymentMethod.id,
         });
-        console.log(paymentIntent);
-        if (paymentIntent) {
-          if (paymentIntent.status === "requires_confirmation") {
-            stripe
-              .confirmCardPayment(paymentIntent.client_secret)
-              .then(async (result) => {
-                if (result.error) {
-                  console.log(result.error.message);
-                } else {
-                  if (result.paymentIntent.status == "succeeded") {
-                    console.log(true);
-                    await updateSubscription({
-                      userId: user._id,
-                      subsId: user.subs_id,
-                      plan,
-                      price,
-                      currency: "usd",
-                    });
-                    setPaymentLoading(false);
-                    navigate(`/pricing?status=completed&plan=${plan}`);
-                  }
-                }
+
+        if (paymentIntent.error) {
+          toast.error(paymentIntent.error.message);
+          setPaymentLoading(false);
+          return;
+        }
+
+        if (paymentIntent.status === "requires_confirmation") {
+          const result = await stripe.confirmCardPayment(
+            paymentIntent.client_secret
+          );
+
+          if (result.error) {
+            toast.error(result.error.message);
+          } else {
+            if (result.paymentIntent.status === "succeeded") {
+              await updateSubscription({
+                userId: user._id,
+                subsId: user.subs_id,
+                plan,
+                price,
+                currency: "usd",
               });
-          } else if (
-            paymentIntent.status === "requires_action" &&
-            paymentIntent.next_action.type === "use_stripe_sdk"
-          ) {
-            stripe
-              .handleCardAction(paymentIntent.client_secret)
-              .then(async (result) => {
-                if (result.error) {
-                  console.log(result.error.message);
-                } else {
-                  if (result.paymentIntent.status == "succeeded") {
-                    await updateSubscription({
-                      userId: user._id,
-                      subsId: user.subs_id,
-                      plan,
-                      price,
-                      currency: "usd",
-                    });
-                    setPaymentLoading(false);
-                    navigate(`/pricing?status=completed&plan=${plan}`);
-                  }
-                }
+              navigate(`/pricing?status=completed&plan=${plan}`);
+            }
+          }
+        } else if (
+          paymentIntent.status === "requires_action" &&
+          paymentIntent.next_action.type === "use_stripe_sdk"
+        ) {
+          const result = await stripe.handleCardAction(
+            paymentIntent.client_secret
+          );
+
+          if (result.error) {
+            toast.error(result.error.message);
+          } else {
+            if (result.paymentIntent.status === "succeeded") {
+              await updateSubscription({
+                userId: user._id,
+                subsId: user.subs_id,
+                plan,
+                price,
+                currency: "usd",
               });
+              navigate(`/pricing?status=completed&plan=${plan}`);
+            }
           }
         }
       }
-    } catch (err) {
-      console.log(err);
-      setPaymentLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("An error occurred. Please try again later.");
     } finally {
       setPaymentLoading(false);
     }
@@ -175,16 +175,11 @@ const StripeCheckoutForm = ({ price, plan }) => {
           </Link>
         </div>
         <h2 className="text-xl mt-5 text-gray-500 font-semibold border-b">
-            Please enter your address{" "}
-            <span className="text-red-500" title="required">
-              *
-            </span>
-          </h2>
-        {/* <InputPrimary
-            name="currency"
-            placeholder={"3-letter ISO currency code"}
-            onChange={handleCurrencyChange}
-          /> */}
+          Please enter your address{" "}
+          <span className="text-red-500" title="required">
+            *
+          </span>
+        </h2>
         <div onChange={handleAddressChange}>
           <div className="flex flex-col sm:flex-row gap-2">
             <InputPrimary name="line1" placeholder={"123 Main St"} />

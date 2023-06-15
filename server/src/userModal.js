@@ -21,11 +21,6 @@ const userSchema = mongoose.Schema({
     type: String,
     default: true
   },
-  subs_expired: {
-    type: Boolean,
-    default: false
-  },
-  subs_end_date: Number,
   subs_plan: {
     type: String,
     default: 'free'
