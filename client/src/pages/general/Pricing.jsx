@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsCheck2Circle } from "react-icons/bs";
-import { getUserByToken } from "../../api";
+import { getUserByToken, startTrial } from "../../api";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -13,8 +13,8 @@ const Pricing = () => {
 
   const [user, setUser] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
-  const [isFree, setIsFree] = useState("");
-  const [plan, setPlan] = useState('')
+  const [plan, setPlan] = useState("");
+  const [trialState, setTrialState] = useState("start now");
 
   useEffect(() => {
     if (status == "completed") setIsCompleted(true);
@@ -24,29 +24,41 @@ const Pricing = () => {
     const runIt = async () => {
       const res = await getUserByToken();
       res && setUser(res);
-      res && setPlan(res.subs_plan)
-
-      if (res?.subs_plan != "free") {
-        setIsFree(false);
-      }
+      res && setPlan(res.subs_plan);
     };
 
     runIt();
   }, []);
 
+  useEffect(() => {
+    if (user)
+      if (user.trial) {
+        const now = new Date();
+        const trailStartedAt = new Date(user.trial_started_at);
+        let diff = (now.getTime() - trailStartedAt.getTime()) / 1000;
+        diff /= 60 * 60;
+        const hourDiff = Math.floor(diff);
+        if (hourDiff >= 0 && hourDiff < 24) {
+          setTrialState("your trail is running");
+        } else if (hourDiff > 24) {
+          setTrialState("your trail has been ended");
+        }
+      }
+  }, [user]);
+
   const handleClick = (plan) => {
     navigate(`/payment?plan=${plan}`);
-  };
+  };  
 
-  const handleTrialClick = (e) => {
-    e.preventDefault()
-    if(user) {
-      toast.warning('Your trial has been already started')
-      navigate('/dashboard')
+  const handleTrialClick = async (e) => {
+    e.preventDefault();
+    if (user) {
+      const res = await startTrial(user._id);
+      res && navigate("/dashboard");
     } else {
-      navigate('/signup')
+      navigate("/signup");
     }
-  }
+  };
 
   return (
     <div className="py-16 md:px-0 px-8 text-center">
@@ -68,13 +80,14 @@ const Pricing = () => {
               can create notes and see the magic happen.
             </div>
             <button
-              disabled={plan == "free"}
+              disabled={(trialState != 'start now') || (plan == "basic" || plan == "premium")}
               onClick={handleTrialClick}
               className={`${
-                plan == "free" && "cursor-not-allowed bg-[#ffebb3]"
-              } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
+                ((trialState != 'start now') || (plan == "basic" || plan == "premium")) &&
+                "cursor-not-allowed bg-[#ffebb3]"
+              } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3] capitalize`}
             >
-              Start Trial!
+              {trialState}
             </button>
           </div>
 
@@ -85,13 +98,15 @@ const Pricing = () => {
             <div className="font-bold uppercase text-2xl">basic</div>
             <div className="font-bold uppercase text-[4rem]">$10.99</div>
             <div className="text-gray-500 px-8 h-[6rem]">
-            In this plan you get 100 Notes for $10.99. If your note taking requirement is low than subscribe to this plan.
+              In this plan you get 100 Notes for $10.99. If your note taking
+              requirement is low than subscribe to this plan.
             </div>
             <button
-              disabled={(plan == "basic" || plan == "premium")}
+              disabled={plan == "basic" || plan == "premium"}
               onClick={(e) => handleClick("basic")}
               className={`${
-                (plan == "basic" || plan == "premium") && "cursor-not-allowed bg-[#ffebb3]"
+                (plan == "basic" || plan == "premium") &&
+                "cursor-not-allowed bg-[#ffebb3]"
               } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
             >
               Buy Now!
@@ -105,13 +120,16 @@ const Pricing = () => {
             <div className="font-bold uppercase text-2xl">premium</div>
             <div className="font-bold uppercase text-[4rem]">$14.99</div>
             <div className="text-gray-500 px-8 h-[6rem]">
-            This plan lets you create 500 Magic notes for only $14.99. Ideal for professionals in the field of Legal, Healthcare, Social workers or Therapists.
+              This plan lets you create 500 Magic notes for only $14.99. Ideal
+              for professionals in the field of Legal, Healthcare, Social
+              workers or Therapists.
             </div>
             <button
-              disabled={(plan == "basic" || plan == "premium")}
+              disabled={plan == "basic" || plan == "premium"}
               onClick={(e) => handleClick("premium")}
               className={`${
-                (plan == "basic" || plan == "premium") && "cursor-not-allowed bg-[#ffebb3]"
+                (plan == "basic" || plan == "premium") &&
+                "cursor-not-allowed bg-[#ffebb3]"
               } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
             >
               Buy Now!

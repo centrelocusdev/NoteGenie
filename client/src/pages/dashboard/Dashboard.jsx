@@ -11,6 +11,7 @@ import { useState } from "react";
 import { predefinedTemplates } from "../../data.js";
 import { getAllTemplates, getUserByToken, logout } from "../../api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -34,6 +35,23 @@ const Dashboard = () => {
       return predefinedTemplates(user?.profession);
     });
   }, []);
+
+  useEffect(() => {
+    if (user?.trial) {
+      const now = new Date();
+      const trailStartedAt = new Date(user.trial_started_at);
+      let diff = (now.getTime() - trailStartedAt.getTime()) / 1000;
+      diff /= 60 * 60;
+      const hourDiff = Math.floor(diff);
+      if (hourDiff > 24) {
+        toast.warning(
+          "Your trial has been expired, please purchase a plan to continue"
+        );
+        navigate("/pricing?status=trial_expired");
+        return;
+      }
+    }
+  }, [user]);
 
   const handleOpenPopupClick = () => setShowPopup(true);
   const handleClosePopupClick = () => setShowPopup(false);
@@ -67,7 +85,9 @@ const Dashboard = () => {
         <div className="flex gap-2 items-center">
           {/* <img src={user} alt="avatar" className="w-12 rounded-full" /> */}
           <BiUserCircle className="text-2xl" />
-          <p className="text-xl font-semibold hidden sm:block capitalize">{user?.name}</p>
+          <p className="text-xl font-semibold hidden sm:block capitalize">
+            {user?.name}
+          </p>
           <button
             onClick={handleOpenSettingsPopupClick}
             title="settings"
@@ -105,14 +125,14 @@ const Dashboard = () => {
               }`}
             >
               <div
-              onClick={handleOpenPopupClick}
-              className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
-            >
-              <FiPlus className="text-[2rem]" />
-              <h4 className="font-semibold capitalize ">
-                create custom templates
-              </h4>
-            </div>
+                onClick={handleOpenPopupClick}
+                className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
+              >
+                <FiPlus className="text-[2rem]" />
+                <h4 className="font-semibold capitalize ">
+                  create custom templates
+                </h4>
+              </div>
               {templates.map((t, key) => (
                 <TemplateCard template={t} key={key} />
               ))}

@@ -74,6 +74,21 @@ export const logout = async () => {
   return true;
 };
 
+export const startTrial = async (userId) => {
+  try {
+    const res = await axios.post(`${url}/start-trial`, { userId });
+    const { status, message } = res.data;
+    if (status == "success") {
+      toast.success(message);
+      return true;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+
 export const updateProfile = async (formData) => {
   try {
     if (formData.password != formData.confirm_password) {
@@ -259,6 +274,22 @@ export const confirmPayment = async (formData) => {
   }
 };
 
+export const createSubscription = async (formData) => {
+  try {
+    const res = await axios.post(`${url}/create-subscription`, formData);
+    const { status, data } = res.data;
+    if (status == "success") {
+      return true;
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+
 export const updateSubscription = async (formData) => {
   try {
     const res = await axios.post(`${url}/update-subscription`, formData);
@@ -293,10 +324,27 @@ export const getSubscription = async (subsId) => {
 
 export const cancelSubs = async (subsId) => {
   try {
-    const res = await axios.post(`${url}/cancel-subscription`, { subsId })
-    const { status, messafe } = res.data;
+    const res = await axios.post(`${url}/cancel-subscription`, { subsId });
+    const { status, message } = res.data;
     if (status == "success") {
-      toast.success('Your subscription has been cancelled.')
+      toast.success("Your subscription has been cancelled.");
+      return;
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+
+export const attachPaymentMethod = async (formData) => {
+  try {
+    const res = await axios.post(`${url}/attach-payment-method`, formData);
+    const { status, message } = res.data;
+    if (status == "success") {
+      toast.success(message);
       return;
     } else {
       return;

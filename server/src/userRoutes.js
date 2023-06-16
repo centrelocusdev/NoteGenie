@@ -50,21 +50,7 @@ router.post("/register", async (req, res) => {
     });
     user.customer_id = customer.id;
 
-    const trialEnd = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
-
-    const subs = await stripe.subscriptions.create({
-      customer: customer.id,
-      trial_end: trialEnd,
-      cancel_at_period_end: true,
-      items: [
-        {
-          price: process.env.FREE_PRICE_ID_TEST,
-        },
-      ],
-    });
-    user.subs_id = subs.id;
-
-    if (!subs || !customer) {
+    if (!customer) {
       throw new Error("something went wrong");
     }
 
@@ -160,8 +146,21 @@ router.post("/reset-count-note", async (req, res) => {
     user.note_count = 0;
     await user.save();
   } catch (err) {
-    res.status(501).send({status: 'error', message: err.message });
+    res.status(500).send({status: 'error', message: err.message });
   }
 });
+
+router.post("/start-trial", async (req, res) => {
+  try {
+    const { userId } = req.body
+    const user = await User.findById(userId)
+    user.trial = true
+    user.trial_started_at = new Date() 
+    await user.save()
+    res.status(200).send({ status: "success", message: "Trial has been activated" });
+  } catch (err) {
+    res.status(500).send({status: 'error', message: err.message });
+  }
+})
 
 module.exports = router;

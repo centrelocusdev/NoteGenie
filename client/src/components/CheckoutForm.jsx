@@ -4,6 +4,8 @@ import {
   getUserByToken,
   createPaymentIntent,
   updateSubscription,
+  createSubscription,
+  attachPaymentMethod,
 } from "../api";
 import { Link } from "react-router-dom";
 import InputPrimary from "./InputPrimary";
@@ -27,12 +29,8 @@ const StripeCheckoutForm = ({ plan }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const user = await getUserByToken();
-        setUser(user);
-      } catch (error) {
-        console.log(error);
-      }
+      const user = await getUserByToken();
+      setUser(user);
     };
 
     fetchUser();
@@ -89,68 +87,62 @@ const StripeCheckoutForm = ({ plan }) => {
         return;
       }
 
-      const paymentMethod = paymentMethodRes.paymentMethod;
+      const paymentMethodId = paymentMethodRes.paymentMethod.id;
+      await attachPaymentMethod({userId: user._id, paymentMethodId})
 
-      if (paymentMethod) {
-        const paymentIntent = await createPaymentIntent({
-          amount: price,
-          currency: "usd",
-          description: "NoteGenie Pro",
-          customer: user.customer_id,
-          payment_method: paymentMethod.id,
-        });
+      const paymentIntent = await createPaymentIntent({
+        amount: price,
+        currency: "usd",
+        description: "NoteGenie Pro",
+        customer: user.customer_id,
+        payment_method: paymentMethodId,
+      });
 
-        if (paymentIntent.error) {
-          toast.error(paymentIntent.error.message);
-          setPaymentLoading(false);
-          return;
-        }
+      if (paymentIntent.error) {
+        toast.error(paymentIntent.error.message);
+        setPaymentLoading(false);
+        return;
+      }
 
-        if (paymentIntent.status === "requires_confirmation") {
-          const result = await stripe.confirmCardPayment(
-            paymentIntent.client_secret
-          );
+      if (paymentIntent.status === "requires_confirmation") {
+        const result = await stripe.confirmCardPayment(
+          paymentIntent.client_secret
+        );
 
-          if (result.error) {
-            toast.error(result.error.message);
-          } else {
-            if (result.paymentIntent.status === "succeeded") {
-              await updateSubscription({
-                userId: user._id,
-                subsId: user.subs_id,
-                plan,
-                price,
-                currency: "usd",
-              });
-              navigate(`/pricing?status=completed&plan=${plan}`);
-            }
+        if (result.error) {
+          toast.error(result.error.message);
+        } else {
+          if (result.paymentIntent.status === "succeeded") {
+            await createSubscription({
+              userId: user._id,
+              plan,
+              paymentMethodId: paymentMethodId,
+            });
+            navigate(`/pricing?status=completed&plan=${plan}`);
           }
-        } else if (
-          paymentIntent.status === "requires_action" &&
-          paymentIntent.next_action.type === "use_stripe_sdk"
-        ) {
-          const result = await stripe.handleCardAction(
-            paymentIntent.client_secret
-          );
+        }
+      } else if (
+        paymentIntent.status === "requires_action" &&
+        paymentIntent.next_action.type === "use_stripe_sdk"
+      ) {
+        const result = await stripe.handleCardAction(
+          paymentIntent.client_secret
+        );
 
-          if (result.error) {
-            toast.error(result.error.message);
-          } else {
-            if (result.paymentIntent.status === "succeeded") {
-              await updateSubscription({
-                userId: user._id,
-                subsId: user.subs_id,
-                plan,
-                price,
-                currency: "usd",
-              });
-              navigate(`/pricing?status=completed&plan=${plan}`);
-            }
+        if (result.error) {
+          toast.error(result.error.message);
+        } else {
+          if (result.paymentIntent.status === "succeeded") {
+            await createSubscription({
+              userId: user._id,
+              plan,
+              paymentMethodId: paymentMethodId,
+            });
+            navigate(`/pricing?status=completed&plan=${plan}`);
           }
         }
       }
     } catch (error) {
-      console.log(error);
       toast.error("An error occurred. Please try again later.");
     } finally {
       setPaymentLoading(false);

@@ -2,16 +2,6 @@ const router = require("express").Router();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY_TEST);
 const User = require("./userModal");
 
-router.post("/create-customer", async (req, res) => {
-  try {
-    const { name, email } = req.body;
-    const customer = await stripe.customers.create({ name, email });
-    res.status(200).send(customer);
-  } catch (err) {
-    res.status(500).send({ status: "error", message: err.message });
-  }
-});
-
 router.post("/create-payment-intent", async (req, res) => {
   try {
     const { amount, currency, description, customer, payment_method } =
@@ -35,63 +25,40 @@ router.post("/create-payment-intent", async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({ status: "error", message: err.message });
   }
 });
 
-router.post("/retrieve-payment-intent", async (req, res) => {
+router.post("/create-subscription", async (req, res) => {
   try {
-    const { clientSecret } = req.body;
-    const paymentIntent = await stripe.paymentIntents.retrieve(clientSecret);
+    const { userId, plan } = req.body;
+    const user = await User.findById(userId);
 
-    res.send({ status: "success", data: paymentIntent });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ status: "error", message: err.message });
-  }
-});
+    let price;
+    if (plan == "basic") price = process.env.BASIC_PRICE_ID_TEST;
+    else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID_TEST;
+    else return;
 
-router.post("/confirm-payment", async (req, res) => {
-  try {
-    console.log("confirm payment called");
-    const { paymentMethodId, paymentIntentId, plan, userId, subsId } = req.body;
-
-    const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
-      payment_method: paymentMethodId,
+    const subs = await stripe.subscriptions.create({
+      customer: user.customer_id,
+      cancel_at_period_end: true,
+      items: [
+        {
+          price,
+        },
+      ],
     });
 
-    console.log(paymentIntent);
+    user.subs_id = subs.id
+    user.subs_plan = plan
+    user.subs_status = subs.status
+    user.trial = false;
+    await user.save();
 
-    if (paymentIntent.status === "succeeded") {
-      console.log("confirm payment succeeded");
-      await stripe.subscriptions.update(subsId, {
-        cancel_at_period_end: false,
-        trial_end: "now",
-      });
-
-      const user = await User.findById(userId);
-      user.subs_plan = plan;
-      user.note_count = 0;
-      user.trial = false;
-      console.log(user);
-      await user.save();
-    } else if (
-      paymentIntent.status === "requires_action" &&
-      paymentIntent.next_action.type === "use_stripe_sdk"
-    ) {
-      res.status(200).send({
-        requiresAction: true,
-        paymentIntentClientSecret: paymentIntent.client_secret,
-      });
-    } else if (paymentIntent.status === "requires_confirmation") {
-      await paymentIntent.confirm();
-      res
-        .status(200)
-        .send({ status: "success", message: "payment confirmed successfully" });
-    } else {
-      res.status(500).send({ status: "error", message: err.message });
-    }
+    res.status(200).send({
+      status: "success",
+      message: "subscription created successfully",
+    });
   } catch (err) {
     res.status(500).send({ status: "error", message: err.message });
   }
@@ -104,10 +71,10 @@ router.post("/update-subscription", async (req, res) => {
     if (plan == "basic") price = process.env.BASIC_PRICE_ID_TEST;
     else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID_TEST;
     else return;
-    
+
     const period30Days = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
 
-    const subs = await stripe.subscriptions.update(subsId, {
+    await stripe.subscriptions.update(subsId, {
       trial_end: "now",
       billing_cycle_anchor: period30Days,
       cancel_at_period_end: false,
@@ -118,13 +85,12 @@ router.post("/update-subscription", async (req, res) => {
       ],
     });
 
-    console.log(subs)
     const user = await User.findById(userId);
     user.subs_plan = plan;
     user.note_count = 0;
     user.trial = false;
     await user.save();
-    res.status(200).json({
+    res.status(200).send({
       status: "success",
       message: "updated subscription successfully",
     });
@@ -155,53 +121,34 @@ router.post("/update-subscription-trial", async (req, res) => {
   }
 });
 
-router.post('/cancel-subscription', async (req, res) => {
+router.post("/cancel-subscription", async (req, res) => {
   try {
-    const subs = await stripe.subscriptions.cancel(req.body.subsId)
-    res.status(200).send({status: "success", message: subs.status})
+    const subs = await stripe.subscriptions.cancel(req.body.subsId);
+    res.status(200).send({ status: "success", message: subs.status });
+  } catch (err) {
+    res.status(500).send({ status: "error", message: err.message });
+  }
+});
+
+router.post("/attach-payment-method", async (req, res) => {
+  try {
+    const { userId, paymentMethodId } = req.body
+    const user = await User.findById(userId)
+    await stripe.paymentMethods.attach(paymentMethodId, { customer: user.customer_id });
+
+    await stripe.customers.update(user.customer_id, {
+    invoice_settings: {
+      default_payment_method: paymentMethodId
+    }
+   })
+
+   res.status(200).send({
+    status: "success",
+    message: "payment method has been attached successfully",
+  });
   } catch (err) {
     res.status(500).send({ status: "error", message: err.message });
   }
 })
-
-const updateSubs = async () => {
-  try {
-    const userId = '648b37f2b4a1d341403c479c'
-    const subsId = 'sub_1NJIkiSD0OCqj199wHogAO4k'
-    const plan = 'basic'
-    let price;
-    if (plan == "basic") price = process.env.BASIC_PRICE_ID_TEST;
-    else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID_TEST;
-    else return;
-    
-    const period30Days = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
-
-    const subs = await stripe.subscriptions.update(subsId, {
-      trial_end: "now",
-      billing_cycle_anchor: period30Days,
-      cancel_at_period_end: false,
-      items: [
-        {
-          price,
-        },
-      ],
-    });
-
-    console.log(subs)
-    const user = await User.findById(userId);
-    user.subs_plan = plan;
-    user.note_count = 0;
-    user.trial = false;
-    await user.save();
-    console.log({
-      status: "success",
-      message: "updated subscription successfully",
-    });
-  } catch (err) {
-    console.log({ status: "error", message: err.message });
-  }
-}
-
-// updateSubs()
 
 module.exports = router;
