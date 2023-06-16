@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import TemplateCard from "../../components/TemplateCard";
 import Popup from "../../components/Popup";
 import SettingsPopup from "../../components/SettingsPopup";
+import CancelSubsPopup from "../../components/CancelSubsPopup";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import { FiPlus, FiSettings } from "react-icons/fi";
+import { FiPlus, FiSettings, FiX } from "react-icons/fi";
 import { CgLogOff } from "react-icons/cg";
 import { BsArrowLeftCircle } from "react-icons/bs";
 import { BiUserCircle } from "react-icons/bi";
@@ -18,8 +19,10 @@ const Dashboard = () => {
   const [user, setUser] = useState();
   const [showPopup, setShowPopup] = useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = useState(false);
+  const [showSubsPopup, setShowSubsPopup] = useState(false);
   const [templates, setTemplates] = useState([]);
   const [customTemplates, setCustomTemplates] = useState([]);
+  const [settingsDropdown, setSettingsDropdown] = useState(false);
 
   useEffect(() => {
     const runIt = async () => {
@@ -55,8 +58,18 @@ const Dashboard = () => {
 
   const handleOpenPopupClick = () => setShowPopup(true);
   const handleClosePopupClick = () => setShowPopup(false);
-  const handleOpenSettingsPopupClick = () => setShowSettingsPopup(true);
+  const handleOpenSettingsPopupClick = () => {
+    setShowSettingsPopup(true);
+    setSettingsDropdown(false);
+  };
+  const handleOpenSubsPopup = () => {
+    setShowSubsPopup(true);
+    setSettingsDropdown(false);
+  };
   const handleCloseSettingsPopupClick = () => setShowSettingsPopup(false);
+  const handleCloseSubsPopupClick = () => setShowSubsPopup(false);
+  const handleSettingsDropdownClick = () =>
+    setSettingsDropdown((prev) => !prev);
   const handleLogoutClick = async () => {
     const res = await logout();
     res && navigate("/");
@@ -68,6 +81,7 @@ const Dashboard = () => {
       {showSettingsPopup && (
         <SettingsPopup display={handleCloseSettingsPopupClick} />
       )}
+      {showSubsPopup && <CancelSubsPopup display={handleCloseSubsPopupClick} />}
       <div className="flex justify-between md:px-12 p-4 py-6">
         <div className="flex gap-2">
           <button
@@ -83,18 +97,37 @@ const Dashboard = () => {
         </div>
 
         <div className="flex gap-2 items-center">
-          {/* <img src={user} alt="avatar" className="w-12 rounded-full" /> */}
           <BiUserCircle className="text-2xl" />
           <p className="text-xl font-semibold hidden sm:block capitalize">
             {user?.name}
           </p>
           <button
-            onClick={handleOpenSettingsPopupClick}
+            onClick={handleSettingsDropdownClick}
             title="settings"
             className="text-xl ml-3 rounded-full h-fit hover:text-gray-500"
           >
-            <FiSettings />
+            {settingsDropdown ? <FiX /> : <FiSettings />}
           </button>
+          <div
+            className={`${
+              !settingsDropdown && "hidden"
+            } flex flex-col p-5 gap-1 rounded-2xl bg-white absolute translate-y-16 -translate-x-12`}
+          >
+            <button
+              onClick={handleOpenSettingsPopupClick}
+              className="border-b pb-1 text-left hover:text-theme-primary"
+            >
+              Update Proifle
+            </button>
+            {user?.subs_status && !user.subs_status != "canceled" && (
+              <button
+                onClick={handleOpenSubsPopup}
+                className="text-left hover:text-theme-primary"
+              >
+                Cancel Subscription
+              </button>
+            )}
+          </div>
           <button
             onClick={handleLogoutClick}
             title="Logout"

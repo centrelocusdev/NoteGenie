@@ -88,60 +88,65 @@ const StripeCheckoutForm = ({ plan }) => {
       }
 
       const paymentMethodId = paymentMethodRes.paymentMethod.id;
-      await attachPaymentMethod({userId: user._id, paymentMethodId})
-
-      const paymentIntent = await createPaymentIntent({
-        amount: price,
-        currency: "usd",
-        description: "NoteGenie Pro",
-        customer: user.customer_id,
-        payment_method: paymentMethodId,
+      await attachPaymentMethod({ userId: user._id, paymentMethodId });
+      await createSubscription({
+        userId: user._id,
+        plan,
+        paymentMethodId: paymentMethodId,
       });
 
-      if (paymentIntent.error) {
-        toast.error(paymentIntent.error.message);
-        setPaymentLoading(false);
-        return;
-      }
+      // const paymentIntent = await createPaymentIntent({
+      //   amount: price,
+      //   currency: "usd",
+      //   description: "NoteGenie Pro",
+      //   customer: user.customer_id,
+      //   payment_method: paymentMethodId,
+      // });
 
-      if (paymentIntent.status === "requires_confirmation") {
-        const result = await stripe.confirmCardPayment(
-          paymentIntent.client_secret
-        );
+      // if (paymentIntent.error) {
+      //   toast.error(paymentIntent.error.message);
+      //   setPaymentLoading(false);
+      //   return;
+      // }
 
-        if (result.error) {
-          toast.error(result.error.message);
-        } else {
-          if (result.paymentIntent.status === "succeeded") {
-            await createSubscription({
-              userId: user._id,
-              plan,
-              paymentMethodId: paymentMethodId,
-            });
-            navigate(`/pricing?status=completed&plan=${plan}`);
-          }
-        }
-      } else if (
-        paymentIntent.status === "requires_action" &&
-        paymentIntent.next_action.type === "use_stripe_sdk"
-      ) {
-        const result = await stripe.handleCardAction(
-          paymentIntent.client_secret
-        );
+      // if (paymentIntent.status === "requires_confirmation") {
+      //   const result = await stripe.confirmCardPayment(
+      //     paymentIntent.client_secret
+      //   );
 
-        if (result.error) {
-          toast.error(result.error.message);
-        } else {
-          if (result.paymentIntent.status === "succeeded") {
-            await createSubscription({
-              userId: user._id,
-              plan,
-              paymentMethodId: paymentMethodId,
-            });
-            navigate(`/pricing?status=completed&plan=${plan}`);
-          }
-        }
-      }
+      //   if (result.error) {
+      //     toast.error(result.error.message);
+      //   } else {
+      //     if (result.paymentIntent.status === "succeeded") {
+      //       // await createSubscription({
+      //       //   userId: user._id,
+      //       //   plan,
+      //       //   paymentMethodId: paymentMethodId,
+      //       // });
+      //       navigate(`/pricing?status=completed&plan=${plan}`);
+      //     }
+      //   }
+      // } else if (
+      //   paymentIntent.status === "requires_action" &&
+      //   paymentIntent.next_action.type === "use_stripe_sdk"
+      // ) {
+      //   const result = await stripe.handleCardAction(
+      //     paymentIntent.client_secret
+      //   );
+
+      //   if (result.error) {
+      //     toast.error(result.error.message);
+      //   } else {
+      //     if (result.paymentIntent.status === "succeeded") {
+      //       // await createSubscription({
+      //       //   userId: user._id,
+      //       //   plan,
+      //       //   paymentMethodId: paymentMethodId,
+      //       // });
+      //       navigate(`/pricing?status=completed&plan=${plan}`);
+      //     }
+      //   }
+      // }
     } catch (error) {
       toast.error("An error occurred. Please try again later.");
     } finally {

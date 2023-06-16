@@ -3,8 +3,8 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import currency from "currency.js";
 
-// const url = "https://ng.thedelvierypointe.com";
-const url = "http://127.0.0.1:8000";
+const url = "https://ng.thedelvierypointe.com";
+// const url = "http://127.0.0.1:8000";
 
 export const getUserByToken = async () => {
   try {
@@ -278,6 +278,7 @@ export const createSubscription = async (formData) => {
   try {
     const res = await axios.post(`${url}/create-subscription`, formData);
     const { status, data } = res.data;
+    console.log(data)
     if (status == "success") {
       return true;
     } else {
@@ -327,7 +328,7 @@ export const cancelSubs = async (subsId) => {
     const res = await axios.post(`${url}/cancel-subscription`, { subsId });
     const { status, message } = res.data;
     if (status == "success") {
-      toast.success("Your subscription has been cancelled.");
+      toast.success(message);
       return;
     } else {
       return;
