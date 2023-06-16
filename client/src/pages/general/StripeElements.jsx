@@ -1,10 +1,10 @@
-import { Elements, CardElement } from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import CheckoutForm from "../../components/CheckoutForm";
+import CheckoutForm from "../../components/CheckoutForm.jsx";
 import { useLocation } from "react-router-dom";
 
 const stripePromise = loadStripe(
-  "pk_test_51N6qwVSD0OCqj199xSjuaGe5L0Zkmkl5ZU2bVIeca1rT4cWSJGL5iw6bLeU1BTGnENmMbTCyBy6U9awIQz3bSyNn00gS4vAsxv"
+  "pk_live_51NEAMgHDuMBRsT9CYjrgyPqzM13FmUVvoZXdhloHQAq5vmeqdSFE9g3ur5SJxeSBhKDWTKV3UbFygqaqHdCPYlGm00Vr8bjCmw"
 );
 
 const StripeElements = () => {

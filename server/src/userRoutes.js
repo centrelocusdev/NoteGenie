@@ -1,31 +1,8 @@
 const router = require("express").Router();
 const User = require("./userModal");
 const bcrypt = require("bcrypt");
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY_TEST);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const moment = require("moment");
-
-const createPrice = async () => {
-  try {
-    const plan = 'Premium'
-    const product = await stripe.products.create({
-      name: `NoteGenie ${plan}`,
-    });
-
-    if (product) {
-      const price = await stripe.prices.create({
-        unit_amount: (14.99 * 100),
-        currency: "usd",
-        product: product.id,
-        recurring: { interval: "month" },
-      });
-      console.log(price.id, price.product);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-// createPrice()
 
 //get user by token
 router.get("/user/:token", async (req, res) => {

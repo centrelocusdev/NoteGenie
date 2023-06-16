@@ -119,7 +119,7 @@ const Dashboard = () => {
             >
               Update Proifle
             </button>
-            {user?.subs_status && !user.subs_status != "canceled" && (
+            {user?.subs_status != "canceled" && (
               <button
                 onClick={handleOpenSubsPopup}
                 className="text-left hover:text-theme-primary"

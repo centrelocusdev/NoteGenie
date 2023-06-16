@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUserByToken } from "../api";
+import { cancelSubcription, getUserByToken } from "../api";
 
 const CancelSubsPopup = ({ display }) => {
   const [user, setUser] = useState("");
@@ -16,7 +16,7 @@ const CancelSubsPopup = ({ display }) => {
 
   const handeCancelSubsClick = async (e) => {
     e.preventDefault();
-    
+    await cancelSubcription(user?._id)
     display()
   };
 

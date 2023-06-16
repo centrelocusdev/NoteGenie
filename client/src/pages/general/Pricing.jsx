@@ -4,6 +4,7 @@ import { BsCheck2Circle } from "react-icons/bs";
 import { getUserByToken, startTrial } from "../../api";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { createSubscription } from "../../api";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -46,8 +47,17 @@ const Pricing = () => {
       }
   }, [user]);
 
-  const handleClick = (plan) => {
-    navigate(`/payment?plan=${plan}`);
+  const handleClick = async (plan) => {
+    if(!user) {
+      toast.warning('please login to continue')
+      navigate('/signup')
+    }
+    if(user) {
+      const res = await createSubscription({userId: user._id, plan})
+      console.log(res)
+      res && navigate(`/payment?plan=${plan}`);
+    }
+    
   };  
 
   const handleTrialClick = async (e) => {
@@ -102,12 +112,9 @@ const Pricing = () => {
               requirement is low than subscribe to this plan.
             </div>
             <button
-              disabled={plan == "basic" || plan == "premium"}
+              // disabled={plan == "basic" || plan == "premium"}
               onClick={(e) => handleClick("basic")}
-              className={`${
-                (plan == "basic" || plan == "premium") &&
-                "cursor-not-allowed bg-[#ffebb3]"
-              } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
+              className={` py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
             >
               Buy Now!
             </button>

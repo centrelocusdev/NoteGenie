@@ -3,8 +3,8 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import currency from "currency.js";
 
-const url = "https://ng.thedelvierypointe.com";
-// const url = "http://127.0.0.1:8000";
+// const url = "https://ng.thedelvierypointe.com";
+const url = "http://127.0.0.1:8000";
 
 export const getUserByToken = async () => {
   try {
@@ -278,9 +278,10 @@ export const createSubscription = async (formData) => {
   try {
     const res = await axios.post(`${url}/create-subscription`, formData);
     const { status, data } = res.data;
-    console.log(data)
     if (status == "success") {
-      return true;
+      window.sessionStorage.setItem("subsId", data.subsId);
+      window.sessionStorage.setItem("clientSecret", data.clientSecret);
+      return data;
     } else {
       return;
     }
@@ -323,9 +324,9 @@ export const getSubscription = async (subsId) => {
   }
 };
 
-export const cancelSubs = async (subsId) => {
+export const cancelSubcription = async (userId) => {
   try {
-    const res = await axios.post(`${url}/cancel-subscription`, { subsId });
+    const res = await axios.post(`${url}/cancel-subscription`, { userId });
     const { status, message } = res.data;
     if (status == "success") {
       toast.success(message);
@@ -343,6 +344,23 @@ export const cancelSubs = async (subsId) => {
 export const attachPaymentMethod = async (formData) => {
   try {
     const res = await axios.post(`${url}/attach-payment-method`, formData);
+    const { status, message } = res.data;
+    if (status == "success") {
+      toast.success(message);
+      return;
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+
+export const updateSubsStatus = async (formData) => {
+  try {
+    const res = await axios.post(`${url}/update-subs-status`, formData);
     const { status, message } = res.data;
     if (status == "success") {
       toast.success(message);

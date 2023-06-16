@@ -1,6 +1,29 @@
 const router = require("express").Router();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY_TEST);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const User = require("./userModal");
+
+const createPrice = async () => {
+  try {
+    const plan = 'Premium'
+    const product = await stripe.products.create({
+      name: `NoteGenie ${plan}`,
+    });
+
+    if (product) {
+      const price = await stripe.prices.create({
+        unit_amount: (10.99 * 100),
+        currency: "usd",
+        product: product.id,
+        recurring: { interval: "month" },
+      });
+      console.log(price.id, price.product);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// createPrice()
 
 router.post("/create-payment-intent", async (req, res) => {
   try {
@@ -34,19 +57,20 @@ router.post("/create-subscription", async (req, res) => {
     const { userId, plan } = req.body;
     const user = await User.findById(userId);
 
-    let price;
-    if (plan == "basic") price = process.env.BASIC_PRICE_ID_TEST;
-    else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID_TEST;
+    let priceId;
+    if (plan == "basic") priceId = process.env.BASIC_PRICE_ID;
+    else if (plan == "premium") priceId = process.env.PREMIUM_PRICE_ID;
     else return;
 
     const subs = await stripe.subscriptions.create({
       customer: user.customer_id,
-      cancel_at_period_end: true,
       items: [
         {
-          price,
+          price: priceId,
         },
       ],
+      payment_behavior: 'default_incomplete',
+      expand: ['latest_invoice.payment_intent']
     });
 
     user.subs_id = subs.id
@@ -58,46 +82,16 @@ router.post("/create-subscription", async (req, res) => {
     res.status(200).send({
       status: "success",
       message: "subscription created successfully",
+      data: {
+        subsId: subs.id,
+        clientSecret: subs.latest_invoice.payment_intent.client_secret,
+      }
     });
   } catch (err) {
     res.status(500).send({ status: "error", message: err.message });
   }
 });
 
-router.post("/update-subscription", async (req, res) => {
-  try {
-    const { userId, subsId, plan } = req.body;
-    let price;
-    if (plan == "basic") price = process.env.BASIC_PRICE_ID_TEST;
-    else if (plan == "premium") price = process.env.PREMIUM_PRICE_ID_TEST;
-    else return;
-
-    const period30Days = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
-
-    await stripe.subscriptions.update(subsId, {
-      trial_end: "now",
-      billing_cycle_anchor: period30Days,
-      cancel_at_period_end: false,
-      items: [
-        {
-          price,
-        },
-      ],
-    });
-
-    const user = await User.findById(userId);
-    user.subs_plan = plan;
-    user.note_count = 0;
-    user.trial = false;
-    await user.save();
-    res.status(200).send({
-      status: "success",
-      message: "updated subscription successfully",
-    });
-  } catch (err) {
-    res.status(500).send({ status: "error", message: err.message });
-  }
-});
 
 router.post("/subscription", async (req, res) => {
   try {
@@ -109,26 +103,34 @@ router.post("/subscription", async (req, res) => {
   }
 });
 
-router.post("/update-subscription-trial", async (req, res) => {
+router.post("/cancel-subscription", async (req, res) => {
   try {
-    const { subsId } = req.body;
-    const subs = await stripe.subscriptions.update(subsId, {
-      trial_end: "now",
-    });
-    res.status(200).send({ status: "success", data: subs });
+    const { userId} = req.body
+    const user = await User.findById(userId)
+    const subs = await stripe.subscriptions.cancel(user.subs_id);
+
+    user.subs_status = subs.status
+    await user.save()
+    res.status(200).send({ status: "success", message: 'Your subscription has been canceled'});
   } catch (err) {
     res.status(500).send({ status: "error", message: err.message });
   }
 });
 
-router.post("/cancel-subscription", async (req, res) => {
+router.post('/update-subs-status', async (req, res) => {
   try {
-    const subs = await stripe.subscriptions.cancel(req.body.subsId);
-    res.status(200).send({ status: "success", message: subs.status });
+    const { userId } = req.body
+    const user = await User.findById(userId)
+    
+    const subs = await stripe.subscriptions.retrieve(user.subs_id)
+    user.subs_status = subs.status
+    await user.save()
+    res.status(200).send({ status: "success", message: "user subscription updated" });
   } catch (err) {
-    res.status(500).send({ status: "error", message: err.message });
-  }
-});
+    res.status(500).send({status: 'error', message: err.message });
+  } 
+})
+
 
 router.post("/attach-payment-method", async (req, res) => {
   try {
