@@ -4,30 +4,6 @@ const bcrypt = require("bcrypt");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const moment = require("moment");
 
-const createPrice = async (plan) => {
-  try {
-    const product = await stripe.products.create({
-      name: `NoteGenie ${plan}`,
-    });
-
-    const unit_amount = plan;
-
-    if (product) {
-      const price = await stripe.prices.create({
-        unit_amount,
-        currency: "usd",
-        product: product.id,
-        recurring: { interval: "month" },
-      });
-      console.log(price.id, price.product);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-// createPrice(15)
-
 //get user by token
 router.get("/user/:token", async (req, res) => {
   try {
@@ -51,27 +27,10 @@ router.post("/register", async (req, res) => {
     });
     user.customer_id = customer.id;
 
-    const trialEnd = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
-    const billingCycleAnchor = trialEnd + 30 * 24 * 60 * 60;
-
-    const subs = await stripe.subscriptions.create({
-      customer: customer.id,
-      trial_end: trialEnd,
-      cancel_at_period_end: true,
-      billing_cycle_anchor: billingCycleAnchor,
-      items: [
-        {
-          price: process.env.FREE_PRICE_ID,
-        },
-      ],
-    });
-    user.subs_id = subs.id;
-
-    if (!subs || !customer) {
+    if (!customer) {
       throw new Error("something went wrong");
     }
 
-    user.subs_end_date = billingCycleAnchor;
     await user.save();
 
     res.status(200).send({ status: "success", data: user });
@@ -164,8 +123,21 @@ router.post("/reset-count-note", async (req, res) => {
     user.note_count = 0;
     await user.save();
   } catch (err) {
-    res.status(501).send({status: 'error', message: err.message });
+    res.status(500).send({status: 'error', message: err.message });
   }
 });
+
+router.post("/start-trial", async (req, res) => {
+  try {
+    const { userId } = req.body
+    const user = await User.findById(userId)
+    user.trial = true
+    user.trial_started_at = new Date() 
+    await user.save()
+    res.status(200).send({ status: "success", message: "Trial has been activated" });
+  } catch (err) {
+    res.status(500).send({status: 'error', message: err.message });
+  }
+})
 
 module.exports = router;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { BsGoogle } from "react-icons/bs";
-import Navbar from "../../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import InputPrimary from "../../components/InputPrimary";
 import ButtonPrimary from "../../components/ButtonPrimary";
@@ -43,7 +42,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await register(formData);
-    res && navigate("/dashboard");
+    res && navigate("/pricing");
   };
 
   return (
