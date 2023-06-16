@@ -106,7 +106,7 @@ const TextEditor = () => {
       }
     } else if(!user.trial) {
       if((user.subs_plan == 'basic' && user.note_count > 100) || (user.subs_plan == 'premium' && user.note_count > 500)) {
-        toast.warning('your plan has been expired')
+        toast.warning('You have reached your notes limit, please subscribe to a plan to continue')
         navigate('/pricing')
         return
       }

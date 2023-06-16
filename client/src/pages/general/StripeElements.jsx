@@ -1,6 +1,6 @@
-import { Elements, CardElement } from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import CheckoutForm from "../../components/CheckoutForm";
+import CheckoutForm from "../../components/CheckoutForm.jsx";
 import { useLocation } from "react-router-dom";
 
 const stripePromise = loadStripe(
@@ -10,12 +10,11 @@ const stripePromise = loadStripe(
 const StripeElements = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const price = queryParams.get("price");
   const plan = queryParams.get("plan");
 
   return (
     <Elements stripe={stripePromise}>
-      <CheckoutForm price={price} plan={plan} />
+      <CheckoutForm plan={plan} />
     </Elements>
   );
 };
