@@ -13,6 +13,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Editor from "./pages/dashboard/Editor";
 import Pricing from "./pages/general/Pricing";
 import StripeElements from "./pages/general/StripeElements";
+import Discaimer from "./pages/general/Disclaimer";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/login" element={<Signin />} />
           <Route path="/support" element={<Support />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/disclaimer" element={<Discaimer />} />
 
           <Route element={<PrivateRoutes />}>
             <Route path="/dashboard" element={<Dashboard />} />
