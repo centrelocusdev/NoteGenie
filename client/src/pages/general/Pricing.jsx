@@ -112,7 +112,7 @@ const Pricing = () => {
               requirement is low than subscribe to this plan.
             </div>
             <button
-              // disabled={plan == "basic" || plan == "premium"}
+              disabled={plan == "basic" || plan == "premium"}
               onClick={(e) => handleClick("basic")}
               className={` py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
             >
