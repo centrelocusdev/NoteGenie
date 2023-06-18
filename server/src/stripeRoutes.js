@@ -73,12 +73,6 @@ router.post("/create-subscription", async (req, res) => {
       expand: ['latest_invoice.payment_intent']
     });
 
-    user.subs_id = subs.id
-    user.subs_plan = plan
-    user.subs_status = subs.status
-    user.trial = false;
-    await user.save();
-
     res.status(200).send({
       status: "success",
       message: "subscription created successfully",
@@ -119,12 +113,16 @@ router.post("/cancel-subscription", async (req, res) => {
 
 router.post('/update-subs-status', async (req, res) => {
   try {
-    const { userId } = req.body
+    const { userId, plan } = req.body
     const user = await User.findById(userId)
     
     const subs = await stripe.subscriptions.retrieve(user.subs_id)
+
+    user.subs_id = subs.id
+    user.subs_plan = plan
     user.subs_status = subs.status
-    await user.save()
+    user.trial = false;
+    await user.save();
     res.status(200).send({ status: "success", message: "user subscription updated" });
   } catch (err) {
     res.status(500).send({status: 'error', message: err.message });

@@ -74,7 +74,7 @@ const CheckoutForm = ({ plan }) => {
 
   if(paymentIntent && paymentIntent.status === 'succeeded') {
     navigate('/dashboard')
-    updateSubsStatus({userId: user._id})
+    updateSubsStatus({userId: user._id, plan})
   } 
 
   return (
