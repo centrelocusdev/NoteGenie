@@ -151,4 +151,11 @@ router.post("/attach-payment-method", async (req, res) => {
   }
 })
 
+const cancelSubs = async () => {
+  const subs = await stripe.subscriptions.cancel('sub_1NKELpHDuMBRsT9CIyA4wqCQ')
+  console.log(subs)
+}
+
+// cancelSubs()
+
 module.exports = router;

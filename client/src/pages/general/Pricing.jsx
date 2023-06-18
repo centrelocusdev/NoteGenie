@@ -33,7 +33,7 @@ const Pricing = () => {
 
   useEffect(() => {
     if (user)
-      if (user.trial) {
+      if (user.trial_started_at) {
         const now = new Date();
         const trailStartedAt = new Date(user.trial_started_at);
         let diff = (now.getTime() - trailStartedAt.getTime()) / 1000;

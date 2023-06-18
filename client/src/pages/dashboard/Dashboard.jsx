@@ -53,8 +53,15 @@ const Dashboard = () => {
         navigate("/pricing?status=trial_expired");
         return;
       }
+    } else if (!user?.trial && !user?.subs_plan) {
+      toast.warning(
+        "Please consider purchasing a plan to continue"
+      );
+      navigate("/pricing");
     }
   }, [user]);
+
+  console.log(!user?.subs_plan)
 
   const handleOpenPopupClick = () => setShowPopup(true);
   const handleClosePopupClick = () => setShowPopup(false);
