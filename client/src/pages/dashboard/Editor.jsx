@@ -199,7 +199,7 @@ const TextEditor = () => {
           </div>
           <button
             onClick={handleRefineDocClick}
-            className="rounded-lg py-3 px-6 bg-theme-primary font-semibold md:w-fit w-full md:mt-0 mt-3"
+            className="rounded-lg py-3 px-5 bg-theme-primary font-semibold md:w-fit w-full md:mt-0 mt-3"
           >
             Elevate Your Notes
           </button>

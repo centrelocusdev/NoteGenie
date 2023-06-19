@@ -167,6 +167,23 @@ export const getAllTemplates = async (userId) => {
   }
 };
 
+export const getPredefinedTemplates = async (profession) => {
+  try {
+    const res = await axios.get(`${url}/predefined-templates/${profession}`)
+    
+    const { status, data } = res.data
+    if (status == "success") {
+      return data;
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+}
+
 export const deleteTemplate = async (id) => {
   try {
     const res = await axios.delete(`${url}/delete-template/${id}`);

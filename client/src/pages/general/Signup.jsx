@@ -15,20 +15,20 @@ const Signup = () => {
     profession: "",
   });
   const professions = [
-    "healthcare provider",
-    "social worker",
+    "healthcare-provider",
+    "social-worker",
     "acupuncuturist",
     "educator",
     "psychologist",
-    "mental health therapist",
-    "chinese herbal medicine",
+    "mental-health-therapist",
+    "chinese-herbal-medicine",
     "psychiatrist",
     "doctor",
-    "physical therapist",
-    "occupational therapist",
+    "physical-therapist",
+    "occupational-therapist",
     "chiropractor",
-    "speech pathologist",
-    "law inforcement",
+    "speech-pathologist",
+    "law-inforcement",
     "lawyer",
   ];
 
@@ -89,7 +89,7 @@ const Signup = () => {
             <option value="">Select Your Profession</option>
             {professions.map((p) => (
               <option value={p} className="capitalize">
-                {p}
+                {p.split('-').join(' ')}
               </option>
             ))}
           </select>

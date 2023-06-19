@@ -10,9 +10,15 @@ import { BsArrowLeftCircle } from "react-icons/bs";
 import { BiUserCircle } from "react-icons/bi";
 import { useState } from "react";
 import { predefinedTemplates } from "../../data.js";
-import { getAllTemplates, getUserByToken, logout } from "../../api";
+import {
+  getPredefinedTemplates,
+  getAllTemplates,
+  getUserByToken,
+  logout,
+} from "../../api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaSpinner } from "react-icons/fa";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,6 +29,7 @@ const Dashboard = () => {
   const [templates, setTemplates] = useState([]);
   const [customTemplates, setCustomTemplates] = useState([]);
   const [settingsDropdown, setSettingsDropdown] = useState(false);
+  const [isTemplatesLoading, setIsTemplatesLoading] = useState(true);
 
   useEffect(() => {
     const runIt = async () => {
@@ -31,37 +38,58 @@ const Dashboard = () => {
 
       const templates = await getAllTemplates(currentUser._id);
       setCustomTemplates(templates);
+
+      const predefinedTemplates = await getPredefinedTemplates(
+        currentUser.profession
+      );
+      setTemplates(predefinedTemplates);
     };
 
     runIt();
-    setTemplates(() => {
-      return predefinedTemplates(user?.profession);
-    });
-  }, []);
+
+    templates?.length && setIsTemplatesLoading(false);
+  }, [user, templates]);
 
   useEffect(() => {
-    if (user?.trial) {
-      const now = new Date();
-      const trailStartedAt = new Date(user.trial_started_at);
-      let diff = (now.getTime() - trailStartedAt.getTime()) / 1000;
-      diff /= 60 * 60;
-      const hourDiff = Math.floor(diff);
-      if (hourDiff > 24) {
-        toast.warning(
-          "Your trial has been expired, please purchase a plan to continue"
-        );
-        navigate("/pricing?status=trial_expired");
+    if (user) {
+      if (user?.trial) {
+        const now = new Date();
+        const trailStartedAt = new Date(user.trial_started_at);
+        let diff = (now.getTime() - trailStartedAt.getTime()) / 1000;
+        diff /= 60 * 60;
+
+        const hourDiff = Math.floor(diff);
+        if (hourDiff > 24) {
+          toast.warning(
+            "Your trial has been expired, please purchase a plan to continue"
+          );
+          navigate("/pricing?status=trial_expired");
+          return;
+        }
+      } else if (
+        !user?.trial &&
+        (user?.subs_plan == "free" || user?.subs_plan == "premium")
+      ) {
+        const now = new Date();
+        const subsStartedAt = new Date(user.subs_started_at);
+        let diff = (now.getTime() - subsStartedAt.getTime()) / 1000;
+        diff /= 60 * 60 * 24 * 7 * 4;
+
+        const monthDiff = Math.floor(diff);
+        if (monthDiff >= 1) {
+          toast.warning(
+            "Your plan has been expired, please purchase a plan to continue"
+          );
+          navigate("/pricing?status=plan_expired");
+          return;
+        }
+      } else if (!user?.trial && !user?.subs_plan) {
+        toast.warning("Please consider purchasing a plan to continue");
+        navigate("/pricing");
         return;
       }
-    } else if (!user?.trial && !user?.subs_plan) {
-      toast.warning(
-        "Please consider purchasing a plan to continue"
-      );
-      navigate("/pricing");
     }
   }, [user]);
-
-  console.log(!user?.subs_plan)
 
   const handleOpenPopupClick = () => setShowPopup(true);
   const handleClosePopupClick = () => setShowPopup(false);
@@ -144,61 +172,67 @@ const Dashboard = () => {
           </button>
         </div>
       </div>
-      <div>
-        <div className="p-4 md:w-4/5 mx-auto">
-          <div className="md:flex justify-between items-center w-full md:w-[95%] mx-auto">
-            <h4 className="text-2xl font-medium text-primary-dark capitalize mb-2">
-              select new template
-            </h4>
-            <ButtonPrimary
-              text={"add note magic"}
-              icon={<FiPlus />}
-              handleClick={(e) => navigate("/dashboard/editor/template/new")}
-            />
-          </div>
-          <div className="flex flex-wrap gap-4 justify-evenly">
-            <div
-              className={`flex flex-wrap lg:gap-8 gap-4 md:pl-5 ${
-                (templates.length + 1) % 3 == 0
-                  ? "justify-evenly"
-                  : "justify-start"
-              }`}
-            >
-              <div
-                onClick={handleOpenPopupClick}
-                className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
-              >
-                <FiPlus className="text-[2rem]" />
-                <h4 className="font-semibold capitalize ">
-                  create custom templates
-                </h4>
-              </div>
-              {templates.map((t, key) => (
-                <TemplateCard template={t} key={key} />
-              ))}
-            </div>
-          </div>
+      {isTemplatesLoading ? (
+        <div className="flex items-center justify-center gap-4 text-2xl">
+          Loading Templates, Please wait <FaSpinner className="animate-spin" />
         </div>
-
-        {customTemplates?.length && (
+      ) : (
+        <div>
           <div className="p-4 md:w-4/5 mx-auto">
-            <h4 className="text-2xl font-medium text-primary-dark capitalize mb-2">
-              custom templates
-            </h4>
-            <div
-              className={`flex flex-wrap gap-8 md:pl-5 mt-5 ${
-                customTemplates.length % 3 == 0
-                  ? "justify-evenly"
-                  : "justify-start"
-              }`}
-            >
-              {customTemplates.map((t, key) => (
-                <TemplateCard template={t} key={key} />
-              ))}
+            <div className="md:flex justify-between items-center w-full md:w-[95%] mx-auto">
+              <h4 className="text-2xl font-medium text-primary-dark capitalize mb-2">
+                select new template
+              </h4>
+              <ButtonPrimary
+                text={"add note magic"}
+                icon={<FiPlus />}
+                handleClick={(e) => navigate("/dashboard/editor/template/new")}
+              />
+            </div>
+            <div className="flex flex-wrap gap-4 justify-evenly">
+              <div
+                className={`flex flex-wrap lg:gap-8 gap-4 md:pl-5 ${
+                  (templates.length + 1) % 3 == 0
+                    ? "justify-evenly"
+                    : "justify-start"
+                }`}
+              >
+                <div
+                  onClick={handleOpenPopupClick}
+                  className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
+                >
+                  <FiPlus className="text-[2rem]" />
+                  <h4 className="font-semibold capitalize ">
+                    create custom templates
+                  </h4>
+                </div>
+                {templates.map((t, key) => (
+                  <TemplateCard template={t} key={key} />
+                ))}
+              </div>
             </div>
           </div>
-        )}
-      </div>
+
+          {customTemplates?.length && (
+            <div className="p-4 md:w-4/5 mx-auto">
+              <h4 className="text-2xl font-medium text-primary-dark capitalize mb-2">
+                custom templates
+              </h4>
+              <div
+                className={`flex flex-wrap gap-8 md:pl-5 mt-5 ${
+                  customTemplates.length % 3 == 0
+                    ? "justify-evenly"
+                    : "justify-start"
+                }`}
+              >
+                {customTemplates.map((t, key) => (
+                  <TemplateCard template={t} key={key} />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Template = require('./templateModal')
 const User = require("./userModal");
+const PredefinedTemplates = require('./predefinedTemplateModal')
 
 router.post('/create-template', async (req, res) => {
   try {
@@ -40,6 +41,17 @@ router.get('/get-template/:id', async (req, res) => {
     const template =  await Template.findById(id)
     if(!template) throw new Error('No template found')
     else res.send({status: 'success', data: template})
+  } catch (err) {
+    res.status(400).send({ status: "error", message: err.message });
+  }
+})
+
+router.get('/predefined-templates/:profession', async (req, res) => {
+  try {
+    const profession = req.params.profession
+    const templates = await PredefinedTemplates.find({profession})
+    if(!templates) throw new Error('No template found')
+    else res.send({status: 'success', data: templates})
   } catch (err) {
     res.status(400).send({ status: "error", message: err.message });
   }

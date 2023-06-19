@@ -122,6 +122,7 @@ router.post('/update-subs-status', async (req, res) => {
     user.subs_plan = plan
     user.subs_status = subs.status
     user.trial = false;
+    user.subs_started_at = new Date(subs.created * 1000)
     await user.save();
     res.status(200).send({ status: "success", message: "user subscription updated" });
   } catch (err) {
@@ -152,9 +153,9 @@ router.post("/attach-payment-method", async (req, res) => {
 })
 
 const cancelSubs = async () => {
-  const subs = await stripe.subscriptions.cancel('sub_1NKELpHDuMBRsT9CIyA4wqCQ')
+  const subs = await stripe.subscriptions.retrieve('sub_1NJCBMHDuMBRsT9C9i233VjA')
   console.log(subs)
-}
+} 
 
 // cancelSubs()
 

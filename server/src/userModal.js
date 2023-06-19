@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema({
   subs_id: String,
   subs_plan: String,
   subs_status: String,
+  subs_started_at: Date,
 })
 
 // generating tokens for user

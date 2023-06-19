@@ -54,7 +54,6 @@ const Pricing = () => {
     }
     if(user) {
       const res = await createSubscription({userId: user._id, plan})
-      console.log(res)
       res && navigate(`/payment?plan=${plan}`);
     }
     

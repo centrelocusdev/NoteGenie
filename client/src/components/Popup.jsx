@@ -39,7 +39,7 @@ const Popup = ({display}) => {
       .join("\n");
 
     const res = await createTemplate({name, description: rawText, userId, type: 'custom'})
-    res && display()
+    display()
     res && setName('')
   };
 
