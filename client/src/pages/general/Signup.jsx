@@ -14,6 +14,7 @@ const Signup = () => {
     confirm_password: "",
     profession: "",
   });
+  const [isLoading, setIsLoading] = useState(false)
   const professions = [
     "healthcare-provider",
     "social-worker",
@@ -41,7 +42,9 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     const res = await register(formData);
+    res && setIsLoading(false)
     res && navigate("/pricing");
   };
 
@@ -94,7 +97,7 @@ const Signup = () => {
             ))}
           </select>
           <ButtonPrimary
-            text={"sign up"}
+            text={isLoading ? 'signing up...' : 'sign up'}
             width={"full"}
             handleClick={handleSubmit}
           />

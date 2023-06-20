@@ -97,14 +97,21 @@ const TextEditor = () => {
     setIsLoading(true);
     setOutput("");
 
-    if(user.trial && user.subs_plan == "free") {
-      const subsStatus = await getSubscription(user.subs_id)
-      if(subsStatus == 'past_due') {
-        toast.warning('your trial has been expired')
-        navigate('/pricing')
-        return
-      }
-    } else if(!user.trial) {
+    if(user.trial && !user.is_admin) {
+      const now = new Date();
+        const trailStartedAt = new Date(user.trial_started_at);
+        let diff = (now.getTime() - trailStartedAt.getTime()) / 1000;
+        diff /= 60 * 60;
+
+        const hourDiff = Math.floor(diff);
+        if (hourDiff > 24) {
+          toast.warning(
+            "Your trial has been expired, please purchase a plan to continue"
+          );
+          navigate("/pricing?status=trial_expired");
+          return;
+        }
+    } else if(!user.trial && !user.is_admin) {
       if((user.subs_plan == 'basic' && user.note_count > 100) || (user.subs_plan == 'premium' && user.note_count > 500)) {
         toast.warning('You have reached your notes limit, please subscribe to a plan to continue')
         navigate('/pricing')

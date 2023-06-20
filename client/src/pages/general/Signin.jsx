@@ -13,6 +13,7 @@ const Signin = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleFormDataChange = (e) => {
     setFormData((prevState) => ({
@@ -23,7 +24,9 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     const res = await login(formData);
+    res && setFormData(false)
     res && navigate(redirectTo);
   };
 
@@ -55,7 +58,7 @@ const Signin = () => {
             name={"password"}
             placeholder={"Enter strong password"}
           />
-          <ButtonPrimary text={"login"} width={"full"} />
+          <ButtonPrimary text={isLoading ? 'logging in...' : 'login'} width={"full"} />
 
           {/* <p className="text-2xl text-center text-slate-400">OR</p>
           <ButtonPrimary

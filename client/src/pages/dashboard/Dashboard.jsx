@@ -51,7 +51,7 @@ const Dashboard = () => {
   }, [user, templates]);
 
   useEffect(() => {
-    if (user) {
+    if (user && !user?.is_admin) {
       if (user?.trial) {
         const now = new Date();
         const trailStartedAt = new Date(user.trial_started_at);
