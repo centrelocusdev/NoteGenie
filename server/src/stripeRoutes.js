@@ -113,10 +113,10 @@ router.post("/cancel-subscription", async (req, res) => {
 
 router.post('/update-subs-status', async (req, res) => {
   try {
-    const { userId, plan } = req.body
+    const { userId, plan, subsId } = req.body
     const user = await User.findById(userId)
     
-    const subs = await stripe.subscriptions.retrieve(user.subs_id)
+    const subs = await stripe.subscriptions.retrieve(subsId)
 
     user.subs_id = subs.id
     user.subs_plan = plan
