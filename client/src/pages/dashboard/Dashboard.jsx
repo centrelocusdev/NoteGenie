@@ -84,9 +84,17 @@ const Dashboard = () => {
           return;
         }
       } else if (!user?.trial && !user?.subs_plan) {
-        toast.warning("Please consider purchasing a plan to continue");
-        navigate("/pricing");
-        return;
+        const fetchUpdatedUser = async () => {
+          const updatedUser = await getUserByToken();
+
+          if (updatedUser)
+          if(!updatedUser?.trial && !updatedUser?.subs_plan)
+          toast.warning("Please consider purchasing a plan to continue");
+          navigate("/pricing");
+          return;
+        };
+
+        fetchUpdatedUser
       }
     }
   }, [user]);

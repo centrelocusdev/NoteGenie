@@ -11,6 +11,7 @@ const Pricing = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const status = queryParams.get("status");
+  const [isLoading, setIsLaoding] = useState(false)
 
   const [user, setUser] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
@@ -48,15 +49,17 @@ const Pricing = () => {
   }, [user]);
 
   const handleClick = async (plan) => {
+    setIsLaoding(true)
     if(!user) {
       toast.warning('please login to continue')
       navigate('/signup')
     }
     if(user) {
+      setIsLaoding(false)
       const res = await createSubscription({userId: user._id, plan})
       res && navigate(`/payment?plan=${plan}`);
     }
-    
+    setIsLaoding(false)
   };  
 
   const handleTrialClick = async (e) => {
@@ -113,9 +116,11 @@ const Pricing = () => {
             <button
               disabled={plan == "basic" || plan == "premium"}
               onClick={(e) => handleClick("basic")}
-              className={` py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
+              className={`${(plan == "basic" || plan == "premium") &&
+                "cursor-not-allowed bg-[#ffebb3]"
+              } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
             >
-              Buy Now!
+             { isLoading ? 'Loading...' : 'Buy Now!'}
             </button>
           </div>
 
@@ -138,7 +143,7 @@ const Pricing = () => {
                 "cursor-not-allowed bg-[#ffebb3]"
               } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
             >
-              Buy Now!
+              { isLoading ? 'Loading...' : 'Buy Now!'}
             </button>
           </div>
         </div>

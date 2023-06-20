@@ -3,6 +3,7 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import InputPrimary from "./InputPrimary";
 import { getUserByToken, updateSubsStatus } from "../api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CheckoutForm = ({ plan }) => {
   const navigate = useNavigate()
@@ -63,8 +64,11 @@ const CheckoutForm = ({ plan }) => {
     })
 
     if(error) {
-      console.log(error, 'card element error')
-      setPaymentLoading(false)
+      if(error.type == 'invalid_request_error')
+        toast.error('Unknown country. Please try using a 2-character country code, such as "us", "in", "eg" etc. ')
+      else 
+        toast.error(error.message)
+        setPaymentLoading(false)
       return
     }
 
@@ -74,7 +78,7 @@ const CheckoutForm = ({ plan }) => {
 
   if(paymentIntent && paymentIntent.status === 'succeeded') {
     navigate('/dashboard')
-    updateSubsStatus({userId: user._id, plan})
+    updateSubsStatus({userId: user._id, plan, subsId})
   } 
 
   return (
