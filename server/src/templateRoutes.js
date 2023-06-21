@@ -57,4 +57,15 @@ router.get('/predefined-templates/:profession', async (req, res) => {
   }
 })
 
+router.get('/predefined-template-by-id/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    const template = await PredefinedTemplates.findById(id)
+    if(!template) throw new Error('No template found')
+    else res.send({status: 'success', data: template})
+  } catch (err) {
+    res.status(400).send({ status: "error", message: err.message });
+  }
+})
+
 module.exports = router
