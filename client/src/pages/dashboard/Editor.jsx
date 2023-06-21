@@ -7,7 +7,7 @@ import { predefinedTemplates } from "../../data";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { getTemplate, getUserByToken, noteCount, sendPrompt, getSubscription } from "../../api";
+import { getTemplate, getUserByToken, noteCount, sendPrompt, getPredefinedTemplateById } from "../../api";
 import {
   PDFDownloadLink,
   Page,
@@ -40,36 +40,30 @@ const TextEditor = () => {
   const [editorState, setEditorState] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [rawText, setRawText] = useState('')
+  const [isTemlateLoading, setIsTemplateLoading] = useState(true)
 
   useEffect(() => {
     const runIt = async () => {
       const user = await getUserByToken();
       setUser(user);
 
-      if (type == "predefined") {
-        const t = predefinedTemplates(user.profession).filter(
-          (t) => t._id == id
-        )[0];
-        setTemplate(t);
-      } else if (type == "custom") {
+      if (type == "custom") {
         const t = await getTemplate(id);
         setTemplate(t);
-      }
+      } else {
+        const t = await getPredefinedTemplateById(id)
+        setTemplate(t);
+      } 
     };
 
     runIt();
-    setTemplate(() => {
-      if (type == "predefined") {
-        return predefinedTemplates(user.profession).filter(
-          (t) => t.id == id
-        )[0];
-      } else {
-        return predefinedTemplates(user.profession).filter(
-          (t) => t.id == id
-        )[0];
-      }
-    });
   }, []);
+
+  useEffect(() => {
+    if(template) {
+      setIsTemplateLoading(false)
+    }
+  }, [template])
 
   useEffect(() => {
     const initialContent = "";
@@ -140,7 +134,8 @@ const TextEditor = () => {
   };
 
   return (
-    <div className="md:flex gap-6">
+    <>
+     { isTemlateLoading ? <div className="text-center dm:pt-16 pt-8 text-2xl"><p>Loading...please wait</p></div> : <div className="md:flex gap-6">
       <div className="md:w-2/3 p-8 flex flex-col justify-between gap-8">
         <div className="mb-5">
           <button
@@ -268,7 +263,8 @@ const TextEditor = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div>}
+    </>
   );
 };
 

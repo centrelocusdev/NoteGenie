@@ -174,9 +174,9 @@ const Dashboard = () => {
           <button
             onClick={handleLogoutClick}
             title="Logout"
-            className="text-2xl rounded-full h-fit hover:text-gray-500 text-red-500"
+            className="text-2xl rounded-full h-fit hover:text-gray-500 text-red-500 flex items-center ml-3"
           >
-            <CgLogOff />
+            <span className="text-lg">Logout </span><CgLogOff />
           </button>
         </div>
       </div>
