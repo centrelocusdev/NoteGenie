@@ -251,7 +251,7 @@ const Home = () => {
             onClick={handleClick}
             className="rounded-lg py-3 px-5 bg-primary-dark text-white font-semibold md:w-fit w-full md:mt-0 mt-3 hover:bg-gray-800"
           >
-            {susbBtn ? 'Subsribe' : 'Subscribed!'}
+            {susbBtn ? 'Subsribed!' : 'Subscribe'}
           </button>
         </div>
       </section>
