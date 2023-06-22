@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Discaimer = () => {
   return (
-    <div className="md:w-4/5 mx-auto md:p-16 p-8">
+    <div className="md:w-4/5 mx-auto md:p-16 p-8 text-justify">
       <h4 className="md:text-3xl md:text-xl text-md text-center uppercase font-medium mb-5">
         NoteGenie.ai Disclaimer
       </h4>
