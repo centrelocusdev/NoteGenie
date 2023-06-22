@@ -242,7 +242,6 @@ const Home = () => {
             type="email"
             className="rounded-lg px-6 py-3 bg-[#ECECEC] w-full focus:outline-none"
             name="input"
-            autoFocus
             placeholder="Please enter your email address"
             value={input}
             onChange={handleInputChange}
