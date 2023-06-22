@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("./userModal");
+const Subscriber = require("./SubscriberModal")
 const bcrypt = require("bcrypt");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const moment = require("moment");
@@ -135,6 +136,16 @@ router.post("/start-trial", async (req, res) => {
     user.trial_started_at = new Date() 
     await user.save()
     res.status(200).send({ status: "success", message: "Trial has been activated" });
+  } catch (err) {
+    res.status(500).send({status: 'error', message: err.message });
+  }
+})
+
+router.post('/add-subscriber', async (req, res) => {
+  try {
+    const subscriber = new Subscriber(req.body)
+    await subscriber.save()
+    res.status(200).send({ status: "success", message: "You have successfully subscribed" });
   } catch (err) {
     res.status(500).send({status: 'error', message: err.message });
   }

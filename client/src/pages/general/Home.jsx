@@ -8,16 +8,24 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
-import yellow_notes from "../../assets/yellow_notes.png";
-import gp1 from "../../assets/doctor.png";
-import gp2 from "../../assets/typist.png";
-import gp3 from "../../assets/class.png";
-import gp4 from "../../assets/law.png";
+import { addSubscriber } from "../../api";
 
 const Home = () => {
   const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState(-1);
+  const [input, setInput] = useState("");
+  const [susbBtn, setSubsBtn] = useState(false);
 
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const res = await addSubscriber({ email: input });
+    res && setSubsBtn(true);
+    res && setInput("");
+  };
   return (
     <section className="min-h-screen min-w-screen">
       <img
@@ -33,17 +41,18 @@ const Home = () => {
               <BsArrowRightShort className="hidden sm:block" />
             </div>
 
-            <p className="text-2xl md:w-4/5 mt-2">Elevate your professional note-taking with the intelligence of
-              NoteGenie.</p>
+            <p className="text-2xl md:w-4/5 mt-2">
+              Elevate your professional note-taking with the intelligence of
+              NoteGenie.
+            </p>
             <p className="mt-5 leading-7 text-justify sm:text-left">
-              From social workers and medical professionals to
-              educators and law enforcement, NoteGenie is the ultimate companion
-              for professionals across diverse fields. Our AI-driven platform
-              seamlessly enhances clinical documentation, streamlines
-              educational notes, and optimizes legal case reports. Experience
-              the transformative capabilities of NoteGenie and elevate your
-              note-taking game. Unlock the future of efficient documentation
-              today!
+              From social workers and medical professionals to educators and law
+              enforcement, NoteGenie is the ultimate companion for professionals
+              across diverse fields. Our AI-driven platform seamlessly enhances
+              clinical documentation, streamlines educational notes, and
+              optimizes legal case reports. Experience the transformative
+              capabilities of NoteGenie and elevate your note-taking game.
+              Unlock the future of efficient documentation today!
             </p>
 
             <ButtonPrimary
@@ -147,7 +156,10 @@ const Home = () => {
             <li className="my-2">
               Auto-save and backup features to ensure that notes are never lost
             </li>
-            <li className="my-2">AI-powered note-taking application with the ability to refine any note, as per the need</li>
+            <li className="my-2">
+              AI-powered note-taking application with the ability to refine any
+              note, as per the need
+            </li>
           </ul>
         </div>
       </section>
@@ -157,7 +169,7 @@ const Home = () => {
           How to use NoteGenie?
         </h4>
         <div className="md:flex md:gap-16 justify-center gap-8">
-        <div className="md:w-1/2">
+          <div className="md:w-1/2">
             <h3 className="text-primary-dark text-2xl">Streamline Workflow</h3>
 
             <ul className={`list-disc list-outside  marker:text-theme-primary`}>
@@ -221,6 +233,27 @@ const Home = () => {
               {openIndex === index && <p className="mt-4">{faq.answer}</p>}
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="md:w-3/5 mx-auto mt-5 md:p-16 p-8 text-gray-600">
+        <div className="md:flex gap-2 items-end h-[10%] justify-between">
+          <input
+            type="email"
+            className="rounded-lg px-6 py-3 bg-[#ECECEC] w-full focus:outline-none"
+            name="input"
+            autoFocus
+            placeholder="Please enter your email address"
+            value={input}
+            onChange={handleInputChange}
+          />
+          <button
+
+            onClick={handleClick}
+            className="rounded-lg py-3 px-5 bg-primary-dark text-white font-semibold md:w-fit w-full md:mt-0 mt-3 hover:bg-gray-800"
+          >
+            {susbBtn ? 'Subsribe' : 'Subscribed!'}
+          </button>
         </div>
       </section>
 

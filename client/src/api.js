@@ -409,3 +409,21 @@ export const updateSubsStatus = async (formData) => {
     return;
   }
 }
+
+export const addSubscriber = async (formData) => {
+  console.log(formData)
+  try {
+    const res = await axios.post(`${url}/add-subscriber`, formData)
+    const { status, message } = res.data;
+    if (status == "success") {
+      toast.success(message);
+      return true
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { status } = error.response;
+    status == 500 && toast.error('This email is already in use, please try using a different email.')
+    return;
+  }
+}
