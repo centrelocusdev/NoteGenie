@@ -45,10 +45,11 @@ const Dashboard = () => {
       setTemplates(predefinedTemplates);
     };
 
+    if(!templates.length)
     runIt();
 
     templates?.length && setIsTemplatesLoading(false);
-  }, [user, templates]);
+  }, [templates]);
 
   useEffect(() => {
     if (user && !user?.is_admin) {

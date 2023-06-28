@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
 router.post("/update-profile", async (req, res) => {
   try {
     const { id } = req.query;
-    const user = await User.findOne({ id });
+    const user = await User.findById(id);
     if (!user) throw new Error("user not found");
 
     const fieldsToBeUpdated = ["password", "profession"];

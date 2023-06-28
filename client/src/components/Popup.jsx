@@ -9,6 +9,7 @@ import { getUserByToken, createTemplate } from "../api";
 const Popup = ({display}) => {
   const [userId, setUserId] = useState()
   const [name, setName] = useState();
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const runIt = async () => {
@@ -32,6 +33,7 @@ const Popup = ({display}) => {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true)
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
     const rawText = rawContentState.blocks
@@ -41,6 +43,7 @@ const Popup = ({display}) => {
     const res = await createTemplate({name, description: rawText, userId, type: 'custom'})
     display()
     res && setName('')
+    res && setIsLoading(false)
   };
 
   return (
@@ -62,7 +65,7 @@ const Popup = ({display}) => {
               editorClassName="min-h-[7rem] rounded px-5 bg-gray-100"
             />
           </div>
-          <ButtonPrimary text={'save template'} width={'full'} handleClick={handleSubmit} />
+          <ButtonPrimary text={isLoading ? 'saving...' : 'save template'} width={'full'} handleClick={handleSubmit} />
           <button onClick={display} className="text-gray text-center w-full hover:underline">Close</button>
         </div>
         </div>

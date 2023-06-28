@@ -10,21 +10,22 @@ const SettingsPopup = ({ display }) => {
     confirm_password: "",
     profession: "",
   });
+  const [isLoading, setIsLoading] = useState(false)
   const professions = [
-    "healthcare provider",
-    "social worker",
+    "healthcare-provider",
+    "social-worker",
     "acupuncuturist",
     "educator",
     "psychologist",
-    "mental health therapist",
-    "chinese herbal medicine",
+    "mental-health-therapist",
+    "chinese-herbal-medicine",
     "psychiatrist",
     "doctor",
-    "physical therapist",
-    "occupational therapist",
+    "physical-therapist",
+    "occupational-therapist",
     "chiropractor",
-    "speech pathologist",
-    "law inforcement",
+    "speech-pathologist",
+    "law-inforcement",
     "lawyer",
   ];
 
@@ -46,9 +47,13 @@ const SettingsPopup = ({ display }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
+    console.log(formData)
     const res = await updateProfile(formData);
     console.log(res)
+    res && setIsLoading(false)
     display();
+    window.location.reload()
   };
 
   return (
@@ -95,7 +100,7 @@ const SettingsPopup = ({ display }) => {
           </select>
 
           <ButtonPrimary
-            text={"update profile"}
+            text={isLoading ? 'updating...' : 'update profile'}
             width={"full"}
             handleClick={handleSubmit}
           />

@@ -96,7 +96,7 @@ export const updateProfile = async (formData) => {
       return;
     }
     const user = await getUserByToken();
-    const res = await axios.post(`${url}/update-profile?id=${user.id}`, {
+    const res = await axios.post(`${url}/update-profile?id=${user._id}`, {
       password: formData.password,
       profession: formData.profession,
     });
@@ -189,7 +189,6 @@ export const getPredefinedTemplateById = async (id) => {
     const res = await axios.get(`${url}/predefined-template-by-id/${id}`)
     
     const { status, data } = res.data
-    console.log(data)
     if (status == "success") {
       return data;
     } else {
@@ -232,7 +231,6 @@ export const getTemplate = async (id) => {
 export const sendPrompt = async (formData) => {
   try {
     const res = await axios.post(`${url}/send-prompt`, formData);
-    toast.success("Magic Note completed!");
     if (!res.data.error) {
       const { status, data } = res.data;
       if (status == "success") {
