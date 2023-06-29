@@ -18,7 +18,7 @@ const Signup = () => {
   const professions = [
     "healthcare-provider",
     "social-worker",
-    "acupuncuturist",
+    "acupuncturist",
     "educator",
     "psychologist",
     "mental-health-therapist",

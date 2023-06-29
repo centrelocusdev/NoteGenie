@@ -6,7 +6,7 @@ const TemplateCard = ({ template }) => {
   const navigate = useNavigate();
 
   const hanldeCardClick = () => {
-    navigate(`/dashboard/editor/template?id=${template._id}&type=${template.type}`);
+    navigate(`/dashboard/editor/template?id=${template._id}&type=${template.type ? template.type : 'predefined'}`);
   };
 
   return (

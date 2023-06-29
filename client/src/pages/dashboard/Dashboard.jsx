@@ -45,7 +45,7 @@ const Dashboard = () => {
       setTemplates(predefinedTemplates);
     };
 
-    if(!templates.length)
+    if(!templates?.length)
     runIt();
 
     templates?.length && setIsTemplatesLoading(false);

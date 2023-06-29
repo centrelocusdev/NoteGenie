@@ -64,7 +64,7 @@ export const login = async (formData) => {
   } catch (error) {
     const { message } = error.response.data;
     toast.error(message);
-    return;
+    return false;
   }
 };
 
@@ -91,16 +91,34 @@ export const startTrial = async (userId) => {
 
 export const updateProfile = async (formData) => {
   try {
-    if (formData.password != formData.confirm_password) {
-      toast.error("password doesn't match");
-      return;
-    }
     const user = await getUserByToken();
-    const res = await axios.post(`${url}/update-profile?id=${user._id}`, {
-      password: formData.password,
-      profession: formData.profession,
-    });
-
+    let res = "";
+    if (formData.password) {
+      console.log('only password')
+      if (formData.password != formData.confirm_password) {
+        toast.error("password doesn't match");
+        return;
+      }
+      res = await axios.post(`${url}/update-profile?id=${user._id}`, {
+        password: formData.password,
+      });
+    } else if (formData.profession) {
+      console.log('only profession')
+      res = await axios.post(`${url}/update-profile?id=${user._id}`, {
+        profession: formData.profession,
+      });
+    } else if (formData.password && formData.profession) {
+      console.log('password and profession')
+      if (formData.password != formData.confirm_password) {
+        toast.error("password doesn't match");
+        return;
+      }
+      res = await axios.post(`${url}/update-profile?id=${user._id}`, {
+        profession: formData.profession,
+        password: formData.password,
+      });
+    }
+    console.log(res)
     toast.success("profile updated successfully");
     const { status, data } = res.data;
     if (status == "success") {
@@ -109,6 +127,7 @@ export const updateProfile = async (formData) => {
       return;
     }
   } catch (error) {
+    console.log(error)
     const { message } = error.response.data;
     toast.error(message);
     return;
@@ -169,9 +188,9 @@ export const getAllTemplates = async (userId) => {
 
 export const getPredefinedTemplates = async (profession) => {
   try {
-    const res = await axios.get(`${url}/predefined-templates/${profession}`)
-    
-    const { status, data } = res.data
+    const res = await axios.get(`${url}/predefined-templates/${profession}`);
+
+    const { status, data } = res.data;
     if (status == "success") {
       return data;
     } else {
@@ -182,13 +201,13 @@ export const getPredefinedTemplates = async (profession) => {
     toast.error(message);
     return;
   }
-}
+};
 
 export const getPredefinedTemplateById = async (id) => {
   try {
-    const res = await axios.get(`${url}/predefined-template-by-id/${id}`)
-    
-    const { status, data } = res.data
+    const res = await axios.get(`${url}/predefined-template-by-id/${id}`);
+
+    const { status, data } = res.data;
     if (status == "success") {
       return data;
     } else {
@@ -199,7 +218,7 @@ export const getPredefinedTemplateById = async (id) => {
     toast.error(message);
     return;
   }
-}
+};
 
 export const deleteTemplate = async (id) => {
   try {
@@ -406,22 +425,25 @@ export const updateSubsStatus = async (formData) => {
     toast.error(message);
     return;
   }
-}
+};
 
 export const addSubscriber = async (formData) => {
-  console.log(formData)
+  console.log(formData);
   try {
-    const res = await axios.post(`${url}/add-subscriber`, formData)
+    const res = await axios.post(`${url}/add-subscriber`, formData);
     const { status, message } = res.data;
     if (status == "success") {
       toast.success(message);
-      return true
+      return true;
     } else {
       return;
     }
   } catch (error) {
     const { status } = error.response;
-    status == 500 && toast.error('This email is already in use, please try using a different email.')
+    status == 500 &&
+      toast.error(
+        "This email is already in use, please try using a different email."
+      );
     return;
   }
-}
+};
