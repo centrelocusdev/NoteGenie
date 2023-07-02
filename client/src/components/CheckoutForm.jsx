@@ -4,6 +4,7 @@ import InputPrimary from "./InputPrimary";
 import { getUserByToken, updateSubsStatus } from "../api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { countries } from 'countries-list';
 
 const CheckoutForm = ({ plan }) => {
   const navigate = useNavigate()
@@ -46,6 +47,17 @@ const CheckoutForm = ({ plan }) => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  const handleCountryChange = (selectedCode) => {
+    setAddress({ ...address, country: selectedCode });
+  };
+
+  const countryList = Object.keys(countries).map((code) => ({
+    code,
+    name: countries[code].name,
+  }));
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -107,11 +119,23 @@ const CheckoutForm = ({ plan }) => {
           <InputPrimary name="city" placeholder={"New York"} />
           <InputPrimary name="state" placeholder={"NY"} />
         </div>
-        <div className="flex flex-col sm:flex-row gap-2">
-          <InputPrimary
+        <div className=" sm:flex-row gap-2 mt-3  text-gray-600">
+          <label className="capitalize text-lg block font-medium">
+          Country
+          </label>
+          <select
             name="country"
-            placeholder={"2-letter country code i.e US"}
-          />
+            value={address.country}
+            onChange={(e) => handleCountryChange(e.target.value)}
+            className="w-full bg-gray-100 py-2 px-4 mt-1 rounded-full focus:outline-none hover:bg-white border border-gray-100"
+          >
+            <option value="">Select a country</option>
+            {countryList.map((country) => (
+              <option key={country.code} value={country.code}>
+                {country.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <h2 className="text-xl mt-5 text-gray-500 font-semibold border-b">
