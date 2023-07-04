@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FiSave, FiClipboard } from "react-icons/fi";
+import { FiSave, FiClipboard, FiInfo } from "react-icons/fi";
 import { BsArrowLeftCircle } from "react-icons/bs";
 import { FaSpinner } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -16,6 +16,7 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 import { toast } from "react-toastify";
+import InfoBox from "../../components/InfoBox";
 
 const styles = StyleSheet.create({
   page: {
@@ -41,6 +42,7 @@ const TextEditor = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [rawText, setRawText] = useState('')
   const [isTemlateLoading, setIsTemplateLoading] = useState(true)
+  const [showInfoBox, setShowInfoBox] = useState(false)
 
   useEffect(() => {
     const runIt = async () => {
@@ -133,8 +135,14 @@ const TextEditor = () => {
     toast.success("Copied to clipboard");
   };
 
+  const handleInfoClick= () => {
+    setShowInfoBox((prev) => !prev)
+  }
+
+
   return (
     <>
+     {showInfoBox && <InfoBox display={setShowInfoBox} />}
      { isTemlateLoading ? <div className="text-center dm:pt-16 pt-8 text-2xl"><p>Loading...please wait</p></div> : <div className="md:flex gap-6">
       <div className="md:w-2/3 p-8 flex flex-col justify-between gap-8">
         <div className="mb-5">
@@ -185,9 +193,10 @@ const TextEditor = () => {
           <div className="md:w-[73%] w-full flex flex-col gap-1">
             <label
               htmlFor="input"
-              className="w-full font-semibold text-gray-500"
+              className="w-full font-semibold text-gray-500 flex items-center gap-2"
             >
-              Enter Additional Prompt (optional)
+              <p>Enter Additional Prompt (optional)</p>
+              <button onClick={handleInfoClick} title="Info"><FiInfo /></button>
             </label>
             <input
               type="text"

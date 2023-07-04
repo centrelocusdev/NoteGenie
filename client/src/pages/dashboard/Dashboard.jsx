@@ -9,7 +9,6 @@ import { CgLogOff } from "react-icons/cg";
 import { BsArrowLeftCircle } from "react-icons/bs";
 import { BiUserCircle } from "react-icons/bi";
 import { useState } from "react";
-import { predefinedTemplates } from "../../data.js";
 import {
   getPredefinedTemplates,
   getAllTemplates,
