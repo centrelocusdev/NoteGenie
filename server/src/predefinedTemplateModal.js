@@ -6,4 +6,4 @@ const templateModal = mongoose.Schema({
   profession: String
 })
 
-module.exports = mongoose.model('predefined_templates', templateModal)
+module.exports = mongoose.model('templates', templateModal)
