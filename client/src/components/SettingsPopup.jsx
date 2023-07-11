@@ -13,19 +13,19 @@ const SettingsPopup = ({ display }) => {
   const [isLoading, setIsLoading] = useState(false)
   const professions = [
     "healthcare-provider",
-    "social-worker",
-    "acupuncturist",
-    "educator",
+    "case-manager",
     "psychologist",
+    "social-worker",
     "mental-health-therapist",
-    "chinese-herbal-medicine",
+    "acupuncture",
+    "educator",
     "psychiatrist",
-    "doctor",
     "physical-therapist",
-    "occupational-therapist",
-    "chiropractor",
     "speech-pathologist",
+    "chiropractor",
+    "emergency-medical-services",
     "law-inforcement",
+    "chinese-herbal-medicine",
     "lawyer",
   ];
 
@@ -94,7 +94,7 @@ const SettingsPopup = ({ display }) => {
             <option value="">Select your profession</option>
             {professions.map((p) => (
               <option value={p} className="capitalize">
-                {p}
+                {p.split('-').join(' ')}
               </option>
             ))}
           </select>
