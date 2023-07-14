@@ -27,6 +27,7 @@ const Signup = () => {
     "physical-therapist",
     "speech-pathologist",
     "chiropractor",
+    "occupational-therapist",
     "emergency-medical-services",
     "law-inforcement",
     "chinese-herbal-medicine",
