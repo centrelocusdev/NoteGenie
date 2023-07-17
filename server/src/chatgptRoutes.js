@@ -19,26 +19,8 @@ const makeRequest = async (prompt) => {
 
 router.post("/send-prompt", async (req, res) => { 
   try {
-    let completeResponse = ""
-    let finishedReason = ""
     let prompt = req.body.prompt
-    let maxLimit = 5
-    // do {
-    //   const response = await makeRequest(prompt);
-    //   finishedReason = response.finish_reason
-
-    //   completeResponse += response.message.content
-    //   prompt = `please complete this response: ${completeResponse}`
-
-    //   if(maxLimit == 0 || finishedReason == 'stop') {
-    //     break;           
-    //   }
-    //   maxLimit -= 1
-     
-    // } while(maxLimit > 0);
-
     const response = await makeRequest(prompt);
-
     res.send({status: 'success', data: response.message.content});
   } catch (err) { 
     res.send({ status: "error", message: err.message });
