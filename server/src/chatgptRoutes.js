@@ -6,7 +6,7 @@ const makeRequest = async (prompt) => {
     "https://api.openai.com/v1/chat/completions",
     {
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt + 'please make sure the res is complete' }],
+      messages: [{ role: "user", content: prompt }],
     },
     {
       headers: {
