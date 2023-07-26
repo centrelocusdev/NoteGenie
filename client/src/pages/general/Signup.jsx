@@ -16,21 +16,24 @@ const Signup = () => {
   });
   const [isLoading, setIsLoading] = useState(false)
   const professions = [
-    "healthcare-provider",
+    "nurse",
+    "doctor",
     "case-manager",
-    "psychologist",
-    "social-worker",
+    "pharmacists",
     "mental-health-therapist",
+    "clinical-social-worker",
+    "lcpc",
     "acupuncture",
-    "educator",
+    "chinese-herbal-medicine",
     "psychiatrist",
     "physical-therapist",
+    "occupational-therapist",
     "speech-pathologist",
     "chiropractor",
-    "occupational-therapist",
     "emergency-medical-services",
+    "psychologist",
+    "educator",
     "law-inforcement",
-    "chinese-herbal-medicine",
     "lawyer",
   ];
 
