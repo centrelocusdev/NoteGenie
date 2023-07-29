@@ -96,7 +96,7 @@ const Signup = () => {
             <option value="">Select Your Profession</option>
             {professions.map((p) => (
               <option value={p} className="capitalize">
-                {p.split('-').join(' ')}
+                {p == 'Lawyer-Paralegal' ? 'Lawyer' : p.split('-').join(' ')}
               </option>
             ))}
           </select>

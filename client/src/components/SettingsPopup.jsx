@@ -98,7 +98,7 @@ const SettingsPopup = ({ display }) => {
             <option value="">Select your profession</option>
             {professions.map((p) => (
               <option value={p} className="capitalize">
-                {p.split('-').join(' ')}
+                {p == 'Lawyer-Paralegal' ? 'Lawyer' : p.split('-').join(' ')}
               </option>
             ))}
           </select>
