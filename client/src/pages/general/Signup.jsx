@@ -13,6 +13,7 @@ const Signup = () => {
     password: "",
     confirm_password: "",
     profession: "",
+    terms: ""
   });
   const [isLoading, setIsLoading] = useState(false)
   const professions = [
@@ -100,6 +101,12 @@ const Signup = () => {
               </option>
             ))}
           </select>
+          <div onChange={handleFormDataChange} className="flex items-center gap-2 mt-4">
+          <input type="checkbox" id="terms" name="terms" required/>
+          <span>
+            I agree to the <span className="text-indigo-500 cursor-pointer" onClick={() => {navigate('/disclaimer')}}>NoteGenie Terms</span>
+          </span>
+          </div>
           <ButtonPrimary
             text={isLoading ? 'signing up...' : 'sign up'}
             width={"full"}

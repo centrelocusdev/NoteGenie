@@ -162,6 +162,11 @@ const Dashboard = () => {
             >
               Update Proifle
             </button>
+            <button onClick={() => (navigate("/support"))}
+              className="border-b pb-1 text-left hover:text-theme-primary"
+            >
+              Support
+            </button>
             {user?.subs_status != "canceled" && (
               <button
                 onClick={handleOpenSubsPopup}
@@ -169,6 +174,7 @@ const Dashboard = () => {
               >
                 Cancel Subscription
               </button>
+              
             )}
           </div>
           <button
