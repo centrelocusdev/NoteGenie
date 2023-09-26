@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsGoogle } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import InputPrimary from "../../components/InputPrimary";
@@ -39,11 +39,21 @@ const Signup = () => {
   ];
 
   const handleFormDataChange = (e) => {
+    const { name, value, type, checked } = e.target;
+  
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
+  
+
+  // const handleFormDataChange = (e) => {
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [e.target.name]: e.target.value,
+  //   }));
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +62,9 @@ const Signup = () => {
     res && setIsLoading(false)
     res && navigate("/pricing");
   };
-
+// useEffect(()=> {
+// console.log(formData);
+// }, [formData])
   return (
     <div className="py-16">
       <div className="md:w-2/5 p-8 mx-auto rounded-2xl bg-white">
@@ -101,8 +113,8 @@ const Signup = () => {
               </option>
             ))}
           </select>
-          <div onChange={handleFormDataChange} className="flex items-center gap-2 mt-4">
-          <input type="checkbox" id="terms" name="terms" required/>
+          <div  className="flex items-center gap-2 mt-4">
+          <input onChange={handleFormDataChange} type="checkbox" id="terms" name="terms" checked={formData.terms} required/>
           <span>
             I agree to the <span className="text-indigo-500 cursor-pointer" onClick={() => {navigate('/disclaimer')}}>NoteGenie Terms</span>
           </span>

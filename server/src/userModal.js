@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
   },
   password: String,
   profession: String,
+  terms: Boolean,
   note_count: {
     type: Number,
     default: 0

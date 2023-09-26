@@ -173,7 +173,7 @@ const TextEditor = () => {
                   "Generating PDF..."
                 ) : (
                   <button disabled={!rawText.length && true} className={`${rawText.length ? 'hover:bg-theme-primary hover:border-transparent' : 'cursor-not-allowed'} mt-1 font-semibold border rounded-full px-3 py-1 flex items-center gap-2 `}>
-                    {/* <FiSave /> Save Note */}
+                    <FiSave /> Save Note
                   </button>
                 )
               }
