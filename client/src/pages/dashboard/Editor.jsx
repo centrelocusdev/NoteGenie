@@ -158,26 +158,26 @@ const TextEditor = () => {
             <h2 className="text-primary-dark text-xl  font-medium uppercase">
               {id == "new" ? "new template" : template?.name}
             </h2>
-            <PDFDownloadLink
-              document={
-                <Document>
-                  <Page style={styles.page}>
-                    <Text cstyle={styles.text}>{template?.description}</Text>
-                  </Page>
-                </Document>
-              }
-              fileName="NoteGenieNote.pdf"
-            >
-              {({ loading }) =>
-                loading ? (
-                  "Generating PDF..."
-                ) : (
-                  <button disabled={!rawText.length && true} className={`${rawText.length ? 'hover:bg-theme-primary hover:border-transparent' : 'cursor-not-allowed'} mt-1 font-semibold border rounded-full px-3 py-1 flex items-center gap-2 `}>
+            {/* <PDFDownloadLink */}
+              {/* document={ */}
+                {/* <Document> */}
+                  {/* <Page style={styles.page}> */}
+                    {/* <Text cstyle={styles.text}>{template?.description}</Text> */}
+                  {/* </Page> */}
+                {/* </Document> */}
+              {/* } */}
+              {/* fileName="NoteGenieNote.pdf" */}
+            {/* > */}
+              {/* {({ loading }) => */}
+                {/* loading ? ( */}
+                  {/* "Generating PDF..." */}
+                {/* ) : ( */}
+                  {/* <button disabled={!rawText.length && true} className={`${rawText.length ? 'hover:bg-theme-primary hover:border-transparent' : 'cursor-not-allowed'} mt-1 font-semibold border rounded-full px-3 py-1 flex items-center gap-2 `}> */}
                     {/* <FiSave /> Save Note */}
-                  </button>
-                )
-              }
-            </PDFDownloadLink>
+                  {/* </button> */}
+                {/* ) */}
+              {/* } */}
+            {/* </PDFDownloadLink> */}
           </div>
           <div className="bg-white rounded-3xl justify-between mt-3">
             <Editor
