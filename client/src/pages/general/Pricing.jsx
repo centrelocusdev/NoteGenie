@@ -16,7 +16,11 @@ const Pricing = () => {
   const [user, setUser] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [plan, setPlan] = useState("");
-  const [trialState, setTrialState] = useState("start now");
+  const [trialState, setTrialState] = useState("Start Now");
+  const [subsState, setSubsState] = useState("Start Now");
+  const [subsBasicButtonStatus , setSubsBasicButtonStatus] = useState("Start Now");
+  const [subsPreButtonStatus , setSubsPreButtonStatus] = useState("Start Now");
+
 
   useEffect(() => {
     if (status == "completed") setIsCompleted(true);
@@ -31,9 +35,36 @@ const Pricing = () => {
 
     runIt();
   }, []);
-
+function checkSubStatus(user){
+if(user){
+  if(user.subs_started_at){
+    const now = new Date();
+    const subsStartedAt = new Date(user.subs_started_at);
+    let diff = (now.getTime() - subsStartedAt.getTime()) / 1000;
+    diff /= 60* 60;
+    const hourDiffS = Math.floor(diff);
+    if(hourDiffS >= 0  && hourDiffS < 744){
+      setSubsState("Your Subscription Is Running")
+      if(plan === 'basic'){
+        setSubsBasicButtonStatus('Your Subscription Is Running');
+      }
+      if(plan === 'premium'){
+        setSubsPreButtonStatus('Your Subscription Is Running');
+      }
+    }else if(hourDiffS > 744){
+      setSubsState("Your Subscription Has Been Ended, Buy Now!");
+      if(plan === 'basic'){
+        setSubsBasicButtonStatus('Your Subscription Has Been Ended, Buy Now!');
+      }
+      if(plan === 'premium'){
+        setSubsPreButtonStatus("Your Subscription Has Been Ended, Buy Now!");
+      }
+    }
+  }
+}
+}
   useEffect(() => {
-    if (user)
+    if (user){
       if (user.trial_started_at) {
         const now = new Date();
         const trailStartedAt = new Date(user.trial_started_at);
@@ -41,11 +72,15 @@ const Pricing = () => {
         diff /= 60 * 60;
         const hourDiff = Math.floor(diff);
         if (hourDiff >= 0 && hourDiff < 24) {
-          setTrialState("your trail is running");
+          setTrialState("your trial is running");
         } else if (hourDiff > 24) {
-          setTrialState("your trail has been ended");
+          setTrialState("your trial has been ended");
         }
       }
+     if(user.subs_started_at){
+      checkSubStatus(user);
+     }  
+    }
   }, [user]);
 
   const handleClick = async (plan) => {
@@ -114,13 +149,13 @@ const Pricing = () => {
               requirement is low than subscribe to this plan.
             </div>
             <button
-              disabled={plan == "basic" || plan == "premium"}
+             disabled= {subsState === 'Your Subscription Is Running'}
               onClick={(e) => handleClick("basic")}
-              className={`${(plan == "basic" || plan == "premium") &&
+              className={`${(subsState === 'Your Subscription Is Running') && 
                 "cursor-not-allowed bg-[#ffebb3]"
               } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
             >
-             { isLoading ? 'Loading...' : 'Buy Now!'}
+             { isLoading ? 'Loading...' : subsBasicButtonStatus}
             </button>
           </div>
 
@@ -136,14 +171,14 @@ const Pricing = () => {
               workers or Therapists.
             </div>
             <button
-              disabled={plan == "basic" || plan == "premium"}
+              disabled={subsState === 'Your Subscription Is Running'}
               onClick={(e) => handleClick("premium")}
               className={`${
-                (plan == "basic" || plan == "premium") &&
+                (subsState === 'Your Subscription Is Running') &&
                 "cursor-not-allowed bg-[#ffebb3]"
               } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3]`}
             >
-              { isLoading ? 'Loading...' : 'Buy Now!'}
+              { isLoading ? 'Loading...' : subsPreButtonStatus}
             </button>
           </div>
         </div>
