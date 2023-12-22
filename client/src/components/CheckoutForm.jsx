@@ -64,6 +64,7 @@ const CheckoutForm = ({ plan }) => {
 
     setPaymentLoading(true)
     const cardElement = elements.getElement(CardElement)
+    console.log(cardElement, user.name, user.email, address);
     let { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: cardElement,

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const User = require("./userModal");
 const Subscriber = require("./SubscriberModal")
 const bcrypt = require("bcrypt");
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_PERSONAL_SECRET);
 const moment = require("moment");
 
 //get user by token
@@ -51,7 +51,6 @@ router.post("/login", async (req, res) => {
     if (!isMatch) throw new Error("Incorrect password, please try again");
     else {
       await user.generateAuthToken();
-
       res.status(200).send({ status: "success", data: user});
     }
   } catch (err) {

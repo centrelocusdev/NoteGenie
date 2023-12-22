@@ -1,10 +1,10 @@
 const router = require("express").Router();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_PERSONAL_SECRET);
 const User = require("./userModal");
 
-const createPrice = async () => {
+router.get("/create-price", async (req,res) => {
   try {
-    const plan = 'Premium'
+    const plan = 'Basic'
     const product = await stripe.products.create({
       name: `NoteGenie ${plan}`,
     });
@@ -14,21 +14,28 @@ const createPrice = async () => {
         unit_amount: (10.99 * 100),
         currency: "usd",
         product: product.id,
-        recurring: { interval: "month" },
+        recurring: { interval: "day" },
       });
-      console.log(price.id, price.product);
+      // console.log(price.id, price.product);
     }
+    res.status(200).json({
+      priceId: price.id,
+      productId: price.product
+    })
   } catch (err) {
     console.log(err);
   }
-};
+})
 
 // createPrice()
 
 router.post("/create-payment-intent", async (req, res) => {
   try {
+    // console.log("in the payment intent");
+
     const { amount, currency, description, customer, payment_method } =
       req.body;
+      // console.log("body" , req.body);
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency,
@@ -37,7 +44,7 @@ router.post("/create-payment-intent", async (req, res) => {
       payment_method,
       payment_method_types: ["card"],
     });
-
+// console.log("payment intent",paymentIntent)
     const { status, client_secret, id } = paymentIntent;
     res.send({
       status: "success",
@@ -55,11 +62,12 @@ router.post("/create-payment-intent", async (req, res) => {
 router.post("/create-subscription", async (req, res) => {
   try {
     const { userId, plan } = req.body;
+    // console.log(userId, plan);
     const user = await User.findById(userId);
 
     let priceId;
-    if (plan == "basic") priceId = process.env.BASIC_PRICE_ID;
-    else if (plan == "premium") priceId = process.env.PREMIUM_PRICE_ID;
+    if (plan == "basic") priceId = process.env.BASIC_PRICE_ID_ONEDAY_TEST;
+    else if (plan == "premium") priceId = process.env.PREMIUM_PRICE_ID_ONEDAY_TEST;
     else return;
 
     const subs = await stripe.subscriptions.create({
@@ -70,9 +78,10 @@ router.post("/create-subscription", async (req, res) => {
         },
       ],
       payment_behavior: 'default_incomplete',
+      payment_settings: { save_default_payment_method: 'on_subscription' },
       expand: ['latest_invoice.payment_intent']
     });
-
+    // console.log(subs);
     res.status(200).send({
       status: "success",
       message: "subscription created successfully",
@@ -154,9 +163,20 @@ router.post("/attach-payment-method", async (req, res) => {
 
 const cancelSubs = async () => {
   const subs = await stripe.subscriptions.retrieve('sub_1NJCBMHDuMBRsT9C9i233VjA')
-  console.log(subs)
+  // console.log(subs)
 } 
 
+router.post("/retrieve-sub", async (req, res) => {
+  const id = req.body.id;
+  const subs = await stripe.subscriptions.retrieve(id);
+  res.status(200).json({
+    status: "success",
+    data: subs
+  })
+  
+})
 // cancelSubs()
+
+
 
 module.exports = router;

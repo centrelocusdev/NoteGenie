@@ -65,6 +65,9 @@ if(user){
 }
   useEffect(() => {
     if (user){
+      console.log(user);
+      console.log(trialState != 'Start Now');
+      console.log(plan);
       if (user.trial_started_at) {
         const now = new Date();
         const trailStartedAt = new Date(user.trial_started_at);
@@ -74,6 +77,7 @@ if(user){
         if (hourDiff >= 0 && hourDiff < 24) {
           setTrialState("your trial is running");
         } else if (hourDiff > 24) {
+          console.log(hourDiff);
           setTrialState("your trial has been ended");
         }
       }
@@ -91,7 +95,9 @@ if(user){
     }
     if(user) {
       setIsLaoding(false)
+      console.log(user._id, plan);
       const res = await createSubscription({userId: user._id, plan})
+      console.log(res, "in res");
       res && navigate(`/payment?plan=${plan}`);
     }
     setIsLaoding(false)
@@ -127,10 +133,10 @@ if(user){
               can create notes and see the magic happen.
             </div>
             <button
-              disabled={(trialState != 'start now') || (plan == "basic" || plan == "premium")}
+              disabled={(trialState != 'Start Now') || (plan == "basic" || plan == "premium")}
               onClick={handleTrialClick}
               className={`${
-                ((trialState != 'start now') || (plan == "basic" || plan == "premium")) &&
+                ((trialState != 'Start Now') || (plan == "basic" || plan == "premium")) &&
                 "cursor-not-allowed bg-[#ffebb3]"
               } py-3 px-6 bg-theme-primary font-semibold w-full md:mt-0 mt-3 hover:bg-[#ffebb3] capitalize`}
             >
