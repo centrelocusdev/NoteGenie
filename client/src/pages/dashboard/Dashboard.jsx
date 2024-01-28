@@ -18,6 +18,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import logo from "../../assets/logo-yellow.png";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -44,8 +46,7 @@ const Dashboard = () => {
       setTemplates(predefinedTemplates);
     };
 
-    if(!templates?.length)
-    runIt();
+    if (!templates?.length) runIt();
 
     templates?.length && setIsTemplatesLoading(false);
   }, [templates]);
@@ -88,13 +89,13 @@ const Dashboard = () => {
           const updatedUser = await getUserByToken();
 
           if (updatedUser)
-          if(!updatedUser?.trial && !updatedUser?.subs_plan)
-          toast.warning("Please consider purchasing a plan to continue");
+            if (!updatedUser?.trial && !updatedUser?.subs_plan)
+              toast.warning("Please consider purchasing a plan to continue");
           navigate("/pricing");
           return;
         };
 
-        fetchUpdatedUser
+        fetchUpdatedUser;
       }
     }
   }, [user]);
@@ -125,22 +126,30 @@ const Dashboard = () => {
         <SettingsPopup display={handleCloseSettingsPopupClick} />
       )}
       {showSubsPopup && <CancelSubsPopup display={handleCloseSubsPopupClick} />}
-      <div className="flex justify-between md:px-12 p-4 py-6">
-        <div className="flex gap-2">
-          <button
+      <div className="flex justify-between items-center md:px-12 p-4 py-6">
+        <div className="rounded-2xl bg-primary-dark flex justify-between sm:px-2 md:px-5 md:py-0">
+          <Link
+            to="/"
+            className="text-primary-dark font-semibold flex items-center gap-2 text-2xl"
+          >
+            <img src={logo} alt="NoteGenie logo" className="w-20 md:w-32" />
+          </Link>
+        </div>
+        <div className=" gap-2 hidden sm:block">
+          {/* <button
             onClick={(e) => navigate("/")}
             title="Back"
             className="text-2xl hover:text-gray-600"
           >
             <BsArrowLeftCircle />
-          </button>
+          </button> */}
           <h2 className="text-primary-dark text-2xl font-medium uppercase">
             Dashboard
           </h2>
         </div>
 
-        <div className="flex gap-2 items-center">
-          <BiUserCircle className="text-2xl" />
+        <div className="flex md:gap-2 items-center">
+          <BiUserCircle className="hidden sm:block text-2xl" />
           <p className="text-xl font-semibold hidden sm:block capitalize">
             {user?.name}
           </p>
@@ -160,9 +169,10 @@ const Dashboard = () => {
               onClick={handleOpenSettingsPopupClick}
               className="border-b pb-1 text-left hover:text-theme-primary"
             >
-              Update Proifle
+              Update Profile
             </button>
-            <button onClick={() => (navigate("/support"))}
+            <button
+              onClick={() => navigate("/support")}
               className="border-b pb-1 text-left hover:text-theme-primary"
             >
               Support
@@ -170,19 +180,25 @@ const Dashboard = () => {
             {user?.subs_status != "canceled" && (
               <button
                 onClick={handleOpenSubsPopup}
-                className="text-left hover:text-theme-primary"
+                className="border-b text-left hover:text-theme-primary"
               >
                 Cancel Subscription
               </button>
-              
             )}
+            <button
+              onClick={() => navigate("/pricing")}
+              className="pb-1 text-left hover:text-theme-primary"
+            >
+              Your Plan
+            </button>
           </div>
           <button
             onClick={handleLogoutClick}
             title="Logout"
             className="text-2xl rounded-full h-fit hover:text-gray-500 text-red-500 flex items-center ml-3"
           >
-            <span className="text-lg">Logout </span><CgLogOff />
+            <span className="text-lg">Logout </span>
+            <CgLogOff />
           </button>
         </div>
       </div>
@@ -197,11 +213,11 @@ const Dashboard = () => {
               <h4 className="text-2xl font-medium text-primary-dark capitalize mb-2">
                 select new template
               </h4>
-              <ButtonPrimary
+              {/* <ButtonPrimary
                 text={"add note magic"}
                 icon={<FiPlus />}
                 handleClick={(e) => navigate("/dashboard/editor/template/new")}
-              />
+              /> */}
             </div>
             <div className="flex flex-wrap gap-4 justify-evenly">
               <div

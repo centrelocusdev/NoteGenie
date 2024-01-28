@@ -65,9 +65,6 @@ if(user){
 }
   useEffect(() => {
     if (user){
-      console.log(user);
-      console.log(trialState != 'Start Now');
-      console.log(plan);
       if (user.trial_started_at) {
         const now = new Date();
         const trailStartedAt = new Date(user.trial_started_at);
@@ -77,7 +74,6 @@ if(user){
         if (hourDiff >= 0 && hourDiff < 24) {
           setTrialState("your trial is running");
         } else if (hourDiff > 24) {
-          console.log(hourDiff);
           setTrialState("your trial has been ended");
         }
       }
@@ -95,9 +91,7 @@ if(user){
     }
     if(user) {
       setIsLaoding(false)
-      console.log(user._id, plan);
       const res = await createSubscription({userId: user._id, plan})
-      console.log(res, "in res");
       res && navigate(`/payment?plan=${plan}`);
     }
     setIsLaoding(false)

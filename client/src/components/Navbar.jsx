@@ -35,7 +35,7 @@ const Navbar = () => {
     window.location.reload()
   };
 
-  const navItems = ["features", "about", "faq", "support", "pricing"];
+  const navItems = ["features", "about", "faq", "support", "pricing" , "dashboard"];
 
   return (
     <div className="w-full top-0 bg-primary-dark py-1 relative">
@@ -45,7 +45,7 @@ const Navbar = () => {
             to="/"
             className="text-primary-dark font-semibold flex items-center gap-2 text-2xl"
           >
-            <img src={logo} alt="NoteGenie logo" className="w-32" />
+            <img src={logo} alt="NoteGenie logo" className="w-20 md:w-32" />
           </Link>
           <button
             onClick={handleClick}
@@ -70,15 +70,15 @@ const Navbar = () => {
           </li>
           {navItems.map((item, index) => (
             <li key={index}>
-              {(item == navItems[3] || item == navItems[4])  ? (
+              {(item == navItems[3] || item == navItems[4]) || item == navItems[5]  ? (
                 <Link to={item}>
-                  <button className="text-primary-light mx-1 px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
+                  <button className={`${item == navItems[5] ? (user ? "block" : "hidden") : ""} text-primary-light mx-1 lg:px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2`}>
                     {item}
                   </button>
                 </Link>
               ) : (
                 <Goto to={item} spy={true} smooth={true} duration={250}>
-                  <button className="text-primary-light text-lg mx-1 px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
+                  <button className="text-primary-light text-lg mx-1 lg:px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2">
                     {item}
                   </button>
                 </Goto>

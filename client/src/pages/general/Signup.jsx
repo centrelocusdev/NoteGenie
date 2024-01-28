@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import InputPrimary from "../../components/InputPrimary";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { register } from "../../api";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -54,8 +55,25 @@ const Signup = () => {
   //     [e.target.name]: e.target.value,
   //   }));
   // };
-
+  function isValidEmail(email) {
+    let regex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    if (email == null) {
+      return false;
+    }
+    console.log(email);
+    console.log(regex.test(email));
+    if (regex.test(email) == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   const handleSubmit = async (e) => {
+    const checkEmail = isValidEmail(formData.email);
+    if(!checkEmail){
+      toast.error("Kindly add valid email!");
+      return;
+    }
     e.preventDefault();
     setIsLoading(true)
     const res = await register(formData);
