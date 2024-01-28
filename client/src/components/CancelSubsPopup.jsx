@@ -21,7 +21,7 @@ const CancelSubsPopup = ({ display }) => {
   };
 
   return (
-    <div className="w-screen min-h-screen bg-[rgba(0,0,0,0.2)] backdrop-blur flex justify-center items-center fixed">
+    <div className="w-screen z-20 min-h-screen bg-[rgba(0,0,0,0.2)] backdrop-blur flex justify-center items-center fixed">
       <div className="md:w-1/3 rounded-2xl mx-auto bg-white p-8">
         <h4 className="text-2xl text-center">
           Are you sure you want <span className="text-red-500">cancel</span> Your Subscription?

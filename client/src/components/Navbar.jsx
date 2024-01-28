@@ -9,14 +9,36 @@ import logo from "../assets/logo-yellow.png";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "./ButtonPrimary";
 import { getUserByToken, logout } from "../api";
+import { FiPlus, FiSettings, FiX } from "react-icons/fi";
+import SettingsPopup from "./SettingsPopup";
+import CancelSubsPopup from "./CancelSubsPopup";
+
 
 const Goto = Scroll.Link;
 
 const Navbar = () => {
+  const [showSettingsPopup, setShowSettingsPopup] = useState(false);
+  const [showSubsPopup, setShowSubsPopup] = useState(false);
+
+const [settingsDropdown, setSettingsDropdown] = useState(false);
   const navigate = useNavigate();
   const [sidebar, setSidebar] = useState(false);
   const [user, setUser] = useState();
 
+  const handleOpenSettingsPopupClick = () => {
+    setShowSettingsPopup(true);
+    setSettingsDropdown(false);
+  };
+
+  const handleOpenSubsPopup = () => {
+    setShowSubsPopup(true);
+    setSettingsDropdown(false);
+  };
+  const handleCloseSettingsPopupClick = () => setShowSettingsPopup(false);
+  const handleCloseSubsPopupClick = () => setShowSubsPopup(false);
+  const handleSettingsDropdownClick = () =>
+  setSettingsDropdown((prev) => !prev);
+  
   useEffect(() => {
     const runIt = async () => {
       const u = await getUserByToken();
@@ -32,12 +54,24 @@ const Navbar = () => {
 
   const handleLogoutClick = async () => {
     const res = await logout();
-    window.location.reload()
+    window.location.reload();
   };
 
-  const navItems = ["features", "about", "faq", "support", "pricing" , "dashboard"];
+  const navItems = [
+    "features",
+    "about",
+    "faq",
+    "support",
+    "pricing",
+    "dashboard",
+  ];
 
   return (
+    <>
+     {showSettingsPopup && (
+        <SettingsPopup display={handleCloseSettingsPopupClick} />
+      )}
+      {showSubsPopup && <CancelSubsPopup display={handleCloseSubsPopupClick} />}
     <div className="w-full top-0 bg-primary-dark py-1 relative">
       <div className="flex flex-wrap flex-col md:flex-row justify-between md:items-center md:px-12">
         <div className="flex justify-between px-5 py-2 md:py-0">
@@ -70,9 +104,15 @@ const Navbar = () => {
           </li>
           {navItems.map((item, index) => (
             <li key={index}>
-              {(item == navItems[3] || item == navItems[4]) || item == navItems[5]  ? (
+              {item == navItems[3] ||
+              item == navItems[4] ||
+              item == navItems[5] ? (
                 <Link to={item}>
-                  <button className={`${item == navItems[5] ? (user ? "block" : "hidden") : ""} text-primary-light mx-1 lg:px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2`}>
+                  <button
+                    className={`${
+                      item == navItems[5] ? (user ? "block" : "hidden") : ""
+                    } text-primary-light mx-1 lg:px-5 w-full lg:w-fit hover:text-theme-primary rounded-xl md:text-left text-center capitalize font-semibold md:py-0 py-2`}
+                  >
                     {item}
                   </button>
                 </Link>
@@ -102,9 +142,16 @@ const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <Link to={'/'} onClick={handleLogoutClick} className="text-[#D62732] text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center">
-                <CgLogOff /> Logout
-              </Link>
+              <>
+              
+                <Link
+                  to={"/"}
+                  onClick={handleLogoutClick}
+                  className="text-[#D62732] text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center"
+                >
+                  <CgLogOff /> Logout
+                </Link>
+              </>
             )}
           </li>
         </ul>
@@ -123,13 +170,58 @@ const Navbar = () => {
               />
             </>
           ) : (
-            <button onClick={handleLogoutClick} className="text-[#D62732] text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center text-red-400 my-3">
+            <>
+             <button
+                  onClick={handleSettingsDropdownClick}
+                  title="settings"
+                  className=" mr-5 text-xl ml-3 rounded-full h-fit hover:text-gray-500"
+                >
+                  {settingsDropdown ? <FiX color="white" /> : <FiSettings color="white" />}
+                </button>
+                <div
+                  className={`${
+                    !settingsDropdown && "hidden"
+                  } flex mt-28 sm:mt-16 z-10 flex-col p-5 gap-1 rounded-2xl bg-white absolute translate-y-16 -translate-x-12`}
+                >
+                  <button
+                    onClick={handleOpenSettingsPopupClick}
+                    className="border-b pb-1 text-left hover:text-theme-primary"
+                  >
+                    Update Profile
+                  </button>
+                  <button
+                    onClick={() => navigate("/support")}
+                    className="border-b pb-1 text-left hover:text-theme-primary"
+                  >
+                    Support
+                  </button>
+                  {user?.subs_status != "canceled" && (
+                    <button
+                      onClick={handleOpenSubsPopup}
+                      className="border-b text-left hover:text-theme-primary"
+                    >
+                      Cancel Subscription
+                    </button>
+                  )}
+                  <button
+                    onClick={() => navigate("/pricing")}
+                    className="pb-1 text-left hover:text-theme-primary"
+                  >
+                    Change Subscription
+                  </button>
+                </div>
+            <button
+              onClick={handleLogoutClick}
+              className="text-[#D62732] text-lg md:px-0 px-5 w-full lg:w-fit hover:text-primary-light py-2 md:text-left text-center capitalize font-semibold flex items-center gap-2 justify-center text-red-400 my-3"
+              >
               <CgLogOff className=" text-2xl" /> Logout
             </button>
+              </>
           )}
         </div>
       </div>
     </div>
+    </>
   );
 };
 

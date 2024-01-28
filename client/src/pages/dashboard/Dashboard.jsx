@@ -163,7 +163,7 @@ const Dashboard = () => {
           <div
             className={`${
               !settingsDropdown && "hidden"
-            } flex flex-col p-5 gap-1 rounded-2xl bg-white absolute translate-y-16 -translate-x-12`}
+            } flex mt-28 sm:mt-16 flex-col p-5 gap-1 rounded-2xl bg-white absolute translate-y-16 -translate-x-12`}
           >
             <button
               onClick={handleOpenSettingsPopupClick}
@@ -189,7 +189,7 @@ const Dashboard = () => {
               onClick={() => navigate("/pricing")}
               className="pb-1 text-left hover:text-theme-primary"
             >
-              Your Plan
+              Change Subscription
             </button>
           </div>
           <button
@@ -227,7 +227,7 @@ const Dashboard = () => {
                     : "justify-start"
                 }`}
               >
-                <div
+                {/* <div
                   onClick={handleOpenPopupClick}
                   className="bg-theme-primary p-5 my-1 rounded-2xl md:w-[48%] w-full h-[8rem] lg:w-[30%] flex flex-col justify-center items-center gap-2 border border-transparent hover:bg-[#ffebb3] cursor-pointer"
                 >
@@ -235,7 +235,7 @@ const Dashboard = () => {
                   <h4 className="font-semibold capitalize ">
                     create custom templates
                   </h4>
-                </div>
+                </div> */}
                 {templates.map((t, key) => (
                   <TemplateCard template={t} key={key} />
                 ))}

@@ -12,25 +12,25 @@ const SettingsPopup = ({ display }) => {
   });
   const [isLoading, setIsLoading] = useState(false)
   const professions = [
-    "Pharmacists",
-    "Doctors",
-    "Nurse",
-    "Case-Manager",
-    "Psychologist",
-    "LCPC",
-    "Clinical-Social-Worker",
-    "Mental-Health-Therapist",
-    "Chinese-Herbal-Medicine",
     "Acupuncture",
-    "Psychiatrist",
+    "Case-Manager",
+    "Chinese-Herbal-Medicine",
     "Chiropractor",
-    "Speech-Pathologist",
-    "Occupational-Therapist",
-    "Physical-therapist",
+    "Clinical-Social-Worker",
+    "Doctors",
+    "Educator",
     "Emergency-Medical-Services",
     "Law-enforcement",
     "Lawyer-Paralegal",
-    "Educator",
+    "LCPC",
+    "Mental-Health-Therapist",
+    "Nurse",
+    "Occupational-Therapist",
+    "Pharmacists",
+    "Physical-therapist",
+    "Psychiatrist",
+    "Psychologist",
+    "Speech-Pathologist",    
   ];
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const SettingsPopup = ({ display }) => {
   };
 
   return (
-    <div className="w-screen min-h-screen bg-[rgba(0,0,0,0.2)] backdrop-blur flex justify-center items-center fixed">
+    <div className="w-screen z-20 min-h-screen bg-[rgba(0,0,0,0.2)] backdrop-blur flex justify-center items-center fixed">
       <div className="md:w-1/3 rounded-2xl mx-auto bg-white p-8">
         <h4 className="text-4xl text-theme-primary text-center">
           Update Profile
@@ -71,18 +71,18 @@ const SettingsPopup = ({ display }) => {
           <InputPrimary
             name={"name"}
             value={user.name}
-            placeholder={"enter your name"}
+            placeholder={"Enter your name"}
             disabled={true}
           />
           <InputPrimary
             name={"password"}
             value={formData.password}
-            placeholder={"enter your new passaword"}
+            placeholder={"Enter your new passaword"}
           />
           <InputPrimary
             name={"confirm_password"}
             value={formData.confirm_password}
-            placeholder={"re-type your password"}
+            placeholder={"Re-type your password"}
           />
           <label
             htmlFor="profession"
