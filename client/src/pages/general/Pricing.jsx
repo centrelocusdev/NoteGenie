@@ -63,7 +63,7 @@ const Pricing = () => {
         let diff = (now.getTime() - subsStartedAt.getTime()) / 1000;
         diff /= 60 * 60;
         const hourDiffS = Math.floor(diff);
-        if (hourDiffS >= 0 && hourDiffS < 744) {
+        if (user.subs_status === active && (hourDiffS >= 0 && hourDiffS < 744)) {
           setSubsState("Your Subscription Is Running");
           if (plan === "basic") {
             setSubsBasicButtonStatus("Your Subscription Is Running");
