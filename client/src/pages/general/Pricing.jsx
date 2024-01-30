@@ -28,7 +28,6 @@ const Pricing = () => {
 
   const handleOpenSubsPopup = () => {
     setShowSubsPopup(true);
-    setSettingsDropdown(false);
   };
 
   const handleCloseSubsPopupClick = () => setShowSubsPopup(false);
