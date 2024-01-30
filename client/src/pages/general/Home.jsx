@@ -37,22 +37,34 @@ const Home = () => {
         <div className="md:flex relative w-full">
           <div className="flex flex-col items-center md:items-start justify-center md:justify-start">
             <div className="flex justify-center md:justify-left items-end gap-1 md:text-5xl text-3xl">
-              <h2 className="text-primary-dark leading-tight ">NoteGenie</h2>
-              <BsArrowRightShort className="hidden sm:block" />
+              <h2 className="text-primary-dark leading-tight ">
+                Note Genie: Write Less, Connect More
+              </h2>
+              {/* <BsArrowRightShort className="hidden sm:block" /> */}
             </div>
 
-            <p className="text-2xl md:w-4/5 mt-2">
-              Elevate your professional note-taking with the intelligence of
-              NoteGenie.
+            <p className="mt-5 leading-7 text-justify sm:text-left">
+              Welcome to Note Genie, where we revolutionize professional
+              note-taking with the power of AI. Embrace the ease of Writing Less
+              and Connecting More in your work. Professionals across various
+              fields — from social workers and medical experts to educators and
+              law enforcement officers — find Note Genie the perfect ally for
+              efficient documentation. Our AI-driven platform is meticulously
+              designed to enhance clinical documentation, streamline educational
+              notes, and optimize legal case reports with unmatched precision.
             </p>
             <p className="mt-5 leading-7 text-justify sm:text-left">
-              From social workers and medical professionals to educators and law
-              enforcement, NoteGenie is the ultimate companion for professionals
-              across diverse fields. Our AI-driven platform seamlessly enhances
-              clinical documentation, streamlines educational notes, and
-              optimizes legal case reports. Experience the transformative
-              capabilities of NoteGenie and elevate your note-taking game.
-              Unlock the future of efficient documentation today!
+              Experience the transformative power of Note Genie. Here,
+              innovation meets efficiency, giving you more time to focus on what
+              truly matters in your profession. Unlock a new era of
+              documentation efficiency and deepen your professional connections
+              with Note Genie.
+            </p>
+            <p className="mt-5 leading-7 text-justify sm:text-left">
+              Start your journey towards streamlined documentation. Discover a
+              world where note-taking is no longer a chore but a seamless,
+              intuitive process. With Note Genie, step into the future of
+              efficient, AI-enhanced professional documentation.
             </p>
 
             <ButtonPrimary
@@ -94,21 +106,41 @@ const Home = () => {
             About Us
           </h4>
           <p className="text-md p-3 leading-8 md:text-center text-justify">
-            Our note-taking app was created with the mission to make note-taking
-            simpler, more efficient, and professional. We are a team of
-            passionate developers, designers, and innovators who believe that
-            technology can help transform the way we work and learn. NoteGenie
-            owners are in the medical and behavioral health profession and
-            understand the time, energy and effort it takes to complete notes
-            that meet your professions standards (i.e. medical necessity,
-            ethical standards, educational/legal requirements). With NoteGenie,
-            we are constantly pushing the boundaries of what is possible and
-            striving to deliver the best user experience for our customers. Join
-            us on this journey to revolutionize the way you take notes!{" "}
+            At Note Genie, we are redefining the art of note-taking. Born from a
+            vision to simplify and enhance the note-taking process, our app is
+            the culmination of expertise, innovation, and a deep understanding
+            of professional needs. We are a diverse team of passionate
+            designers, and industry experts united by a belief in the
+            transformative power of technology in the workplace and educational
+            environments.{" "}
+          </p>
+          <p className="text-md p-3 leading-8 md:text-center text-justify">
+            {" "}
+            Our roots lie in the medical and behavioral health professions,
+            giving us first hand insight into the challenges of maintaining
+            rigorous professional standards. We recognize the immense time,
+            energy, and effort required to create notes that meet and exceed the
+            expectations of medical necessity, ethical standards, and legal or
+            educational requirements. It's this understanding that drives our
+            commitment to excellence.
+          </p>
+          <p className="text-md p-3 leading-8 md:text-center text-justify">
+            With Note Genie, we're not just developing an app but crafting an
+            experience. We focus on pushing the boundaries of what's possible,
+            dedicated to delivering a product that stands out for its
+            efficiency, professionalism, and ease of use. We strive to provide a
+            seamless and intuitive user experience that aligns with the dynamic
+            needs of our customers.
+          </p>
+          <p className="text-md p-3 leading-8 md:text-center text-justify">
+            Join us in this revolution. Experience the difference with Note
+            Genie, where we empower you to "Write Less, Connect More." Discover
+            a world where note-taking is not just a task but a seamless part of
+            your professional journey.
           </p>
           <p className="text-xl p-3 leading-7 md:text-center text-justify">
-            {" "}
-            Try NoteGenie today and see how easy it can be.
+            Join the Note Genie revolution – Write Less, Connect More, and
+            transform the way you work
           </p>
         </div>
       </section>
@@ -137,30 +169,58 @@ const Home = () => {
             Streamline Your Note-Taking Experience with Modern and Intuitive UI
             Design
           </h3>
-          <p className="my-5 text-justify">
-            Upgrade your note-taking experience with our sleek and modern app,
-            featuring an intuitive UI design. Our integration with chatGPT
-            provides personalized and insightful suggestions to improve
-            productivity and efficiency. Say goodbye to traditional note-taking
-            and embrace the future of productivity. Try our cutting-edge app
-            today.
+          <p className=" mb-2 mt-5 text-justify">
+            <span className="font-medium mr-2">Redefine Your Note-Taking with Note Genie:</span>
+            Where Efficiency Meets
+            Intuitive Design Transform how you capture information with Note
+            Genie, the epitome of modern, intuitive note-taking. Our application
+            is not just a tool; it's an experience that redefines productivity
+            and efficiency in your professional world. With our seamless
+            integration of chatGPT technology, Note Genie offers personalized,
+            AI-driven insights and suggestions, tailoring your note-taking to
+            your unique workflow.
+          </p>
+          <p className=" text-justify">
+            Say farewell to outdated methods and embrace a new era where every
+            note is an opportunity to "Write Less, Connect More." Our
+            cutting-edge app is designed to adapt to your needs, ensuring you
+            spend less time on documentation and more time focusing on what
+            truly matters in your profession.
           </p>
 
+          <p className="text-lg font-semibold mt-5 text-justify">
+            Key Features of Note Genie:
+          </p>
           <ul
             className={`list-disc list-outside  marker:text-theme-primary font-medium `}
           >
-            <li className="my-2">
-              Multiple note-taking templates for different types of content and
-              workflows
+            <li className="mt-2">
+              <span className="mr-2">Diverse Templates:</span>
+              <span className="font-normal">
+                Choose from various note templates, each optimized for different
+                content types and professional workflows.
+              </span>
             </li>
             <li className="my-2">
-              Auto-save and backup features to ensure that notes are never lost
+              <span className="mr-2">Reliable Auto-Save and Backup:</span>
+              <span className="font-normal">
+                With our robust auto-save and backup functionalities, rest
+                assured that your notes are safe and retrievable at any moment.
+              </span>
             </li>
             <li className="my-2">
-              AI-powered note-taking application with the ability to refine any
-              note, as per the need
+              <span className="mr-2">AI-Enhanced Customization:</span>
+              <span className="font-normal">
+                At the core of Note Genie is our AI-powered technology, ready to
+                refine and adapt each note to your specific requirements.
+              </span>
             </li>
           </ul>
+          <p>
+            Experience the future of note-taking today with Note Genie. Join us
+            on a journey where every note is a step towards greater efficiency
+            and deeper professional connections.
+          </p>
         </div>
       </section>
 
@@ -247,11 +307,10 @@ const Home = () => {
             onChange={handleInputChange}
           />
           <button
-
             onClick={handleClick}
             className="rounded-lg py-3 px-5 bg-primary-dark text-white font-semibold md:w-fit w-full md:mt-0 mt-3 hover:bg-gray-800"
           >
-            {susbBtn ? 'Subsribed!' : 'Subscribe'}
+            {susbBtn ? "Subsribed!" : "Subscribe"}
           </button>
         </div>
       </section>
