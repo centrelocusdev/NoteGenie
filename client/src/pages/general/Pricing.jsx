@@ -19,6 +19,7 @@ const Pricing = () => {
   const [user, setUser] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [plan, setPlan] = useState("");
+  const [newPlan, setNewPlan]  = useState("");
   const [trialState, setTrialState] = useState("Start Now");
   const [subsState, setSubsState] = useState("Start Now");
   const [subsBasicButtonStatus, setSubsBasicButtonStatus] =
@@ -111,7 +112,8 @@ const Pricing = () => {
     }
   }, [user]);
 
-  const handleClick = async (newPlan) => {
+  const handleClick = async (choosedPlan) => {
+    setNewPlan(choosedPlan);
     setIsLaoding(true);
     if (!user) {
       toast.warning("please login to continue");
@@ -126,8 +128,8 @@ const Pricing = () => {
         return;
       }
       setIsLaoding(false);
-      const res = await createSubscription({ userId: user._id, plan:newPlan });
-      res && navigate(`/payment?plan=${newPlan}`);
+      const res = await createSubscription({ userId: user._id, plan:choosedPlan });
+      res && navigate(`/payment?plan=${choosedPlan}`);
     }
     setIsLaoding(false);
   };
@@ -145,7 +147,7 @@ const Pricing = () => {
   return (
     <>
       {showSubsPopup && (
-        <UpgradeSubsPopup userId={user._id} plan={plan} display={handleCloseSubsPopupClick} />
+        <UpgradeSubsPopup userId={user._id} plan={newPlan} display={handleCloseSubsPopupClick} />
       )}
       <div className="pb-16 flex flex-col gap-20 md:px-0 px-8 text-center">
         <div className="rounded-2xl w-40 mt-5 ml-5 bg-primary-dark flex justify-between sm:px-2 md:px-5 md:py-0">
