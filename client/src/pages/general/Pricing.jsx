@@ -111,7 +111,7 @@ const Pricing = () => {
     }
   }, [user]);
 
-  const handleClick = async (plan) => {
+  const handleClick = async (newPlan) => {
     setIsLaoding(true);
     if (!user) {
       toast.warning("please login to continue");
@@ -126,8 +126,8 @@ const Pricing = () => {
         return;
       }
       setIsLaoding(false);
-      const res = await createSubscription({ userId: user._id, plan });
-      res && navigate(`/payment?plan=${plan}`);
+      const res = await createSubscription({ userId: user._id, plan:newPlan });
+      res && navigate(`/payment?plan=${newPlan}`);
     }
     setIsLaoding(false);
   };
