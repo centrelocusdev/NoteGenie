@@ -3,13 +3,15 @@ import { BsArrowRightShort } from "react-icons/bs";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import rectangle from "../../assets/rectangle.png";
 import sbar from "../../assets/sbar.png";
+import notebookLines from "../../assets/Notebook Lines.png";
 import dashboard from "../../assets/dashboard.png";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { addSubscriber } from "../../api";
-
+import footer from "../../assets/footer.png";
+import ellipse from "../../assets/ellipse.png";
 const Home = () => {
   const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState(-1);
@@ -28,22 +30,46 @@ const Home = () => {
   };
   return (
     <section className="min-h-screen min-w-screen">
-      <img
-        src={rectangle}
-        className="absolute z-60 w-[75%] mx-auto -translate-y-16 hidden md:block"
-      />
+      
       <Navbar />
-      <div className="mx-auto md:pt-24 p-12 ">
-        <div className="md:flex relative w-full">
-          <div className="flex flex-col items-center md:items-start justify-center md:justify-start">
-            <div className="flex justify-center md:justify-left items-end gap-1 md:text-5xl text-3xl">
-              <h2 className="text-primary-dark leading-tight ">
+      <img
+        src={ellipse}
+        className="w-full absolute"
+        // className="absolute z-60 w-[75%] mx-auto -translate-y-16 hidden md:block"
+      />
+     <div className="bg-gradient-to-b from-white to-yellow3">
+     <div className="flex flex-col pb-20 items-center relative w-full gap-5 ">
+        <div className="sm:mx-20 md:mx-64 mt-20 mb-10">
+        <h2 className="text-primary-dark text-5xl font-bold text-center ">
                 Note Genie: Write Less, Connect More
               </h2>
               {/* <BsArrowRightShort className="hidden sm:block" /> */}
-            </div>
-
-            <p className="mt-5 leading-7 text-justify sm:text-left">
+            <p className="mt-5 leading-7 text-xl text-center">
+              Start your journey towards streamlined documentation. Discover a
+              world where note-taking is no longer a chore but a seamless,
+              intuitive process. With Note Genie, step into the future of
+              efficient, AI-enhanced professional documentation.
+            </p>
+        </div>       
+          <img
+            src={sbar}
+            alt=""
+            className="hidden lg:block h-4/5 w-1/2 self-center rounded-2xl"
+          />
+          <button className="text-2xl mt-10 font-bold py-2.5 px-6 rounded-30 bg-black  text-white"
+           onClick={() => {navigate('/dashbaord')}}
+          >Try NoteGenie</button>
+      </div>
+     </div>
+      <div className="w-full mt-16  flex justify-center flex-col items-center">
+        <img
+          className="w-full absolute"
+          src={notebookLines}
+          alt="notebook-lines"
+        />
+        <div className="flex flex-col sm:mx-28 md:mx-40 my-10 z-20 gap-0">
+          <div className="bg-yellow1 w-full py-10 flex flex-col gap-5 px-10 ">
+            <p className="mt-5 leading-7 text-xl text-justify sm:text-center">
               Welcome to Note Genie, where we revolutionize professional
               note-taking with the power of AI. Embrace the ease of Writing Less
               and Connecting More in your work. Professionals across various
@@ -53,27 +79,15 @@ const Home = () => {
               designed to enhance clinical documentation, streamline educational
               notes, and optimize legal case reports with unmatched precision.
             </p>
-            <p className="mt-5 leading-7 text-justify sm:text-left">
+            <p className="mt-5 leading-7 text-xl text-justify sm:text-center">
               Experience the transformative power of Note Genie. Here,
               innovation meets efficiency, giving you more time to focus on what
               truly matters in your profession. Unlock a new era of
               documentation efficiency and deepen your professional connections
               with Note Genie.
             </p>
-            <p className="mt-5 leading-7 text-justify sm:text-left">
-              Start your journey towards streamlined documentation. Discover a
-              world where note-taking is no longer a chore but a seamless,
-              intuitive process. With Note Genie, step into the future of
-              efficient, AI-enhanced professional documentation.
-            </p>
-
-            <ButtonPrimary
-              text={"Try NoteGenie"}
-              isDark={true}
-              handleClick={(e) => navigate("/dashboard")}
-            />
           </div>
-          <img src={sbar} alt="" className="hidden md:block" />
+          <img className="w-full relative bottom-1" src={footer} alt="footer" />
         </div>
       </div>
 
@@ -88,7 +102,7 @@ const Home = () => {
           {features.map(({ title, desc }, key) => (
             <div
               key={key}
-              className="w-72 bg-theme-primary rounded-xl p-5 m-2 border-2 rounded-2xl border-theme-primary"
+              className="w-72 bg-theme-primary rounded-xl p-5 m-2 border-2  border-theme-primary"
             >
               <h5 className="text-2xl font- mb-3">{title}</h5>
               <p className="md:text-normal">{desc}</p>
@@ -170,15 +184,16 @@ const Home = () => {
             Design
           </h3>
           <p className=" mb-2 mt-5 text-justify">
-            <span className="font-medium mr-2">Redefine Your Note-Taking with Note Genie:</span>
-            Where Efficiency Meets
-            Intuitive Design Transform how you capture information with Note
-            Genie, the epitome of modern, intuitive note-taking. Our application
-            is not just a tool; it's an experience that redefines productivity
-            and efficiency in your professional world. With our seamless
-            integration of chatGPT technology, Note Genie offers personalized,
-            AI-driven insights and suggestions, tailoring your note-taking to
-            your unique workflow.
+            <span className="font-medium mr-2">
+              Redefine Your Note-Taking with Note Genie:
+            </span>
+            Where Efficiency Meets Intuitive Design Transform how you capture
+            information with Note Genie, the epitome of modern, intuitive
+            note-taking. Our application is not just a tool; it's an experience
+            that redefines productivity and efficiency in your professional
+            world. With our seamless integration of chatGPT technology, Note
+            Genie offers personalized, AI-driven insights and suggestions,
+            tailoring your note-taking to your unique workflow.
           </p>
           <p className=" text-justify">
             Say farewell to outdated methods and embrace a new era where every

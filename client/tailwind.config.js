@@ -17,6 +17,9 @@ export default {
   ],
   theme: {
     extend: {
+      borderRadius: {
+        '30': "30px"
+      },
       colors: {
         'blue': '#02BAFB',
         'grad-dark': '#00BFFF0D',
@@ -24,10 +27,12 @@ export default {
         'card-gray': '#2B597336',
         'chat-gray': '#3A405B47',
         'theme-primary': '#FCD47C',
+        'yellow1': "#FFD76B",
+        'yellow3': "#FFE091",
         'primary-dark': '#1A191E',
         'secondary-dark': '#000000',
         'primary-light': '#F9F9E1',
-      }
+      },
     },
   },
 }
