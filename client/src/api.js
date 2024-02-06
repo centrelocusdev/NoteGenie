@@ -457,7 +457,7 @@ export const createCheckoutSession = async () => {
     );
     const { status, message, session } = res.data;
     if (status == "success") {
-      toast.success(message);
+      // toast.success(message);
       return { status: "success", session: session };
     } else {
       return;
