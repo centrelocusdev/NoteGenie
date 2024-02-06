@@ -10,7 +10,7 @@ import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { addSubscriber } from "../../api";
-import footer from "../../assets/footer.png";
+import footer from "../../assets/Footer.png";
 import ellipse from "../../assets/ellipse.png";
 const Home = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const Home = () => {
      <div className="flex flex-col pb-20 items-center relative w-full gap-5 ">
         <div className="sm:mx-20 md:mx-64 mt-20 mb-10">
         <h2 className="text-primary-dark text-5xl font-bold text-center ">
-                Note Genie: Write Less, Connect More
+                Write Less, Connect More
               </h2>
               {/* <BsArrowRightShort className="hidden sm:block" /> */}
             <p className="mt-5 leading-7 text-xl text-center">
@@ -57,7 +57,7 @@ const Home = () => {
             className="hidden lg:block h-4/5 w-1/2 self-center rounded-2xl"
           />
           <button className="text-2xl mt-10 font-bold py-2.5 px-6 rounded-30 bg-black  text-white"
-           onClick={() => {navigate('/dashbaord')}}
+           onClick={() => {navigate('/dashboard')}}
           >Try NoteGenie</button>
       </div>
      </div>

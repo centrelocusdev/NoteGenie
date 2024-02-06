@@ -29,6 +29,7 @@ export default {
         'theme-primary': '#FCD47C',
         'yellow1': "#FFD76B",
         'yellow3': "#FFE091",
+        'yellow4': "#FFEDBD",
         'primary-dark': '#1A191E',
         'secondary-dark': '#000000',
         'primary-light': '#F9F9E1',

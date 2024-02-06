@@ -19,7 +19,7 @@ const Pricing = () => {
   const [user, setUser] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [plan, setPlan] = useState("");
-  const [newPlan, setNewPlan]  = useState("");
+  const [newPlan, setNewPlan] = useState("");
   const [trialState, setTrialState] = useState("Start Now");
   const [subsState, setSubsState] = useState("Start Now");
   const [subsBasicButtonStatus, setSubsBasicButtonStatus] =
@@ -64,7 +64,11 @@ const Pricing = () => {
         let diff = (now.getTime() - subsStartedAt.getTime()) / 1000;
         diff /= 60 * 60;
         const hourDiffS = Math.floor(diff);
-        if (user.subs_status === "active" && (hourDiffS >= 0 && hourDiffS < 744)) {
+        if (
+          user.subs_status === "active" &&
+          hourDiffS >= 0 &&
+          hourDiffS < 744
+        ) {
           setSubsState("Your Subscription Is Running");
           if (plan === "basic") {
             setSubsBasicButtonStatus("Your Subscription Is Running");
@@ -122,13 +126,16 @@ const Pricing = () => {
     }
     if (user) {
       const anyPlanRunning = subsState === "Your Subscription Is Running";
-      if(anyPlanRunning){
+      if (anyPlanRunning) {
         setIsLaoding(false);
         handleOpenSubsPopup();
         return;
       }
       setIsLaoding(false);
-      const res = await createSubscription({ userId: user._id, plan:choosedPlan });
+      const res = await createSubscription({
+        userId: user._id,
+        plan: choosedPlan,
+      });
       res && navigate(`/payment?plan=${choosedPlan}`);
     }
     setIsLaoding(false);
@@ -147,7 +154,11 @@ const Pricing = () => {
   return (
     <>
       {showSubsPopup && (
-        <UpgradeSubsPopup userId={user._id} plan={newPlan} display={handleCloseSubsPopupClick} />
+        <UpgradeSubsPopup
+          userId={user._id}
+          plan={newPlan}
+          display={handleCloseSubsPopupClick}
+        />
       )}
       <div className="pb-16 flex flex-col gap-20 md:px-0 px-8 text-center">
         <div className="rounded-2xl w-40 mt-5 ml-5 bg-primary-dark flex justify-between sm:px-2 md:px-5 md:py-0">
@@ -277,12 +288,23 @@ const Pricing = () => {
             </div>
           </div>
         )}
-        <Link
-          to={isCompleted ? "/dashboard" : "/"}
-          className="text-gray-500 mt-5 underline hover:text-primary-dark"
-        >
-          Go Back
-        </Link>
+        <div className="flex flex-col gap-5">
+        {subsState === "Your Subscription Is Running" &&
+         <Link
+         to={"/payment-method"}
+         className="text-gray-500 mt-5 underline hover:text-primary-dark"
+       >
+         Update Payment Method
+       </Link>
+        }
+         
+          <Link
+            to={isCompleted ? "/dashboard" : "/"}
+            className="text-gray-500 underline hover:text-primary-dark"
+          >
+            Go Back
+          </Link>
+        </div>
       </div>
     </>
   );

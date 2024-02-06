@@ -96,7 +96,7 @@ export const updateProfile = async (formData) => {
     const user = await getUserByToken();
     let res = "";
     if (formData.password) {
-      console.log('only password')
+      console.log("only password");
       if (formData.password != formData.confirm_password) {
         toast.error("password doesn't match");
         return;
@@ -105,12 +105,12 @@ export const updateProfile = async (formData) => {
         password: formData.password,
       });
     } else if (formData.profession) {
-      console.log('only profession')
+      console.log("only profession");
       res = await axios.post(`${url}/update-profile?id=${user._id}`, {
         profession: formData.profession,
       });
     } else if (formData.password && formData.profession) {
-      console.log('password and profession')
+      console.log("password and profession");
       if (formData.password != formData.confirm_password) {
         toast.error("password doesn't match");
         return;
@@ -120,7 +120,7 @@ export const updateProfile = async (formData) => {
         password: formData.password,
       });
     }
-    console.log(res)
+    console.log(res);
     toast.success("profile updated successfully");
     const { status, data } = res.data;
     if (status == "success") {
@@ -129,7 +129,7 @@ export const updateProfile = async (formData) => {
       return;
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     const { message } = error.response.data;
     toast.error(message);
     return;
@@ -446,6 +446,88 @@ export const addSubscriber = async (formData) => {
       toast.error(
         "This email is already in use, please try using a different email."
       );
+    return;
+  }
+};
+
+export const createCheckoutSession = async () => {
+  try {
+    const res = await axios.get(
+      `${url}/create-checkout-session/${Cookies.get("notegenie")}`
+    );
+    const { status, message, session } = res.data;
+    if (status == "success") {
+      toast.success(message);
+      return { status: "success", session: session };
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+
+export const sendCheckoutId = async (id) => {
+  try {
+    const res = await axios.post(
+      `${url}/attatchPaymentMethodToSubs/${Cookies.get("notegenie")}`,
+      {
+        CHECKOUT_SESSION_ID: id,
+      }
+    );
+    const { status, message, subscription } = res.data;
+    if (status == "success") {
+      console.log("subs", subscription);
+      toast.success(message);
+      return true;
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+export const updateCardDetails = async (formData) => {
+  console.log(formData);
+  try {
+    const res = await axios.post(
+      `${url}/update-detailsof-default-paymentmethod/${Cookies.get(
+        "notegenie"
+      )}`,
+      {
+        card: formData,
+      }
+    );
+    const { status, message } = res.data;
+    if (status == "success") {
+      toast.success(message);
+      return true;
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+
+export const fetchCardDetails = async () => {
+  try {
+    const res = await axios.get(
+      `${url}/cardDetails/${Cookies.get("notegenie")}`
+    );
+    console.log("api", res);
+    if (res.data.status === "success" && res.data.card) {
+      return { status: "success", card: res.data.card };
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
     return;
   }
 };

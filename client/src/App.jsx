@@ -14,6 +14,9 @@ import Editor from "./pages/dashboard/Editor";
 import Pricing from "./pages/general/Pricing";
 import StripeElements from "./pages/general/StripeElements";
 import Discaimer from "./pages/general/Disclaimer";
+import UpdatePaymentMethod from "./pages/general/UpdatePaymentMethod";
+import Success from "./pages/general/Success";
+import Error from "./pages/general/Error";
 
 function App() {
   return (
@@ -37,6 +40,10 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/editor/template" element={<Editor />} />
             <Route path="/payment" element={<StripeElements />} />
+            <Route path="/payment-method"  element={<UpdatePaymentMethod/>}/>
+            <Route path="/success" element={<Success/>}/>
+            <Route path="/error" element={<Error/>}/>
+            
           </Route>
         </Routes>
       </Suspense>
