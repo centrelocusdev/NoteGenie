@@ -78,6 +78,22 @@ const UpdatePaymentMethod = () => {
         setLoadingUpdate(false);
         return;
       }
+      if(formData.exp_month === null){
+        setError((prev) => ({
+          ...prev,
+          ["exp_month"]: "Invalid Month",
+        }));
+        setLoadingUpdate(false);
+      }
+
+      if(formData.exp_year === null){
+        setError((prev) => ({
+          ...prev,
+          ["exp_year"]: "Invalid Year",
+        }));
+        setLoadingUpdate(false);
+        return;
+      }
       console.log("formdata", formData);
       const res = await updateCardDetails(formData);
       if (res === true) {
