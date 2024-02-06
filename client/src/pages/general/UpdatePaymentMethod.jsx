@@ -25,11 +25,11 @@ const UpdatePaymentMethod = () => {
       const res = await createCheckoutSession();
       if (res.status === "success") {
         if (res.session && res.session.url) {
-          console.log(res.session);
+          // console.log(res.session);
           window.location.href = res.session.url;
         }
       }
-      console.log("create chcekout session", res);
+      // console.log("create chcekout session", res);
     } catch (err) {
       console.log(err);
       toast.error("Something went wrong!");
@@ -72,7 +72,7 @@ const UpdatePaymentMethod = () => {
   async function handleSubmit() {
     setLoadingUpdate(true);
     try {
-      console.log(formData);
+      // console.log(formData);
       if (error.exp_month != null || error.exp_year != null) {
         toast.error("Invalid Fields");
         setLoadingUpdate(false);
@@ -94,7 +94,7 @@ const UpdatePaymentMethod = () => {
         setLoadingUpdate(false);
         return;
       }
-      console.log("formdata", formData);
+      // console.log("formdata", formData);
       const res = await updateCardDetails(formData);
       if (res === true) {
         setLoadingUpdate(false);
@@ -112,7 +112,7 @@ const UpdatePaymentMethod = () => {
     async function getCardDetails() {
       try {
         const res = await fetchCardDetails();
-        console.log("card", res);
+        // console.log("card", res);
         if (res.status === "success") {
           setCard(res.card);
         }

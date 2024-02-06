@@ -40,7 +40,7 @@ const Pricing = () => {
     const runIt = async () => {
       const res = await getUserByToken();
       res && setUser(res);
-      res && setPlan(res.subs_plan);
+      res && setPlan(res.subs_plan.toLowerCase());
     };
 
     runIt();
@@ -64,6 +64,7 @@ const Pricing = () => {
         let diff = (now.getTime() - subsStartedAt.getTime()) / 1000;
         diff /= 60 * 60;
         const hourDiffS = Math.floor(diff);
+       
         if (
           user.subs_status === "active" &&
           hourDiffS >= 0 &&
@@ -150,9 +151,9 @@ const Pricing = () => {
       navigate("/signup");
     }
   };
-  useEffect(() => {
-      console.log("sub status" , subsState);
-  } , [subsState])
+  // useEffect(() => {
+  //     console.log("sub status" , subsBasicButtonStatus);
+  // } , [subsBasicButtonStatus])
 
   return (
     <>
