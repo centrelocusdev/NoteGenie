@@ -5,9 +5,11 @@ import { updateCardDetails } from "../../api";
 import { fetchCardDetails } from "../../api";
 import notebook from "../../assets/Notebook.png";
 import ClipLoader from "react-spinners/ClipLoader";
-
+import { BsArrowLeftCircle } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 const UpdatePaymentMethod = () => {
   const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     exp_month: null,
     exp_year: null,
@@ -109,6 +111,7 @@ const UpdatePaymentMethod = () => {
       <div className="w-screen min-h-screen h-fit flex justify-center items-center">
         <div className="w-full sm:w-2/3 h-fit flex py-10 flex-col lg:flex-row  m-auto items-center gap-10 px-10 bg-primary-light  sm:bg-white">
           <div className="w-full sm:w-1/2 h-full flex  justify-end">
+          <BsArrowLeftCircle className="cursor-pointer" onClick={()=> {navigate("/pricing")}} size={30} />
             <img className="w-full h-full" src={notebook} alt="notebook" />
           </div>
           <div className="flex w-full lg:w-1/2 h-fit flex-col">
