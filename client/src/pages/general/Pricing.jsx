@@ -150,6 +150,9 @@ const Pricing = () => {
       navigate("/signup");
     }
   };
+  useEffect(() => {
+      console.log("sub status" , subsState);
+  } , [subsState])
 
   return (
     <>
