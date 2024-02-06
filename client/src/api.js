@@ -430,7 +430,7 @@ export const updateSubsStatus = async (formData) => {
 };
 
 export const addSubscriber = async (formData) => {
-  console.log(formData);
+  // console.log(formData);
   try {
     const res = await axios.post(`${url}/add-subscriber`, formData);
     const { status, message } = res.data;
@@ -479,7 +479,7 @@ export const sendCheckoutId = async (id) => {
     );
     const { status, message, subscription } = res.data;
     if (status == "success") {
-      console.log("subs", subscription);
+      // console.log("subs", subscription);
       toast.success(message);
       return true;
     } else {
@@ -492,7 +492,7 @@ export const sendCheckoutId = async (id) => {
   }
 };
 export const updateCardDetails = async (formData) => {
-  console.log(formData);
+  // console.log(formData);
   try {
     const res = await axios.post(
       `${url}/update-detailsof-default-paymentmethod/${Cookies.get(
@@ -521,7 +521,7 @@ export const fetchCardDetails = async () => {
     const res = await axios.get(
       `${url}/cardDetails/${Cookies.get("notegenie")}`
     );
-    console.log("api", res);
+    // console.log("api", res);
     if (res.data.status === "success" && res.data.card) {
       return { status: "success", card: res.data.card };
     }
