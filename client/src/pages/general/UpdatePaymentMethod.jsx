@@ -75,6 +75,7 @@ const UpdatePaymentMethod = () => {
       console.log(formData);
       if (error.exp_month != null || error.exp_year != null) {
         toast.error("Invalid Fields");
+        setLoadingUpdate(false);
         return;
       }
       console.log("formdata", formData);
