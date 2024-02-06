@@ -110,12 +110,15 @@ const UpdatePaymentMethod = () => {
     <div className="w-screen min-h-screen h-fit flex justify-center items-center">
       <div className="w-screen min-h-screen h-fit flex justify-center items-center">
         <div className="w-full sm:w-2/3 h-fit flex py-10 flex-col lg:flex-row  m-auto items-center gap-10 px-10 bg-primary-light  sm:bg-white">
-          <div className="w-full sm:w-1/2 h-full flex  justify-end">
-          <BsArrowLeftCircle className="cursor-pointer" onClick={()=> {navigate("/pricing")}} size={30} />
+          <div className="w-full sm:w-1/2 h-full flex gap-2 justify-end">
+          
             <img className="w-full h-full" src={notebook} alt="notebook" />
           </div>
           <div className="flex w-full lg:w-1/2 h-fit flex-col">
-            <h1 className="font-bold text-3xl mb-5">Update Card Details</h1>
+            <div className="flex gap-5 items-center mb-5">
+            <BsArrowLeftCircle className="cursor-pointer" onClick={()=> {navigate("/pricing")}} size={30} />
+            <h1 className="font-bold text-3xl">Update Card Details</h1>
+            </div>
             <div className="flex flex-col items-start gap-2 mb-5">
               <label className="text-sm" htmlFor="card-number">
                 Current Card Number
