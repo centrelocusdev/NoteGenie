@@ -105,9 +105,10 @@ const Pricing = () => {
         let diff = (now.getTime() - trailStartedAt.getTime()) / 1000;
         diff /= 60 * 60;
         const hourDiff = Math.floor(diff);
-        if (hourDiff >= 0 && hourDiff < 24) {
+        
+        if (user.trial && (hourDiff >= 0 && hourDiff < 24)) {
           setTrialState("your trial is running");
-        } else if (hourDiff > 24) {
+        } else if (hourDiff > 24 || user.trial === false) {
           setTrialState("your trial has been ended");
         }
       }
