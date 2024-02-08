@@ -3,18 +3,26 @@ import { BsGoogle } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import InputPrimary from "../../components/InputPrimary";
 import ButtonPrimary from "../../components/ButtonPrimary";
-import { register } from "../../api";
+import { register , getOtp , verifyOtp } from "../../api";
 import { toast } from "react-toastify";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const[phase1, setPhase1] = useState(false);
+  const[phase2, setPhase2] = useState(false);
+  const[phase3, setPhase3] = useState(false);
+  const [phase1Loader, setPhase1Loader] = useState(false);
+  const [phase2Loader, setPhase2Loader] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirm_password: "",
     profession: "",
-    terms: ""
+    terms: "",
+    otp: ""
   });
   const [isLoading, setIsLoading] = useState(false)
   const professions = [
@@ -60,25 +68,89 @@ const Signup = () => {
     if (email == null) {
       return false;
     }
-    console.log(email);
-    console.log(regex.test(email));
+    // console.log(email);
+    // console.log(regex.test(email));
     if (regex.test(email) == true) {
       return true;
     } else {
       return false;
     }
   }
-  const handleSubmit = async (e) => {
-    const checkEmail = isValidEmail(formData.email);
-    if(!checkEmail){
-      toast.error("Kindly add valid email!");
+  const sendRequestForOtp = async () => {
+    setPhase1Loader(true);
+    try{
+      const checkEmail = isValidEmail(formData.email);
+      if(!checkEmail){
+        toast.error("Kindly add valid email!");
+        setPhase1Loader(false);
+        return;
+      }
+      const res = await getOtp(formData.email);
+      if(res){
+        setPhase1(true);
+        setPhase1Loader(false);
+      }else{
+        setPhase1Loader(false);
+        // toast.error("Invalid Email!");
+      }
+
+    }catch(err){
+      console.log(err);
+      setPhase1Loader(false);
+      // toast.error("Something went wrong!");
+    }
+  }
+
+  const verifytheOtp = async () => {
+    if(!formData.email){
+      toast.error("Email is required!");
       return;
     }
+    if(!formData.otp){
+      toast.error("OTP is required!");
+      return;
+    }
+    setPhase2Loader(true);
+    try{
+      const res = await verifyOtp({email:formData.email, otp:formData.otp});
+      if(res){
+        setPhase2(true);
+        setFormData((prevState) => ({
+          ...prevState,
+          ["otp"]: "",
+        }));
+        setPhase2Loader(false);
+      }else{
+        setPhase2Loader(false);
+      }
+
+    }catch(err){
+      console.log(err);
+      setPhase2Loader(false);
+    }
+  }
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
+    try{
+      const checkEmail = isValidEmail(formData.email);
+    if(!checkEmail){
+      toast.error("Kindly add valid email!");
+      setIsLoading(false);
+      return;
+    }
+    
     const res = await register(formData);
-    res && setIsLoading(false)
+    setIsLoading(false);
     res && navigate("/pricing");
+
+    }catch(err){
+      console.log(err);
+      setIsLoading(false);
+    }
+    
   };
 // useEffect(()=> {
 // console.log(formData);
@@ -97,12 +169,28 @@ const Signup = () => {
         </p>
 
         <div onChange={handleFormDataChange} className="md:w-4/5 mx-auto">
-          <InputPrimary name={"name"} placeholder={"John Doe"} />
+          
+          <div className="flex items-end gap-2">
           <InputPrimary
             type={"email"}
             name={"email"}
             placeholder={"johndoe@gmail.com"}
           />
+          <button disabled={phase1} onClick={sendRequestForOtp} className={`${phase1 === true ? "cursor-not-allowed focus:outline-none disabled:opacity-75": "cursor-pointer"} w-1/2 px-2 py-2  bg-theme-primary rounded-full`}>{phase1Loader? <ClipLoader color="black" size={20} /> : "Get OTP" }</button>
+          </div>
+          {(phase1 === true && phase2 === false) && 
+          <div className="flex items-end gap-2">
+          <InputPrimary
+            type={"otp"}
+            name={"otp"}
+            placeholder={"*****"}
+          />
+          <button onClick={verifytheOtp} className="w-1/2 px-2 py-2 cursor-pointer bg-theme-primary rounded-full">{phase2Loader ? <ClipLoader color="black" size={20} /> : "Verify OTP"}</button>
+          </div>
+          }
+          <InputPrimary name={"name"} placeholder={"John Doe"} />
+
+         
           <InputPrimary
             type={"password"}
             name={"password"}
@@ -138,6 +226,8 @@ const Signup = () => {
           </span>
           </div>
           <ButtonPrimary
+          isDisabled={(!phase1 || !phase2) && true}
+          
             text={isLoading ? 'signing up...' : 'sign up'}
             width={"full"}
             handleClick={handleSubmit}

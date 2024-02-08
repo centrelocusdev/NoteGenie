@@ -104,7 +104,7 @@ const Support = () => {
             value={formData.message}
             onChange={handleFormDataChange}
           />
-          <ButtonPrimary text="Contact Us" width="full" type="submit" />
+          <ButtonPrimary isDisabled={false} text="Contact Us" width="full" type="submit" />
         </form>
       </div>
     </div>

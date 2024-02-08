@@ -104,6 +104,7 @@ const SettingsPopup = ({ display }) => {
           </select>
 
           <ButtonPrimary
+          isDisabled={false}
             text={isLoading ? 'updating...' : 'update profile'}
             width={"full"}
             handleClick={handleSubmit}

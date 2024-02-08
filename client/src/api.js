@@ -23,6 +23,46 @@ export const getUserByToken = async () => {
   }
 };
 
+export const getOtp = async (email) => {
+  try {
+    console.log("email" , email);
+    const res = await axios.post(`${url}/getOtp`, {
+      email: email,
+    });
+    console.log(res);
+    const { status, message } = res.data;
+    if (status == "success" ) {
+      toast.success(message);
+      return true;
+    } 
+  } catch (error) {
+    console.log(error);
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+
+export const verifyOtp = async ({email, otp}) => {
+  try {
+    const res = await axios.post(`${url}/verifyOtp`, {
+      email: email,
+      otp: otp
+    });
+    const { status, message } = res.data;
+    if (status == "success") {
+      toast.success(message);
+      return true;
+    } else {
+      return;
+    }
+  } catch (error) {
+    const { message } = error.response.data;
+    toast.error(message);
+    return;
+  }
+};
+
 export const register = async (formData) => {
   try {
     if (!/^[A-Za-z ]+$/.test(formData.name)) {
@@ -45,7 +85,7 @@ export const register = async (formData) => {
     ) {
       toast.warning("All fields are mendatory");
     } else {
-      const res = await axios.post(`${url}/register/`, formData);
+      const res = await axios.post(`${url}/register`, formData);
       Cookies.set("notegenie", res.data.data.token);
       toast.success("user registered successfully");
       return true;
@@ -96,7 +136,7 @@ export const updateProfile = async (formData) => {
     const user = await getUserByToken();
     let res = "";
     if (formData.password) {
-      console.log("only password");
+      // console.log("only password");
       if (formData.password != formData.confirm_password) {
         toast.error("password doesn't match");
         return;
@@ -105,12 +145,12 @@ export const updateProfile = async (formData) => {
         password: formData.password,
       });
     } else if (formData.profession) {
-      console.log("only profession");
+      // console.log("only profession");
       res = await axios.post(`${url}/update-profile?id=${user._id}`, {
         profession: formData.profession,
       });
     } else if (formData.password && formData.profession) {
-      console.log("password and profession");
+      // console.log("password and profession");
       if (formData.password != formData.confirm_password) {
         toast.error("password doesn't match");
         return;
@@ -120,7 +160,7 @@ export const updateProfile = async (formData) => {
         password: formData.password,
       });
     }
-    console.log(res);
+    // console.log(res);
     toast.success("profile updated successfully");
     const { status, data } = res.data;
     if (status == "success") {
@@ -277,7 +317,6 @@ export const noteCount = async (id) => {
     return;
   }
 };
-
 export const createPaymentIntent = async (formData) => {
   try {
     const res = await axios.post(`${url}/create-payment-intent`, formData);
@@ -322,7 +361,7 @@ export const confirmPayment = async (formData) => {
     }
   } catch (error) {
     const { message } = error.response.data;
-    console.log(message);
+    // console.log(message);
     toast.error(message);
     return;
   }
@@ -531,3 +570,5 @@ export const fetchCardDetails = async () => {
     return;
   }
 };
+
+

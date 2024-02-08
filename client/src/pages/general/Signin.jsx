@@ -58,7 +58,7 @@ const Signin = () => {
             name={"password"}
             placeholder={"Enter strong password"}
           />
-          <ButtonPrimary text={isLoading ? 'logging in...' : 'login'} width={"full"} />
+          <ButtonPrimary isDisabled={false} text={isLoading ? 'logging in...' : 'login'} width={"full"} />
 
           {/* <p className="text-2xl text-center text-slate-400">OR</p>
           <ButtonPrimary

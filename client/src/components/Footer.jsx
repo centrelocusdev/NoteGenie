@@ -21,7 +21,7 @@ const Footer = () => {
           <a target="_blank" href="https://tiktok.com/notegenie"><FaTiktok /></a>
           <a target="_blank" href="https://instagram.com/notegenie.ai"><FaInstagram /></a>
         </div>
-      <ButtonPrimary text={'disclaimer'} isDark={true} handleClick={(e) => navigate('/disclaimer')} />
+      <ButtonPrimary isDisabled={false} text={'disclaimer'} isDark={true} handleClick={(e) => navigate('/disclaimer')} />
 
       <div className="border-t border-primary-light text-center pt-3">
           &copy; Copyright 2023. NoteGenie

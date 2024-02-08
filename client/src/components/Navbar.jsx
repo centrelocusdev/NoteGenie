@@ -165,6 +165,7 @@ const [settingsDropdown, setSettingsDropdown] = useState(false);
                 Login
               </Link>
               <ButtonPrimary
+              isDisabled={false}
                 text={"sign up"}
                 handleClick={(e) => navigate("/signup")}
               />

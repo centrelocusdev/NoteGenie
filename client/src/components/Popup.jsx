@@ -65,7 +65,7 @@ const Popup = ({display}) => {
               editorClassName="min-h-[7rem] rounded px-5 bg-gray-100"
             />
           </div>
-          <ButtonPrimary text={isLoading ? 'saving...' : 'save template'} width={'full'} handleClick={handleSubmit} />
+          <ButtonPrimary isDisabled={false} text={isLoading ? 'saving...' : 'save template'} width={'full'} handleClick={handleSubmit} />
           <button onClick={display} className="text-gray text-center w-full hover:underline">Close</button>
         </div>
         </div>
