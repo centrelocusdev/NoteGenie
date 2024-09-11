@@ -32,7 +32,7 @@ const Support = () => {
     e.preventDefault();
     const { name, email, message } = formData;
     const subject = "NoteGenie Support";
-    const mailtoLink = `mailto:help.notegenie@gmail.com?subject=${encodeURIComponent(
+    const mailtoLink = `mailto:notegenie.help@gmail.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(
       `Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`
